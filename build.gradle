@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'it.ettore'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.1'
+}
+
+test {
+    useJUnitPlatform()
+}
