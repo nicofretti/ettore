@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,7 +26,11 @@ public abstract class E2EBaseTest {
 
     @Before
     public void before() {
-        driver = new ChromeDriver();
+        ChromeOptions opts = new ChromeOptions();
+        if (System.getenv().getOrDefault("ETTORE_HEADLESS_E2E", "FALSE").equals("TRUE")) {
+            opts.setHeadless(true);
+        }
+        driver = new ChromeDriver(opts);
     }
 
     @After
