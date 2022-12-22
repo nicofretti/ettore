@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ETTORE_HEADLESS_E2E=TRUE
+      ETTORE_HEADLESS_E2E: TRUE
 
     steps:
     - uses: actions/checkout@v3
