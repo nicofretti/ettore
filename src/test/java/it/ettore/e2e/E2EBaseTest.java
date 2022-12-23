@@ -6,8 +6,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,22 +15,25 @@ import org.springframework.test.context.junit4.SpringRunner;
 // Every class that provides end-to-end test should extend from E2EBaseTest. This class handles the compilation and
 // deployment of the application on a random port and the setup of a browser driver.
 public abstract class E2EBaseTest {
+    private static WebDriverManager manager;
     protected WebDriver driver;
+
+    private static boolean isE2E() {
+        return System.getenv().getOrDefault("ETTORE_E2E", "off").equals("on");
+    }
 
     @BeforeClass
     public static void setup() {
-        WebDriverManager.chromedriver().setup();
+        if (isE2E()) {
+            manager = WebDriverManager.chromedriver().browserInDocker();
+        } else {
+            manager = WebDriverManager.chromedriver();
+        }
     }
 
     @Before
     public void before() {
-        ChromeOptions opts = new ChromeOptions();
-        if (System.getenv().getOrDefault("ETTORE_E2E", "FALSE").equals("TRUE")) {
-            opts.setHeadless(true);
-            opts.addArguments("--no-sandbox");
-            opts.addArguments("--disable-dev-shm-usage");
-        }
-        driver = new ChromeDriver(opts);
+        driver = manager.create();
     }
 
     @After
@@ -46,6 +47,12 @@ public abstract class E2EBaseTest {
     // Returns the base domain that end-to-end tests should work with. This is necessary because the port for the
     // testing web server is chosen at random to allow for running E2E tests while the default port is already in use.
     protected String baseDomain() {
-        return String.format("http://localhost:%d/", port);
+        String ip;
+        if (isE2E()) {
+            ip = "172.17.0.1";
+        } else {
+            ip = "localhost";
+        }
+        return String.format("http://%s:%d/", ip, port);
     }
 }

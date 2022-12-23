@@ -13,7 +13,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      ETTORE_E2E: TRUE
+      ETTORE_E2E: on
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 11
