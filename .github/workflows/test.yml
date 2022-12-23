@@ -21,10 +21,5 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-    - uses: browser-actions/setup-chrome@latest
-      with:
-        chrome-version: stable
-    - name: Setup upterm session
-      uses: lhotari/action-upterm@v1
     - name: Test
       run: ./gradlew test
