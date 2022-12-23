@@ -27,8 +27,10 @@ public abstract class E2EBaseTest {
     @Before
     public void before() {
         ChromeOptions opts = new ChromeOptions();
-        if (System.getenv().getOrDefault("ETTORE_HEADLESS_E2E", "FALSE").equals("TRUE")) {
+        if (System.getenv().getOrDefault("ETTORE_E2E", "FALSE").equals("TRUE")) {
             opts.setHeadless(true);
+            opts.addArguments("--no-sandbox");
+            opts.addArguments("--disable-dev-shm-usage");
         }
         driver = new ChromeDriver(opts);
     }

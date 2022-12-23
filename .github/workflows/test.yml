@@ -10,13 +10,10 @@ permissions:
   contents: read
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-
     env:
-      ETTORE_HEADLESS_E2E: TRUE
-
+      ETTORE_E2E: TRUE
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 11
@@ -25,5 +22,7 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
     - uses: browser-actions/setup-chrome@latest
+      with:
+        chrome-version: stable
     - name: Test
       run: ./gradlew test
