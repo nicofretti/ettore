@@ -1,12 +1,25 @@
 package it.ettore.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.regex.Pattern;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
-    public static enum Role {
+    public enum Role {
         PROFESSOR,
         STUDENT,
     }
@@ -18,16 +31,11 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    // TODO Should this be a bytes array instead?
     private String pswHash;
     private Role role;
 
-    @OneToMany(mappedBy="professor")
-    private List<Course> coursesTaught;
-
-    public User() {
-
-    }
+    @OneToMany(mappedBy="professor", cascade = CascadeType.ALL)
+    private List<Course> coursesTaught = new ArrayList<>();
 
     public User(String firstName, String lastName, String email, String psw, Role role) {
         this.firstName = firstName;
@@ -39,21 +47,31 @@ public class User {
     }
 
     static String hashPsw(String psw) {
-        // TODO Actual implementation
-        return "some hash";
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            byte[] salt = new byte[16];
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            random.nextBytes(salt);
+            md.update(salt);
+            byte[] hashedPsw = md.digest(psw.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedPsw) {
+                sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null; //Todo return null in case it fails or we can return un-hashed password?
     }
 
     static void assertEmail(String email) {
-        // TODO check regex
-        if (false) {
+        String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        if (!Pattern.compile(regexPattern).matcher(email).matches()) {
             throw new IllegalArgumentException("bad email");
         }
     }
-
-    public long getId() {
-        return id;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -74,19 +92,17 @@ public class User {
         return role;
     }
 
-    public List<Course> getCoursesTaught() {
-        return coursesTaught;
+    public void setEmail(String email) {
+        assertEmail(email);
+        this.email = email;
+    }
+
+    public void setPswHash(String pswHash) {
+        this.pswHash = hashPsw(pswHash);
     }
 
     @Override
     public String toString() {
-        switch (role) {
-            case PROFESSOR:
-                return String.format("User{id=%d,email=%s,role=Professor,num_courses=%d}", id, email, coursesTaught.size());
-            case STUDENT:
-                return String.format("User{id=%d,email=%s,role=Student}", id, email);
-            default:
-                throw new IllegalStateException();
-        }
+        return String.format("User{id=%d,email=%s,role=%s}", id, email, role.toString());
     }
 }

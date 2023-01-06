@@ -1,10 +1,17 @@
 package it.ettore.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Course {
-    public static enum Category {
+    public enum Category {
         Maths,
         Science,
         History,
@@ -23,13 +30,9 @@ public class Course {
     private int startingYear;
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name="professor_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "professor_id", nullable = false)
     private User professor;
-
-    public Course() {
-
-    }
 
     public Course(String name, String description, int startingYear, Category category, User professor) {
         this.name = name;
@@ -43,32 +46,8 @@ public class Course {
         return String.format("(%d/%d)", startingYear, startingYear + 1);
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getStartingYear() {
-        return startingYear;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public User getProfessor() {
-        return professor;
-    }
-
     @Override
     public String toString() {
-        return String.format("Course{id=%d}", id);
+        return String.format("Course{id=%d,name=%s}", id, name);
     }
 }
