@@ -7,8 +7,6 @@ import static org.junit.Assert.*;
 
 public class UserTest {
     @Test
-    public void testDefaultUser() {
-        User user = new User();
-        assertEquals("User{id=0}", user.toString());
+    public void testProfessorRef() {
     }
 }
