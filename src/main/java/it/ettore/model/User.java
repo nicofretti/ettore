@@ -1,12 +1,20 @@
 package it.ettore.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
-    public static enum Role {
+    public enum Role {
         PROFESSOR,
         STUDENT,
     }
@@ -22,12 +30,8 @@ public class User {
     private String pswHash;
     private Role role;
 
-    @OneToMany(mappedBy="professor")
-    private List<Course> coursesTaught;
-
-    public User() {
-
-    }
+    @OneToMany(mappedBy="professor", cascade = CascadeType.ALL)
+    private List<Course> coursesTaught = new ArrayList<>();
 
     public User(String firstName, String lastName, String email, String psw, Role role) {
         this.firstName = firstName;
@@ -50,43 +54,8 @@ public class User {
         }
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPswHash() {
-        return pswHash;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public List<Course> getCoursesTaught() {
-        return coursesTaught;
-    }
-
     @Override
     public String toString() {
-        switch (role) {
-            case PROFESSOR:
-                return String.format("User{id=%d,email=%s,role=Professor,num_courses=%d}", id, email, coursesTaught.size());
-            case STUDENT:
-                return String.format("User{id=%d,email=%s,role=Student}", id, email);
-            default:
-                throw new IllegalStateException();
-        }
+        return String.format("User{id=%d,email=%s,role=%s}", id, email, role.toString());
     }
 }
