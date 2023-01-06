@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.regex.Pattern;
+
 @Entity
 @Getter
 @Setter
@@ -26,7 +31,6 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    // TODO Should this be a bytes array instead?
     private String pswHash;
     private Role role;
 
@@ -43,15 +47,58 @@ public class User {
     }
 
     static String hashPsw(String psw) {
-        // TODO Actual implementation
-        return "some hash";
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            byte[] salt = new byte[16];
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            random.nextBytes(salt);
+            md.update(salt);
+            byte[] hashedPsw = md.digest(psw.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedPsw) {
+                sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null; //Todo return null in case it fails or we can return un-hashed password?
     }
 
     static void assertEmail(String email) {
-        // TODO check regex
-        if (false) {
+        String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        if (!Pattern.compile(regexPattern).matcher(email).matches()) {
             throw new IllegalArgumentException("bad email");
         }
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPswHash() {
+        return pswHash;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setEmail(String email) {
+        assertEmail(email);
+        this.email = email;
+    }
+
+    public void setPswHash(String pswHash) {
+        this.pswHash = hashPsw(pswHash);
     }
 
     @Override

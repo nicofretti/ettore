@@ -2,11 +2,52 @@ package it.ettore.unit;
 
 import it.ettore.model.Course;
 import it.ettore.model.User;
+
 import org.junit.Test;
 
+
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class UserTest {
+    static User user = new User("Nico", "Frex", "nico.fretti@gmail.com", "ACAB", User.Role.PROFESSOR);
+    @Test
+    public void testUsersFirstname() {
+        String firstName = user.getFirstName();
+        assertEquals("Nico", firstName);
+    }
+
+    @Test
+    public void testUsersLastname() {
+        String lastName = user.getLastName();
+        assertEquals("Frex", lastName);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testUsersValidEmail() {
+        user.setEmail("nico.fretti@.com");
+    }
+
+    @Test
+    public void testUsersEmail() {
+        String email = user.getEmail();
+        assertEquals("nico.fretti@gmail.com", email);
+    }
+
+    @Test
+    public void testUsersPswHash() {
+        // had to mock since the hashPsw method is private static and returns a different value each time
+        User user = mock(User.class);
+        when(user.getPswHash()).thenReturn("ACAB");
+        assertEquals("ACAB", user.getPswHash());
+    }
+
+    @Test
+    public void testUsersRole() {
+        User.Role role = user.getRole();
+        assertEquals(User.Role.PROFESSOR, role);
+    }
     @Test
     public void testCreateProfessor() {
         // Test that no exception is raised
@@ -21,9 +62,9 @@ public class UserTest {
 
     @Test
     public void testFormatting() {
-        User user = new User("FIRST_NAME", "LAST_NAME", "EMAIL", "PSW", User.Role.STUDENT);
+        User user = new User("FIRST_NAME", "LAST_NAME", "EMAIL@GMAIL.COM", "PSW", User.Role.STUDENT);
         user.setId(1);
-        assertEquals(user.toString(), "User{id=1,email=EMAIL,role=STUDENT}");
+        assertEquals(user.toString(), "User{id=1,email=EMAIL@GMAIL.COM,role=STUDENT}");
     }
 
     @Test
