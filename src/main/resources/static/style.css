@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@layer base{
+    :root {
+        --color-window: #FFFEF0;
+        --color-background: #FFF4CF;
+        --color-background-light: #E8E8E8;
+        --color-secondary: #3C3C3C;
+        --color-primary: #FED211;
+        --color-text: #252525;
+        --color-text-light: #C2C2C2;
+        --color-green: #00EA6C;
+        --color-red: #FF5C52;
+    }
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--color-window);
+    color: var(--color-text);
+}
+
+h1.et-logo{
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    letter-spacing: 0.275em;
+}
+
+/* Inputs */
+
+input[type=text], [type=password] {
+    border-width: 2px;
+    border-color: rgb(209 213 219);
+    border-radius: 0.5rem;
+}
+input[type=text]:focus, [type=password]:focus {
+    border-color: var(--color-background-light);
+}
+
+button.et-button-primary{
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+    border-radius: 0.5rem;
+}
+
+button.et-button-secondary{
+    background-color: var(--color-secondary);
+    color: var(--color-window);
+    border-radius: 0.5rem;
+}
+
+/* Custom Ettore */
+
+.et-bg-background{
+    background-color: var(--color-background);
+}
+
+.et-bg-text-light{
+    background-color: var(--color-text-light);
+}
+
+.et-card{
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    background-color: var(--color-background);
+}
+
+.et-flex-centered{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
