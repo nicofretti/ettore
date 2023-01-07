@@ -1,12 +1,17 @@
 package it.ettore;
 
 import it.ettore.model.CourseRepository;
+import it.ettore.model.User;
 import it.ettore.model.UserRepository;
+import it.ettore.utils.Utils;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AppController {
@@ -14,6 +19,11 @@ public class AppController {
     private UserRepository repoUser;
     @Autowired
     private CourseRepository repoCourse;
+
+    @GetMapping("/index")
+    public String indexPage() {
+        return "index";
+    }
 
     @GetMapping("/login")
     public String loginPage() {
@@ -32,8 +42,47 @@ public class AppController {
     }
 
     @PostMapping("/register")
-    public String register() {
-        // TODO Implement
-        return "index";
+    public String register(
+        @RequestParam(name="first_name", required=true) String firstName,
+        @RequestParam(name="last_name", required=true) String lastName,
+        @RequestParam(name="email", required=true) String email,
+        @RequestParam(name="password", required=true) String password,
+        @RequestParam(name="role", required=true) String stringRole,
+        Model model
+    ) {
+        User.Role role;
+        switch (stringRole) {
+            case "student":
+                role = User.Role.STUDENT;
+                break;
+            case "professor":
+                role = User.Role.PROFESSOR;
+                break;
+            default:
+                model.addAttribute("error", "Ruolo invalido");
+                return "register";
+        }
+
+        User user;
+        try {
+            user = new User(firstName, lastName, email, password, role);
+        } catch (IllegalArgumentException exc) {
+            model.addAttribute("error", exc.getMessage());
+            return "register";
+        }
+
+        try {
+            repoUser.save(user);
+        } catch (Exception exc) {
+            if (Utils.IsCause(exc, DataIntegrityViolationException.class)) {
+                model.addAttribute("error", "Email non disponibile");
+                return "register";
+            }
+            // Unhandled exception
+            throw exc;
+        }
+
+        // TODO Send back cookie
+        return "redirect:/index";
     }
 }

@@ -30,6 +30,7 @@ public class User {
 
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String email;
     private String pswHash;
     private Role role;
@@ -69,7 +70,7 @@ public class User {
         String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         if (!Pattern.compile(regexPattern).matcher(email).matches()) {
-            throw new IllegalArgumentException("bad email");
+            throw new IllegalArgumentException("Email invalida");
         }
     }
 
