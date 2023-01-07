@@ -28,12 +28,12 @@ h1.et-logo{
 
 /* Inputs */
 
-input[type=text], [type=password] {
+input[type=text], input[type=password] {
     border-width: 2px;
     border-color: rgb(209 213 219);
     border-radius: 0.5rem;
 }
-input[type=text]:focus, [type=password]:focus {
+input[type=text]:focus, input[type=password]:focus {
     border-color: var(--color-background-light);
 }
 
