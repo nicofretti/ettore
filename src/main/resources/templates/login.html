@@ -10,7 +10,7 @@
     <body class="et-flex-centered flex-col h-screen">
         <div class="et-card et-flex-centered flex-col p-12">
             <h1 class="et-logo">ETTORE</h1>
-            <form class="et-flex-centered flex-col mt-12">
+            <form class="et-flex-centered flex-col mt-12" method="post" action="/login">
                 <div class="flex flex-col">
                     <label class="text-sm">Email</label>
                     <input type="text">
@@ -22,7 +22,7 @@
                 <button class="et-button-primary w-full h-12 mt-10">Entra</button>
             </form>
             <hr class="w-2/3 my-8 bg-text-light"/>
-            <button class="et-button-secondary w-full h-12">Registrati</button>
+            <button class="et-button-secondary w-full h-12" onclick="document.location = '/register'">Registrati</button>
         </div>
     </body>
 </html>

@@ -26,6 +26,15 @@ h1.et-logo{
     letter-spacing: 0.275em;
 }
 
+span.et-subtitle{
+    /*
+    Elia:
+    L'ho copiato da et-logo ma non so bene come i vari numeri siano stati calcolati. Io li ho abbassati un po' a
+    caso. Feel free to change.
+     */
+    font-size: 1.25rem;
+}
+
 /* Inputs */
 
 input[type=text], input[type=password] {
@@ -69,4 +78,12 @@ button.et-button-secondary{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.et-already-registered{
+    font-size: 0.938rem;
+}
+
+.et-already-registered > a {
+    text-decoration: underline;
 }

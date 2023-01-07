@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Register</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="et-flex-centered flex-col h-screen">
+<div class="et-card et-flex-centered flex-col p-12">
+    <h1 class="et-logo">ETTORE</h1>
+    <span class="et-subtitle">REGISTRAZIONE</span>
+    <form class="et-flex-centered flex-col mt-8" method="post" action="/register">
+        <div class="flex flex-col">
+            <label class="text-sm">Nome</label>
+            <input type="text" name="first_name">
+        </div>
+        <div class="flex flex-col mt-2">
+            <label class="text-sm">Cognome</label>
+            <input type="text" name="last_name">
+        </div>
+        <div class="flex flex-col mt-2">
+            <label class="text-sm">Email</label>
+            <input type="text">
+        </div>
+        <div class="flex flex-col mt-2">
+            <label class="text-sm">Password</label>
+            <input type="password" name="password">
+        </div>
+        <div class="flex flex-col mt-2">
+            <label class="text-sm">Conferma password</label>
+            <input type="password" name="confirm_password">
+        </div>
+        <div class="flex flex-col w-full mt-2">
+            <label class="text-sm">Sono un</label>
+            <div class="flex flex-row items-center">
+                <input class="mr-2" type="radio" name="role" value="student" checked>
+                <span>Studente</span>
+            </div>
+            <div class="flex flex-row items-center">
+                <input class="mr-2" type="radio" name="role" value="professor">
+                <span>Professore</span>
+            </div>
+        </div>
+        <button class="et-button-primary w-full h-12 mt-2">Registrati</button>
+    </form>
+    <div class="flex-row w-full et-already-registered mt-6">
+        <span>Sei già registrato?</span>
+        <a href="/login">Torna al login</a>
+    </div>
+</div>
+</body>
+</html>
