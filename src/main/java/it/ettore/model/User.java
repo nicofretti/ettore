@@ -52,7 +52,7 @@ public class User {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             byte[] salt = new byte[16];
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-            random.nextBytes(salt);
+            salt = "kokarkokarkokar1".getBytes();
             md.update(salt);
             byte[] hashedPsw = md.digest(psw.getBytes());
             StringBuilder sb = new StringBuilder();
@@ -81,10 +81,6 @@ public class User {
 
     public void setPswHash(String pswHash) {
         this.pswHash = hashPsw(pswHash);
-    }
-
-    public String getPswHash() {
-        return pswHash;
     }
 
     @Override
