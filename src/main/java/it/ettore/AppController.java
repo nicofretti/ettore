@@ -4,6 +4,7 @@ import it.ettore.model.CourseRepository;
 import it.ettore.model.User;
 import it.ettore.model.UserRepository;
 import it.ettore.utils.Utils;
+import java.util.Optional;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -31,9 +32,25 @@ public class AppController {
     }
 
     @PostMapping("/login")
-    public String login() {
-        // TODO Implement
-        return "index";
+    public String login(
+            @RequestParam(name="email", required=true) String email,
+            @RequestParam(name="password", required=true) String password,
+            Model model
+    ) {
+        Optional<User> user = repoUser.findByEmail(email);
+        if (user.isEmpty() || !user.get().getPswHash().equals(User.hashPsw(password))) { //maybe move hashPsw to Utils?
+            model.addAttribute("error", "Invalid credentials");
+            return "login";
+        }
+
+        model.addAttribute("user", user.get());
+        if(user.get().getRole() == User.Role.PROFESSOR) {
+            model.addAttribute("HomepageProfessor", user.get());
+            return "HomepageProfessor";
+        } else {
+            model.addAttribute("HomepageStudent", user.get());
+            return "HomepageStudent";
+        }
     }
 
     @GetMapping("/register")

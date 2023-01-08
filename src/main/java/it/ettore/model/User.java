@@ -47,7 +47,7 @@ public class User {
         this.role = role;
     }
 
-    static String hashPsw(String psw) {
+    public static String hashPsw(String psw) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             byte[] salt = new byte[16];
@@ -81,6 +81,10 @@ public class User {
 
     public void setPswHash(String pswHash) {
         this.pswHash = hashPsw(pswHash);
+    }
+
+    public String getPswHash() {
+        return pswHash;
     }
 
     @Override
