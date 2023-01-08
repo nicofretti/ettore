@@ -85,6 +85,68 @@ button.et-button-disabled{
     align-items: center;
 }
 
+.et-user-actions{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+    text-align: right;
+}
+
+/* User name */
+.et-user-actions > p{
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+/* Logout link */
+.et-user-actions > a{
+    text-decoration: underline;
+}
+
+
+.et-user-actions{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+}
+
+.et-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 0.5rem;
+}
+
+.et-breadcrumbs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    text-transform: uppercase;
+    column-gap: 0.25rem;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+}
+.et-breadcrumbs > a{
+    text-decoration-line: underline;
+}
+
+.et-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-left: 20rem;
+    margin-right: 20rem;
+    gap: 1.5rem;
+}
+
 .et-already-registered{
     font-size: 0.938rem;
 }
