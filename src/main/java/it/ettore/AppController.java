@@ -24,7 +24,7 @@ public class AppController {
         }
         System.out.println("Creating new user");
 
-        User user = new User("Nico", "Frex", "nico.fretti@gmail.com", "ACAB", User.Role.PROFESSOR);
+        User user = new User("Nico", "Frex", "nico@gmail.com", "ACAB", User.Role.PROFESSOR);
         repoUser.save(user);
 
         Course course = new Course("Fourier", "Bogdan mihai", 2022, Course.Category.Maths, user);
