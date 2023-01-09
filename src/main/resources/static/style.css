@@ -137,9 +137,13 @@ button.et-button-disabled{
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-left: 20rem;
-    margin-right: 20rem;
+    margin-left: 10rem;
+    margin-right: 10rem;
     gap: 1.5rem;
+}
+
+.et-icon-course{
+    color: var(--color-green);
 }
 
 .et-already-registered{
