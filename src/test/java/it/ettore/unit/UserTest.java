@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 public class UserTest {
     static User user;
     static {
-        user = new User("Nico", "Frex", "nico.fretti@gmail.com", "ACAB", User.Role.PROFESSOR);
+        user = new User("Nico", "Frex", "nico.barbero@gmail.com", "ACAB", User.Role.PROFESSOR);
         // Set some mock ID, just remember it later
         user.setId(1);
     }
@@ -32,13 +32,13 @@ public class UserTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void testUsersValidEmail() {
-        user.setEmail("nico.fretti@.com");
+        user.setEmail("nico.barbero@.com");
     }
 
     @Test
     public void testUsersEmail() {
         String email = user.getEmail();
-        assertEquals("nico.fretti@gmail.com", email);
+        assertEquals("nico.barbero@gmail.com", email);
     }
 
     @Test
@@ -68,7 +68,7 @@ public class UserTest {
 
     @Test
     public void testFormatting() {
-        assertEquals(user.toString(), "User{id=1,email=nico.fretti@gmail.com,role=PROFESSOR}");
+        assertEquals(user.toString(), "User{id=1,email=nico.barbero@gmail.com,role=PROFESSOR}");
     }
 
     @Test

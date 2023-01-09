@@ -55,7 +55,7 @@
 
     <script>
         // Don't show email error if email has never been edited so far
-        var isEmailUntouched = true;
+        let isEmailUntouched = true;
 
         // Updates the clickable status of the submit button and the visibility of the confirm password error
         function updateForm() {
@@ -63,14 +63,14 @@
                 isEmailUntouched = false;
             }
 
-            var submitButton = document.querySelector("button");
+            let submitButton = document.querySelector("button");
             if (isSubmittable()) {
                 submitButton.classList.remove("et-button-disabled");
             } else {
                 submitButton.classList.add("et-button-disabled");
             }
 
-            var confirmPasswordError = document.querySelector("#confirm-password-not-ok");
+            let confirmPasswordError = document.querySelector("#confirm-password-not-ok");
             if (doPasswordsMatch()) {
                 confirmPasswordError.style = "visibility: hidden";
             } else {
@@ -78,7 +78,7 @@
             }
 
             // This check is also done server-side but we do it client-side first for better interactivity
-            var emailError = document.querySelector("#email-not-ok");
+            let emailError = document.querySelector("#email-not-ok");
             if (isEmailUntouched || isEmailOk()) {
                 emailError.style = "visibility: hidden";
             } else {
@@ -89,22 +89,17 @@
         // Returns true if the submit button should be clickable
         function isSubmittable() {
             // These must have a non-empty value
-            var textInputs = ["first_name", "last_name", "email", "password", "confirm_password"];
-            for (var i = 0; i < textInputs.length; i++) {
+            let textInputs = ["first_name", "last_name", "email", "password", "confirm_password"];
+            for (let i = 0; i < textInputs.length; i++) {
                 if (document.querySelector("input[name='" + textInputs[i] + "']").value === "") {
                     return false;
                 }
             }
-
-            if (!doPasswordsMatch()) {
-                return false;
-            }
-
-            return true;
+            return doPasswordsMatch();
         }
 
         function isEmailOk() {
-            var value = document.querySelector("input[name='email']").value;
+            let value = document.querySelector("input[name='email']").value;
             return /^(?=.{1,64}@)[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/.test(value);
         }
 

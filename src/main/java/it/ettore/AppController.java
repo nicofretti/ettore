@@ -46,9 +46,11 @@ public class AppController {
         model.addAttribute("user", user.get());
         if(user.get().getRole() == User.Role.PROFESSOR) {
             model.addAttribute("HomepageProfessor", user.get());
+            // TODO to change
             return "redirect:/index";
         } else {
             model.addAttribute("HomepageStudent", user.get());
+            // TODO to change
             return "redirect:/index";
         }
     }
