@@ -43,8 +43,9 @@
                 <span>Professore</span>
             </div>
         </div>
-        <span style="visibility: hidden" class="text-red-700 self-start" id="email-not-ok">Email invalida</span>
-        <span style="visibility: hidden" class="text-red-700 self-start" id="confirm-password-not-ok">Password non uguali</span>
+        <span style="display: none" class="text-red-700 self-start" id="email-not-ok">Email invalida</span>
+        <span style="display: none" class="text-red-700 self-start" id="password-too-short">Password troppo corta</span>
+        <span style="display: none" class="text-red-700 self-start" id="confirm-password-not-ok">Password non uguali</span>
         <button class="et-button-primary et-button-disabled w-full h-12 mt-2">Registrati</button>
     </form>
     <div class="flex-row w-full et-already-registered mt-6">
@@ -54,11 +55,16 @@
     <div class="w-full mt-6 bg-red-400 p-2 rounded-md" th:if="${ error != null }" th:text="${ error }"></div>
 
     <script>
+        // Don't show password error if password never been edited so far
+        let isPasswordUntouched = true;
         // Don't show email error if email has never been edited so far
         let isEmailUntouched = true;
 
         // Updates the clickable status of the submit button and the visibility of the confirm password error
         function updateForm() {
+            if (document.querySelector("input[name='password']").value !== "") {
+                isPasswordUntouched = false;
+            }
             if (document.querySelector("input[name='email']").value !== "") {
                 isEmailUntouched = false;
             }
@@ -70,9 +76,16 @@
                 submitButton.classList.add("et-button-disabled");
             }
 
+            let passwordTooShortError = document.querySelector("#password-too-short");
+            if (isPasswordUntouched || isPasswordLongEnough()) {
+                passwordTooShortError.style = "display: none";
+            } else {
+                passwordTooShortError.style = "";
+            }
+
             let confirmPasswordError = document.querySelector("#confirm-password-not-ok");
             if (doPasswordsMatch()) {
-                confirmPasswordError.style = "visibility: hidden";
+                confirmPasswordError.style = "display: none";
             } else {
                 confirmPasswordError.style = "";
             }
@@ -80,7 +93,7 @@
             // This check is also done server-side but we do it client-side first for better interactivity
             let emailError = document.querySelector("#email-not-ok");
             if (isEmailUntouched || isEmailOk()) {
-                emailError.style = "visibility: hidden";
+                emailError.style = "display: none";
             } else {
                 emailError.style = "";
             }
@@ -96,6 +109,11 @@
                 }
             }
             return doPasswordsMatch();
+        }
+
+        function isPasswordLongEnough() {
+            let value = document.querySelector("input[name='password']").value;
+            return value.length >= 8;
         }
 
         function isEmailOk() {
