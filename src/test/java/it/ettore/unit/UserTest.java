@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 public class UserTest {
     static User user;
     static {
-        user = new User("Nico", "Frex", "nico.barbero@gmail.com", "ACAB", User.Role.PROFESSOR);
+        user = new User("Nico", "Frex", "nico.barbero@gmail.com", "ACABACAB", User.Role.PROFESSOR);
         // Set some mock ID, just remember it later
         user.setId(1);
     }
