@@ -1,11 +1,8 @@
 package it.ettore.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConstructorBinding;
-
 import javax.persistence.*;
 
 @Entity
