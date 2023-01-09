@@ -76,6 +76,15 @@
                 submitButton.classList.add("et-button-disabled");
             }
 
+            // This check is also done server-side but we do it client-side first for better interactivity
+            let emailError = document.querySelector("#email-not-ok");
+            if (isEmailUntouched || isEmailOk()) {
+                emailError.style = "display: none";
+            } else {
+                emailError.style = "";
+            }
+
+            // This check is also done server-side but we do it client-side first for better interactivity
             let passwordTooShortError = document.querySelector("#password-too-short");
             if (isPasswordUntouched || isPasswordLongEnough()) {
                 passwordTooShortError.style = "display: none";
@@ -89,14 +98,6 @@
             } else {
                 confirmPasswordError.style = "";
             }
-
-            // This check is also done server-side but we do it client-side first for better interactivity
-            let emailError = document.querySelector("#email-not-ok");
-            if (isEmailUntouched || isEmailOk()) {
-                emailError.style = "display: none";
-            } else {
-                emailError.style = "";
-            }
         }
 
         // Returns true if the submit button should be clickable
@@ -108,17 +109,17 @@
                     return false;
                 }
             }
-            return doPasswordsMatch();
-        }
-
-        function isPasswordLongEnough() {
-            let value = document.querySelector("input[name='password']").value;
-            return value.length >= 8;
+            return isEmailOk() && isPasswordLongEnough() && doPasswordsMatch();
         }
 
         function isEmailOk() {
             let value = document.querySelector("input[name='email']").value;
             return /^(?=.{1,64}@)[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/.test(value);
+        }
+
+        function isPasswordLongEnough() {
+            let value = document.querySelector("input[name='password']").value;
+            return value.length >= 8;
         }
 
         function doPasswordsMatch() {

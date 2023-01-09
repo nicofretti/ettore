@@ -43,6 +43,7 @@ public class User {
         this.lastName = lastName;
         assertEmail(email);
         this.email = email;
+        assertPassword(psw);
         this.pswHash = hashPsw(psw);
         this.role = role;
     }
@@ -71,6 +72,12 @@ public class User {
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         if (!Pattern.compile(regexPattern).matcher(email).matches()) {
             throw new IllegalArgumentException("Invalid email format");
+        }
+    }
+
+    static void assertPassword(String psw) {
+        if (psw.length() < 8) {
+            throw new IllegalArgumentException("Password is too short");
         }
     }
 
