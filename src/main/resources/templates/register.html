@@ -10,14 +10,14 @@
 <body class="et-flex-centered flex-col h-screen" onload="updateForm()">
 <div class="et-card et-flex-centered flex-col p-12">
     <h1 class="et-logo">ETTORE</h1>
-    <span class="et-subtitle">REGISTRAZIONE</span>
+    <span class="et-subtitle">REGISTER</span>
     <form class="et-flex-centered flex-col mt-8" method="post" action="/register">
         <div class="flex flex-col">
-            <label class="text-sm">Nome</label>
+            <label class="text-sm">First name</label>
             <input type="text" name="first_name" oninput="updateForm()">
         </div>
         <div class="flex flex-col mt-2">
-            <label class="text-sm">Cognome</label>
+            <label class="text-sm">Last name</label>
             <input type="text" name="last_name" oninput="updateForm()">
         </div>
         <div class="flex flex-col mt-2">
@@ -29,28 +29,28 @@
             <input type="password" name="password" oninput="updateForm()">
         </div>
         <div class="flex flex-col mt-2">
-            <label class="text-sm">Conferma password</label>
+            <label class="text-sm">Confirm password</label>
             <input type="password" name="confirm_password" oninput="updateForm()">
         </div>
         <div class="flex flex-col w-full mt-2">
-            <label class="text-sm">Sono un</label>
+            <label class="text-sm">I'm a</label>
             <div class="flex flex-row items-center">
                 <input class="mr-2" type="radio" name="role" value="student" checked>
                 <span>Studente</span>
             </div>
             <div class="flex flex-row items-center">
                 <input class="mr-2" type="radio" name="role" value="professor">
-                <span>Professore</span>
+                <span>Professor</span>
             </div>
         </div>
-        <span style="display: none" class="text-red-700 self-start" id="email-not-ok">Email invalida</span>
-        <span style="display: none" class="text-red-700 self-start" id="password-too-short">Password troppo corta</span>
-        <span style="display: none" class="text-red-700 self-start" id="confirm-password-not-ok">Password non uguali</span>
-        <button class="et-button-primary et-button-disabled w-full h-12 mt-2">Registrati</button>
+        <span style="display: none" class="text-red-700 self-start" id="email-not-ok">Invalid email format</span>
+        <span style="display: none" class="text-red-700 self-start" id="password-too-short">Password is too short</span>
+        <span style="display: none" class="text-red-700 self-start" id="confirm-password-not-ok">Password don't match</span>
+        <button class="et-button-primary et-button-disabled w-full h-12 mt-2" id="btn-register">Register</button>
     </form>
     <div class="flex-row w-full et-already-registered mt-6">
-        <span>Sei già registrato?</span>
-        <a href="/login">Torna al login</a>
+        <span>Already a member?</span>
+        <a href="/login">Go back to login</a>
     </div>
     <div class="w-full mt-6 bg-red-400 p-2 rounded-md" th:if="${ error != null }" th:text="${ error }"></div>
 

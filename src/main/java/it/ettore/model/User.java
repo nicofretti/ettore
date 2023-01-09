@@ -70,7 +70,7 @@ public class User {
         String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         if (!Pattern.compile(regexPattern).matcher(email).matches()) {
-            throw new IllegalArgumentException("Email invalida");
+            throw new IllegalArgumentException("Invalid email format");
         }
     }
 

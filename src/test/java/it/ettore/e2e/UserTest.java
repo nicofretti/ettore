@@ -27,7 +27,7 @@ public class UserTest extends E2EBaseTest {
         driver.findElement(By.name("email")).sendKeys("human.being@earth.space");
         driver.findElement(By.name("password")).sendKeys("haha_gotcha");
         driver.findElement(By.name("confirm_password")).sendKeys("haha_gotcha");
-        driver.findElement(By.tagName("button")).click();
+        driver.findElement(By.id("btn-register")).click();
         //check if we got redirected on index.html
         assertEquals("Ettore", driver.getTitle());
 
