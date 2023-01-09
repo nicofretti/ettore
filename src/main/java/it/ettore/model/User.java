@@ -30,6 +30,7 @@ public class User {
 
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String email;
     private String pswHash;
     private Role role;
@@ -46,12 +47,12 @@ public class User {
         this.role = role;
     }
 
-    static String hashPsw(String psw) {
+    public static String hashPsw(String psw) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             byte[] salt = new byte[16];
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-            random.nextBytes(salt);
+            salt = "kokarkokarkokar1".getBytes();
             md.update(salt);
             byte[] hashedPsw = md.digest(psw.getBytes());
             StringBuilder sb = new StringBuilder();
@@ -69,27 +70,8 @@ public class User {
         String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         if (!Pattern.compile(regexPattern).matcher(email).matches()) {
-            throw new IllegalArgumentException("bad email");
+            throw new IllegalArgumentException("Email invalida");
         }
-    }
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPswHash() {
-        return pswHash;
-    }
-
-    public Role getRole() {
-        return role;
     }
 
     public void setEmail(String email) {

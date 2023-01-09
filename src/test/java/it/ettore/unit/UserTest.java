@@ -11,7 +11,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class UserTest {
-    static User user = new User("Nico", "Frex", "nico.fretti@gmail.com", "ACAB", User.Role.PROFESSOR);
+    static User user;
+    static {
+        user = new User("Nico", "Frex", "nico.barbero@gmail.com", "ACAB", User.Role.PROFESSOR);
+        // Set some mock ID, just remember it later
+        user.setId(1);
+    }
+
     @Test
     public void testUsersFirstname() {
         String firstName = user.getFirstName();
@@ -26,13 +32,13 @@ public class UserTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void testUsersValidEmail() {
-        user.setEmail("nico.fretti@.com");
+        user.setEmail("nico.barbero@.com");
     }
 
     @Test
     public void testUsersEmail() {
         String email = user.getEmail();
-        assertEquals("nico.fretti@gmail.com", email);
+        assertEquals("nico.barbero@gmail.com", email);
     }
 
     @Test
@@ -62,14 +68,12 @@ public class UserTest {
 
     @Test
     public void testFormatting() {
-        User user = new User("FIRST_NAME", "LAST_NAME", "EMAIL@GMAIL.COM", "PSW", User.Role.STUDENT);
-        user.setId(1);
-        assertEquals(user.toString(), "User{id=1,email=EMAIL@GMAIL.COM,role=STUDENT}");
+        assertEquals(user.toString(), "User{id=1,email=nico.barbero@gmail.com,role=PROFESSOR}");
     }
 
     @Test
     public void testAddRemoveCourse() {
-        // Test that no exception is raised
+        // Test that no exception is raised when adding or removing courses
         User user = new User("Giorgio", "Poi", "giorgio.poi@univr.it", "sferaebbasta", User.Role.PROFESSOR);
         user.getCoursesTaught().add(new Course("COURSE1", "DESCRIPTION", 2023, Course.Category.Maths, user));
         user.getCoursesTaught().add(new Course("COURSE2", "DESCRIPTION", 2022, Course.Category.Maths, user));

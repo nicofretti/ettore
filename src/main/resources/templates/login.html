@@ -1,102 +1,82 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Log In</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+        <link rel="stylesheet" href="/style.css">
     </head>
-    <body class="et-flex-centered flex-col h-screen">
+    <body class="et-flex-centered flex-col h-screen" onload="updateStyle()">
         <div class="et-card et-flex-centered flex-col p-12">
             <h1 class="et-logo">ETTORE</h1>
-            <form class="et-flex-centered flex-col mt-12">
+            <form class="et-flex-centered flex-col mt-12" method="post" action="/login">
                 <div class="flex flex-col">
                     <label class="text-sm">Email</label>
-                    <input type="text">
+                    <input type="text" name="email" oninput="updateStyle()">
                 </div>
                 <div class="flex flex-col mt-8">
                     <label class="text-sm">Password</label>
-                    <input type="password">
+                    <input type="password" name="password" oninput="updateStyle()">
                 </div>
-                <button class="et-button-primary w-full h-12 mt-10">Entra</button>
+                <span style="visibility: hidden" class="text-red-700 self-start" id="email-not-ok">Invalid Email</span>
+                <span style="visibility: hidden" class="text-red-700 self-start" id="confirm-password-not-ok">Password too short</span>
+                <button class="et-button-primary et-button-disabled w-full h-12 mt-2" name="login">Login</button>
             </form>
             <hr class="w-2/3 my-8 bg-text-light"/>
-            <button class="et-button-secondary w-full h-12">Registrati</button>
+            <button class="et-button-secondary w-full h-12" name="register" onclick="document.location = '/register'">Registrati</button>
         </div>
     </body>
-    <!-- TODO: this style should be in a separate file -->
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-        @layer base{
-        :root {
-                --color-window: #FFFEF0;
-                --color-background: #FFF4CF;
-                --color-background-light: #E8E8E8;
-                --color-secondary: #3C3C3C;
-                --color-primary: #FED211;
-                --color-text: #252525;
-                --color-text-light: #C2C2C2;
-                --color-green: #00EA6C;
-                --color-red: #FF5C52;
-            }
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--color-window);
-            color: var(--color-text);
-        }
-
-        h1.et-logo{
-            font-size: 1.875rem;
-            line-height: 2.25rem;
-            font-weight: 700;
-            letter-spacing: 0.275em;
-        }
-
-        /* Inputs */
-
-        input[type=text], [type=password] {
-            border-width: 2px;
-            border-color: rgb(209 213 219);
-            border-radius: 0.5rem;
-        }
-        input[type=text]:focus, [type=password]:focus {
-            border-color: var(--color-background-light);
-        }
-
-        button.et-button-primary{
-            background-color: var(--color-primary);
-            color: var(--color-secondary);
-            border-radius: 0.5rem;
-        }
-
-        button.et-button-secondary{
-            background-color: var(--color-secondary);
-            color: var(--color-window);
-            border-radius: 0.5rem;
-        }
-
-        /* Custom Ettore */
-
-        .et-bg-background{
-            background-color: var(--color-background);
-        }
-
-        .et-bg-text-light{
-            background-color: var(--color-text-light);
-        }
-
-        .et-card{
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            background-color: var(--color-background);
-        }
-
-        .et-flex-centered{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-    </style>
 </html>
+<script>
+    // Don't show email error if email has never been edited so far
+    let isEmailUntouched = true;
+    let isPasswordUntouched = true;
+
+    // Updates the clickable status of the submit button and the visibility of the confirm password error
+    function updateStyle() {
+        if (document.querySelector("input[name='email']").value !== "") {
+            isEmailUntouched = false;
+        }
+
+        if (document.querySelector("input[name='password']").value !== "") {
+            isPasswordUntouched = false;
+        }
+
+        let loginButton = document.querySelector("button[name='login']");
+        if (canLogin()) {
+            loginButton.classList.remove("et-button-disabled");
+        } else {
+            loginButton.classList.add("et-button-disabled");
+        }
+
+        let emailError = document.querySelector("#email-not-ok");
+        if (isEmailUntouched || isEmailOk()) {
+            emailError.style = "visibility: hidden";
+        } else {
+            emailError.style = "";
+        }
+
+        let confirmPasswordError = document.querySelector("#confirm-password-not-ok");
+        if (isPasswordUntouched || isPasswordOk()) {
+            confirmPasswordError.style = "visibility: hidden";
+        } else {
+            confirmPasswordError.style = "";
+        }
+    }
+
+    // Returns true if the login button should be clickable
+    function canLogin() {
+        return isEmailOk() && isPasswordOk();
+    }
+
+    function isEmailOk() {
+        let value = document.querySelector("input[name='email']").value;
+        return /^(?=.{1,64}@)[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/.test(value);
+    }
+
+    function isPasswordOk() {
+        let value = document.querySelector("input[name='password']").value;
+        return value.length >= 8;
+    }
+</script>
