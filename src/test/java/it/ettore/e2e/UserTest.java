@@ -1,14 +1,25 @@
 package it.ettore.e2e;
 
+import it.ettore.model.UserRepository;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.*;
 
 public class UserTest extends E2EBaseTest {
+    @Autowired
+    protected UserRepository repoUser;
+
+    void clearDb() {
+        repoUser.deleteAll();
+    }
+
     @Test
     public void userRegisteringAndLoggingIn() {
+        clearDb();
+
         //try logging in with a non-existent user
         driver.get(baseDomain() + "login");
         assertEquals("Log In", driver.getTitle());

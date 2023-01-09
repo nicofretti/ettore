@@ -52,7 +52,7 @@
         <span>Already a member?</span>
         <a href="/login">Go back to login</a>
     </div>
-    <div class="w-full mt-6 bg-red-400 p-2 rounded-md" th:if="${ error != null }" th:text="${ error }"></div>
+    <div class="w-full mt-6 bg-red-400 p-2 rounded-md" id="error" th:if="${ error != null }" th:text="${ error }"></div>
 
     <script>
         // Don't show password error if password never been edited so far
