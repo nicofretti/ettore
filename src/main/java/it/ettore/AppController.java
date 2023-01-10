@@ -4,6 +4,7 @@ import it.ettore.model.CourseRepository;
 import it.ettore.model.User;
 import it.ettore.model.UserRepository;
 import it.ettore.utils.Utils;
+import it.ettore.AuthInterceptor.Auth;
 import java.util.Optional;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class AppController {
     }
 
     @PostMapping("/login")
+    @Auth
     public String login(
             @RequestParam(name="email", required=true) String email,
             @RequestParam(name="password", required=true) String password,
