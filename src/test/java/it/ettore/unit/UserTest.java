@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 public class UserTest {
     static User user;
     static {
-        user = new User("Nico", "Frex", "nico.barbero@gmail.com", "ACAB", User.Role.PROFESSOR);
+        user = new User("Nico", "Frex", "nico.barbero@gmail.com", "ACABACAB", User.Role.PROFESSOR);
         // Set some mock ID, just remember it later
         user.setId(1);
     }
@@ -63,7 +63,7 @@ public class UserTest {
     @Test
     public void testCreateStudent() {
         // Test that no exception is raised
-        new User("Massimo", "Mina", "massimo.mina@studenti.univr.it", "nutella", User.Role.STUDENT);
+        new User("Massimo", "Mina", "massimo.mina@studenti.univr.it", "nutella123", User.Role.STUDENT);
     }
 
     @Test
