@@ -63,7 +63,7 @@ public class UserTest {
     @Test
     public void testCreateStudent() {
         // Test that no exception is raised
-        new User("Massimo", "Mina", "massimo.mina@studenti.univr.it", "nutella", User.Role.STUDENT);
+        new User("Massimo", "Mina", "massimo.mina@studenti.univr.it", "nutella123", User.Role.STUDENT);
     }
 
     @Test
