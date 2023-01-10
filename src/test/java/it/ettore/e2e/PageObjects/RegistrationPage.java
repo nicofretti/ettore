@@ -71,12 +71,11 @@ public class RegistrationPage extends PageObject {
         this.confirmPassword.sendKeys(confirmPassword);
     }
 
-    /*
-    public CoursesPage register() {
+
+    public LoginPage register() {
         registerButton.click();
-        return new CoursesPage(driver);
+        return new LoginPage(driver);
     }
-    */
     public LoginPage returnToLogin() {
         returnToLogin.click();
         return new LoginPage(driver);
