@@ -20,19 +20,19 @@
         <div class="et-header">
             <h1 class="et-logo">ETTORE</h1>
             <div class="et-breadcrumbs">
-                <a>I miei corsi</a>
+                <a href="">I miei corsi</a>
             </div>
         </div>
         <!-- Content -->
         <div class="et-content">
-            <button class="et-button-primary w-full h-12"> Nuovo corso </button>
+            <button class="et-button-primary w-full h-12" onclick="window.location.href='add'"> Nuovo corso </button>
             <!-- Iterate over courses -->
             <div th:each="course: ${courses}" class="et-card p-5 w-100">
                 <div class="flex flex-row justify-items-center gap-5">
                     <!-- Icon -->
                     <i th:class="'et-icon-course fa-2x '+ ${course.getIcon()}" class="fa fa-book fa-2x"></i>
                     <!-- Title -->
-                    <a th:text="${course.getName()}" class="text-2xl font-bold"  href="#">Analisi di segnali</a>
+                    <a th:text="${course.getName()}" th:href="${course.getId()}+'/'" class="text-2xl font-bold">Analisi di segnali</a>
                     <!-- Year -->
                     <p th:text="${course.formatPeriod()}" class="text-xl">(2021/2022)</p>
                 </div>

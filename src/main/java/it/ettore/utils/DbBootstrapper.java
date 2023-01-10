@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Component
 public class DbBootstrapper {
@@ -19,7 +20,14 @@ public class DbBootstrapper {
 
     @PostConstruct
     public void bootstrap() {
-        repoUser.save(new User("A", "Student", "a.student@ettore.it", "a.student@ettore.it", User.Role.STUDENT));
-        repoCourse.save(new Course("Maths", "Maths course", 2023, Course.Category.Maths, new User("A.", "Professor", "a.professor@ettore.it", "a.professor@ettore.it", User.Role.PROFESSOR)));
+        repoUser.save(new User("A.", "Student", "a.student@ettore.it", "a.student@ettore.it", User.Role.STUDENT));
+        User professor = new User("B.", "Professor", "a.professor@ettore.it", "a.professor@ettore.it", User.Role.PROFESSOR);
+        // Add math and history course to the professor
+        repoCourse.saveAll(List.of(
+                new Course("Maths", "Maths course", 2023, Course.Category.Maths, professor),
+                new Course("History", "History course", 2023, Course.Category.History, professor)
+            )
+        );
     }
+
 }
