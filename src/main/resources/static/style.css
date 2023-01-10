@@ -135,11 +135,15 @@ button.et-button-disabled{
 .et-content{
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     flex-direction: column;
-    margin-left: 20rem;
-    margin-right: 20rem;
+    margin-left: 15rem;
+    margin-right: 15rem;
     gap: 1.5rem;
+}
+
+.et-icon-course{
+    color: var(--color-green);
 }
 
 .et-already-registered{
