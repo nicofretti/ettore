@@ -22,12 +22,18 @@ public class RegistrationPage extends PageObject {
     @FindBy(name = "email")
     private WebElement email;
 
+    @FindBy(id = "email-not-ok")
+    private WebElement emailNotOk;
+
     @FindBy(name = "password")
     private WebElement password;
 
 
     @FindBy(name = "confirm_password")
     private WebElement confirmPassword;
+
+    @FindBy(id = "password-not-ok")
+    private WebElement passwordNotOk;
 
     @FindBy(id = "btn-register")
     private WebElement registerButton;
@@ -45,6 +51,20 @@ public class RegistrationPage extends PageObject {
     public String getError() {
         return error.getText();
     }
+
+    public String getEmailNotOk() {
+
+        return emailNotOk.getCssValue("display");
+    }
+    public String getPasswordNotOk() {
+
+        return passwordNotOk.getCssValue("display");
+    }
+
+    public String getButtonClickable() {
+        return registerButton.getCssValue("pointer-events");
+    }
+
 
     public void setFirstName(String firstName) {
         this.firstName.clear();
@@ -72,9 +92,9 @@ public class RegistrationPage extends PageObject {
     }
 
 
-    public LoginPage register() {
+    public CoursesPage register() {
         registerButton.click();
-        return new LoginPage(driver);
+        return new CoursesPage(driver);
     }
     public LoginPage returnToLogin() {
         returnToLogin.click();
