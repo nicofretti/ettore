@@ -78,7 +78,7 @@ public class AppController {
                 role = User.Role.PROFESSOR;
                 break;
             default:
-                model.addAttribute("error", "Ruolo invalido");
+                model.addAttribute("error", "Invalid role");
                 return "register";
         }
 
@@ -94,7 +94,7 @@ public class AppController {
             repoUser.save(user);
         } catch (Exception exc) {
             if (Utils.IsCause(exc, DataIntegrityViolationException.class)) {
-                model.addAttribute("error", "Email non disponibile");
+                model.addAttribute("error", "Email already taken");
                 return "register";
             }
             // Unhandled exception
