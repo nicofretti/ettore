@@ -22,6 +22,9 @@ public class LoginPage extends PageObject{
     @FindBy(name = "login")
     private WebElement loginButton;
 
+    @FindBy(name = "register")
+    private WebElement registerButton;
+
     public String getTitle() {
         return title.getText();
     }
@@ -36,14 +39,15 @@ public class LoginPage extends PageObject{
         this.password.sendKeys(password);
     }
 
+    /*
     public CoursesPage login() {
         loginButton.click();
         return new CoursesPage(driver);
     }
-
-    public RegisterPage register() {
-        driver.findElement(By.name("register")).click();
-        return new RegisterPage(driver);
+    */
+    public RegistrationPage register() {
+        registerButton.click();
+        return new RegistrationPage(driver);
     }
 
 }
