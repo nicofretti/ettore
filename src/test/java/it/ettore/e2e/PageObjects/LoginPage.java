@@ -39,12 +39,11 @@ public class LoginPage extends PageObject{
         this.password.sendKeys(password);
     }
 
-    /*
+
     public CoursesPage login() {
         loginButton.click();
         return new CoursesPage(driver);
     }
-    */
     public RegistrationPage register() {
         registerButton.click();
         return new RegistrationPage(driver);

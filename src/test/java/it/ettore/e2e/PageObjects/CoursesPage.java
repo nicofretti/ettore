@@ -10,4 +10,11 @@ public class CoursesPage extends PageObject{
         super(driver);
     }
 
+    @FindBy(tagName = "title")
+    private WebElement title;
+
+    public String getTitle() {
+        return title.getText();
+    }
+
 }
