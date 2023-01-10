@@ -7,73 +7,38 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="../../static/style.css">
+        <link rel="stylesheet" href="/style.css">
         <title>Ettore</title>
     </head>
     <body>
         <!-- Username and logout button -->
         <div class="et-user-actions">
-            <p>Gino Gino</p>
+            <p th:text="${user.firstName}+' '+${user.lastName}">Gino Gino</p>
             <a>Logout</a>
         </div>
         <!-- Header -->
         <div class="et-header">
             <h1 class="et-logo">ETTORE</h1>
             <div class="et-breadcrumbs">
-                <a href="#">Home</a>
-                <span>/</span>
-                <a href="#">Login</a>
+                <a>I miei corsi</a>
             </div>
         </div>
         <!-- Content -->
         <div class="et-content">
             <button class="et-button-primary w-full h-12"> Nuovo corso </button>
-            <div class="et-card p-5 w-100">
+            <!-- Iterate over courses -->
+            <div th:each="course: ${courses}" class="et-card p-5 w-100">
                 <div class="flex flex-row justify-items-center gap-5">
                     <!-- Icon -->
-                    <i class="et-icon-course fa fa-book fa-2x"></i>
+                    <i th:class="'et-icon-course fa-2x '+ ${course.getIcon()}" class="fa fa-book fa-2x"></i>
                     <!-- Title -->
-                    <a class="text-2xl font-bold" href="#">Analisi di segnali</a>
+                    <a th:text="${course.getName()}" class="text-2xl font-bold"  href="#">Analisi di segnali</a>
                     <!-- Year -->
-                    <p class="text-xl">(2021/2022)</p>
+                    <p th:text="${course.formatPeriod()}" class="text-xl">(2021/2022)</p>
                 </div>
                 <!-- Description -->
-                <p class="mt-4">
+                <p th:text="${course.description}" class="mt-4">
                     Descrizione del corso Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non est magna.
-                    Proin tincidunt eleifend enim. Sed pretium nisi eu augue dignissim efficitur. Aenean tempor est at tortor dignissim tempor.
-                    Ut sed ex vitae eros auctor maximus in vitae ipsum. Quisque sem quam, dictum in sagittis vel, pharetra tempus diam.
-                </p>
-            </div>
-            <div class="et-card p-5 w-100">
-                <div class="flex flex-row justify-items-center gap-5">
-                    <!-- Icon -->
-                    <i class="et-icon-course fa fa-book fa-2x"></i>
-                    <!-- Title -->
-                    <a class="text-2xl font-bold" href="#">Analisi di segnali</a>
-                    <!-- Year -->
-                    <p class="text-xl">(2021/2022)</p>
-                </div>
-                <!-- Description -->
-                <p class="mt-4">
-                    Descrizione del corso Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non est magna.
-                    Proin tincidunt eleifend enim. Sed pretium nisi eu augue dignissim efficitur. Aenean tempor est at tortor dignissim tempor.
-                    Ut sed ex vitae eros auctor maximus in vitae ipsum. Quisque sem quam, dictum in sagittis vel, pharetra tempus diam.
-                </p>
-            </div>
-            <div class="et-card p-5 w-100">
-                <div class="flex flex-row justify-items-center gap-5">
-                    <!-- Icon -->
-                    <i class="et-icon-course fa fa-book fa-2x"></i>
-                    <!-- Title -->
-                    <a class="text-2xl font-bold" href="#">Analisi di segnali</a>
-                    <!-- Year -->
-                    <p class="text-xl">(2021/2022)</p>
-                </div>
-                <!-- Description -->
-                <p class="mt-4">
-                    Descrizione del corso Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non est magna.
-                    Proin tincidunt eleifend enim. Sed pretium nisi eu augue dignissim efficitur. Aenean tempor est at tortor dignissim tempor.
-                    Ut sed ex vitae eros auctor maximus in vitae ipsum. Quisque sem quam, dictum in sagittis vel, pharetra tempus diam.
                 </p>
             </div>
         </div>

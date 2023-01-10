@@ -14,9 +14,12 @@ public class DbBootstrapper {
     @Autowired
     UserRepository repoUser;
 
+    @Autowired
+    CourseRepository repoCourse;
+
     @PostConstruct
     public void bootstrap() {
-        repoUser.save(new User("A", "Professor", "a.professor@ettore.it", "a.professor@ettore.it", User.Role.PROFESSOR));
         repoUser.save(new User("A", "Student", "a.student@ettore.it", "a.student@ettore.it", User.Role.STUDENT));
+        repoCourse.save(new Course("Maths", "Maths course", 2023, Course.Category.Maths, new User("A.", "Professor", "a.professor@ettore.it", "a.professor@ettore.it", User.Role.PROFESSOR)));
     }
 }
