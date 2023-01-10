@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class CourseController {
@@ -27,10 +26,13 @@ public class CourseController {
     @GetMapping("/courses")
     public String coursesList(Model model){
         // TODO - get current user
-        User user = repoUser.findByEmail("a.professor@ettore.it").get();
-        Optional<List<Course>> courses = repoCourse.findByProfessor(user);
-        model.addAttribute("user",user);
-        model.addAttribute("courses", courses.get());
+        Optional<User> user = repoUser.findByEmail("a.professor@ettore.it");
+        if(!user.isPresent()){
+            return "redirect:/login";
+        }
+        Optional<List<Course>> courses = repoCourse.findByProfessor(user.get());
+        model.addAttribute("user",user.get());
+        model.addAttribute("courses", courses.isPresent() ? courses.get() : new ArrayList<>());
         return "course/list";
 
     }
@@ -38,9 +40,16 @@ public class CourseController {
     @RequestMapping(value = "/courses/{id}", method = RequestMethod.GET)
     public String coursesDetails(Model model, @PathVariable @NotNull long id){
         // TODO - get current user
-        User user = repoUser.findByEmail("a.professor@ettore.it").get();
-        model.addAttribute("user",user);
+        Optional<User> user = repoUser.findByEmail("a.professor@ettore.it");
+        if(!user.isPresent()){
+            return "redirect:/login";
+        }
+        model.addAttribute("user",user.get());
         Optional<Course> course = repoCourse.findById(id);
+        // On wrong id redirect to courses
+        if(!course.isPresent()){
+            return "redirect:/courses";
+        }
         model.addAttribute("course", course.get());
         return "course/details";
     }

@@ -11,6 +11,8 @@
         <title>Ettore</title>
     </head>
     <body>
+        <!-- Base href for redirections -->
+        <base th:href="'/courses/'+${course.getId()}+'/'"/>
         <!-- Username and logout button -->
         <div class="et-user-actions">
             <p th:text="${user.firstName}+' '+${user.lastName}">Gino Gino</p>

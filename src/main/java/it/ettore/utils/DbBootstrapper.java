@@ -25,7 +25,8 @@ public class DbBootstrapper {
         // Add math and history course to the professor
         repoCourse.saveAll(List.of(
                 new Course("Maths", "Maths course", 2023, Course.Category.Maths, professor),
-                new Course("History", "History course", 2023, Course.Category.History, professor)
+                new Course("History", "History course", 2023, Course.Category.History, professor),
+                new Course("Art", "Art course", 2023, Course.Category.Art, professor)
             )
         );
     }
