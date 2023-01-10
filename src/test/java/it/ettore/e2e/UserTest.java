@@ -21,12 +21,13 @@ public class UserTest extends E2EBaseTest {
     public void userRegisteringAndLoggingIn() {
         clearDb();
         driver.get(baseDomain() + "login");
+        //System.out.println(driver.getCurrentUrl());
+        LoginPage loginPage = new LoginPage(driver);
 
         //TODO: delete this later
         assertEquals("I'm supposed to be in /login" ,"Log In", driver.getTitle());
 
         //check that we are on the right page
-        LoginPage loginPage = new LoginPage(driver);
 
         assertEquals("I'm supposed to be in /login" ,"Log In", loginPage.getTitle());
 
@@ -57,9 +58,7 @@ public class UserTest extends E2EBaseTest {
         loginPage.setEmail("real_human@earth.com");
         loginPage.setPassword("alien_spy");
         CoursesPage coursesPage = loginPage.login();
-
-        //TODO: implement Courses page object
-        //assertEquals("I'm supposed to be in /courses" ,"Courses", coursesPage.getTitle());
+        assertEquals("I'm supposed to be in /courses" ,"Courses", coursesPage.getTitle());
 
     }
 }
