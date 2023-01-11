@@ -5,6 +5,7 @@ import it.ettore.model.Course;
 import it.ettore.model.CourseRepository;
 import it.ettore.model.User;
 import it.ettore.model.UserRepository;
+import it.ettore.utils.Breadcrumb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,30 +28,44 @@ public class CourseController {
     public String coursesList(Model model){
         // TODO - get current user
         Optional<User> user = repoUser.findByEmail("a.professor@ettore.it");
-        if(!user.isPresent()){
+        if(user.isEmpty()){
             return "redirect:/login";
         }
         Optional<List<Course>> courses = repoCourse.findByProfessor(user.get());
-        model.addAttribute("user",user.get());
-        model.addAttribute("courses", courses.isPresent() ? courses.get() : new ArrayList<>());
+        // Add attributes
+        model.addAllAttributes(
+            Map.of(
+                "breadcrumbs", List.of(new Breadcrumb("I miei corsi", "/courses/")),
+                "user", user.get(),
+                "courses", courses.orElseGet(ArrayList::new)
+            )
+        );
         return "course/list";
-
     }
 
     @RequestMapping(value = "/courses/{id}", method = RequestMethod.GET)
     public String coursesDetails(Model model, @PathVariable @NotNull long id){
         // TODO - get current user
         Optional<User> user = repoUser.findByEmail("a.professor@ettore.it");
-        if(!user.isPresent()){
+        if(user.isEmpty()){
             return "redirect:/login";
         }
-        model.addAttribute("user",user.get());
         Optional<Course> course = repoCourse.findById(id);
         // On wrong id redirect to courses
-        if(!course.isPresent()){
+        if(course.isEmpty()){
             return "redirect:/courses";
         }
-        model.addAttribute("course", course.get());
+        // Add attributes
+        model.addAllAttributes(
+            Map.of(
+                "breadcrumbs", Arrays.asList(
+                    new Breadcrumb("I miei corsi","/courses/"),
+                    new Breadcrumb(course.get().getName(),"/courses/"+course.get().getId()+"/")
+                ),
+                "user", user.get(),
+                "course", course.get()
+            )
+        );
         return "course/details";
     }
 }
