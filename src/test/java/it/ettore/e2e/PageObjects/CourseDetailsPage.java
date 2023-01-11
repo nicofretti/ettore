@@ -8,37 +8,37 @@ public class CourseDetailsPage extends PageObject{
         super(driver);
     }
 
-    @FindBy(xpath = "//body/div[1]/p")
+    @FindBy(id = "fullName")
     private WebElement fullName;
 
-    @FindBy(xpath = "//body/div[1]/a")
+    @FindBy(xpath = "//a[@href='/logout']")
     private WebElement logout;
 
-    @FindBy(xpath = "//body/div[2]/div/a[1]")
+    @FindBy(xpath = "//a[@href='/courses']")
     private WebElement returnToMyCourses;
 
-    @FindBy(xpath = "//body/div[2]/div/a[2]")
+    @FindBy(xpath = "//a[@href='']")
     private WebElement currentCourse;
 
-    @FindBy(xpath = "//body/div[3]/div/div/div/p[1]")
+    @FindBy(id = "courseName")
     private WebElement courseName;
 
-    @FindBy(xpath = "//body/div[3]/div/div/div/p[2]")
+    @FindBy(id = "coursePeriod")
     private WebElement coursePeriod;
 
-    @FindBy(xpath = "//body/div[3]/div/div/button")
+    @FindBy(tagName = "button")
     private WebElement modifycourse;
 
-    @FindBy(xpath = "//body/div[3]/div/p")
+    @FindBy(id = "courseDescription")
     private WebElement courseDescription;
 
-    @FindBy(xpath = "//body/div[3]/div[2]/a[1]")
+    @FindBy(xpath = "//a[@href='lessons/']")
     private WebElement courseLessonsLink;
 
-    @FindBy(xpath = "//body/div[3]/div[2]/a[2]")
+    @FindBy(xpath = "//a[@href='quiz/']")
     private WebElement courseQuizLink;
 
-    @FindBy(xpath = "//body/div[3]/a")
+    @FindBy(xpath = "//a[@href='students/']")
     private WebElement courseStudentsLink;
 
     public String getFullName() {

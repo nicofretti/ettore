@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport"
@@ -15,14 +15,14 @@
         <base th:href="'/courses/'+${course.getId()}+'/'"/>
         <!-- Username and logout button -->
         <div class="et-user-actions">
-            <p th:text="${user.firstName}+' '+${user.lastName}">Gino Gino</p>
-            <a>Logout</a>
+            <p id="fullName" th:text="${user.firstName}+' '+${user.lastName}">Gino Gino</p>
+            <a href="/logout">Logout</a>
         </div>
         <!-- Header -->
         <div class="et-header">
             <h1 class="et-logo">ETTORE</h1>
             <div class="et-breadcrumbs">
-                <a href="/courses/">I miei corsi</a>
+                <a href="/courses/">My Courses</a>
                 <span>/</span>
                 <a href="" th:text="${course.getName()}">Math</a>
             </div>
@@ -36,23 +36,23 @@
                         <!-- Icon -->
                         <i th:class="'et-icon-course fa-2x '+ ${course.getIcon()}" class="fa fa-book fa-2x"></i>
                         <!-- Title -->
-                        <p th:text="${course.getName()}" class="text-2xl font-bold">Analisi di segnali</p>
+                        <p id="courseName" th:text="${course.getName()}" class="text-2xl font-bold">Analisi di segnali</p>
                         <!-- Year -->
-                        <p th:text="${course.formatPeriod()}" class="text-xl">(2021/2022)</p>
+                        <p id="coursePeriod" th:text="${course.formatPeriod()}" class="text-xl">(2021/2022)</p>
                     </div>
                     <!-- Edit button -->
-                    <button onclick="window.location.href='edit'" class="et-button-primary w-28">Modifica</button>
+                    <button onclick="window.location.href='edit'" class="et-button-primary w-28">Modify</button>
                 </div>
                 <!-- Description -->
-                <p th:text="${course.getDescription()}" class="mt-4">
-                    Descrizione del cor.
+                <p id="courseDescription" th:text="${course.getDescription()}" class="mt-4">
+                    Course Description
                 </p>
             </div>
             <!-- Lessons and Quiz -->
             <div class="grid grid-cols-2 gap-4">
                 <a href="lessons/" class="et-flex-centered flex-col et-card px-5 py-10">
                     <i class="fa fa-file-alt fa-2x"></i>
-                    <p class="text-xl">Lezioni</p>
+                    <p class="text-xl">Lessons</p>
                 </a>
                 <a href="quiz/" class="et-flex-centered flex-col et-card px-5 py-10">
                     <i class="fa fa-clipboard-check fa-2x"></i>
@@ -62,7 +62,7 @@
             <!-- Students -->
             <a href="students/" class="et-flex-centered flex-col et-card px-5 py-10">
                 <i class="fa fa-users fa-2x"></i>
-                <p class="text-xl">Studenti</p>
+                <p class="text-xl">Students</p>
             </a>
         </div>
     </body>
