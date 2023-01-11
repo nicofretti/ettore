@@ -24,12 +24,8 @@ public class AppController {
 
     @GetMapping("/index")
     public String indexPage(HttpServletRequest request) {
-        Object userObj = request.getAttribute("user");
-        if (!(userObj instanceof User)) throw new IllegalStateException("expected user");
-        User user = (User) userObj;
-
-        System.out.println(user.toString());
-
+        User user = Utils.loggedUser(request);
+        System.out.println(user);
         return "index";
     }
 

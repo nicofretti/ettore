@@ -23,7 +23,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         List<String> whitelist = List.of(
             "/style.css",
             "/register",
-            "/login"
+            "/login",
+            "/logout"
         );
 
         if (whitelist.contains(request.getServletPath())) {
