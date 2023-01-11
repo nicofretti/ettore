@@ -1,30 +1,14 @@
 <!doctype html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="/style.css">
-        <title>Ettore</title>
+        <title>Lista dei corsi</title>
+        <meta th:replace="common/imports"/>
     </head>
     <body>
+        <!-- Header with logo, logout and breadcrumbs -->
+        <div th:replace="common/header"></div>
         <!-- Base href for redirections -->
         <base href="/courses/"/>
-        <!-- Username and logout button -->
-        <div class="et-user-actions">
-            <p th:text="${user.firstName}+' '+${user.lastName}">Gino Gino</p>
-            <a href="/logout">Logout</a>
-        </div>
-        <!-- Header -->
-        <div class="et-header">
-            <h1 class="et-logo">ETTORE</h1>
-            <div class="et-breadcrumbs">
-                <a href="">I miei corsi</a>
-            </div>
-        </div>
         <!-- Content -->
         <div class="et-content">
             <button class="et-button-primary w-full h-12" onclick="window.location.href='add'"> Nuovo corso </button>
