@@ -24,8 +24,7 @@ public class AppController {
 
     @GetMapping("/index")
     public String indexPage(HttpServletRequest request) {
-        User user = Utils.loggedUser(request);
-        System.out.println(user);
+        // User user = Utils.loggedUser(request);
         return "index";
     }
 
