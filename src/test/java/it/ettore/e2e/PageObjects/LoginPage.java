@@ -9,10 +9,6 @@ public class LoginPage extends PageObject{
     public LoginPage(WebDriver driver) {
         super(driver);
     }
-
-    @FindBy(xpath = "//head/title")
-    private WebElement title;
-
     @FindBy(name = "email")
     private WebElement email;
 
@@ -24,15 +20,6 @@ public class LoginPage extends PageObject{
 
     @FindBy(name = "register")
     private WebElement registerButton;
-
-
-    public String getCurrentUrl() {
-        return driver.getCurrentUrl();
-    }
-
-    public String getTitle() {
-        return title.getText();
-    }
 
     public void setEmail(String email) {
         this.email.clear();
