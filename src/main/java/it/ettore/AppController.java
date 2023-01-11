@@ -4,9 +4,7 @@ import it.ettore.model.CourseRepository;
 import it.ettore.model.User;
 import it.ettore.model.UserRepository;
 import it.ettore.utils.Utils;
-import it.ettore.AuthInterceptor.Auth;
 import java.util.Optional;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -14,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class AppController {
@@ -23,7 +23,13 @@ public class AppController {
     private CourseRepository repoCourse;
 
     @GetMapping("/index")
-    public String indexPage() {
+    public String indexPage(HttpServletRequest request) {
+        Object userObj = request.getAttribute("user");
+        if (!(userObj instanceof User)) throw new IllegalStateException("expected user");
+        User user = (User) userObj;
+
+        System.out.println(user.toString());
+
         return "index";
     }
 
@@ -33,17 +39,19 @@ public class AppController {
     }
 
     @PostMapping("/login")
-    @Auth
     public String login(
             @RequestParam(name="email", required=true) String email,
             @RequestParam(name="password", required=true) String password,
-            Model model
+            Model model,
+            HttpServletRequest request
     ) {
         Optional<User> user = repoUser.findByEmail(email);
         if (user.isEmpty() || !user.get().getPswHash().equals(User.hashPsw(password))) { //maybe move hashPsw to Utils?
             model.addAttribute("error", "Invalid credentials");
             return "login";
         }
+
+        request.getSession().setAttribute("PSW_HASH", user.get().getPswHash());
 
         model.addAttribute("user", user.get());
         if(user.get().getRole() == User.Role.PROFESSOR) {
@@ -69,7 +77,8 @@ public class AppController {
         @RequestParam(name="email", required=true) String email,
         @RequestParam(name="password", required=true) String password,
         @RequestParam(name="role", required=true) String stringRole,
-        Model model
+        Model model,
+        HttpServletRequest request
     ) {
         User.Role role;
         switch (stringRole) {
@@ -103,7 +112,14 @@ public class AppController {
             throw exc;
         }
 
-        // TODO Send back cookie
+        request.getSession().setAttribute("PSW_HASH", user.getPswHash());
+
         return "redirect:/index";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().removeAttribute("PSW_HASH");
+        return "redirect:/login";
     }
 }
