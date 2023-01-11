@@ -12,7 +12,10 @@ public class Registration extends E2EBaseTest {
     @Autowired
     protected UserRepository repoUser;
 
-
+    public String url () {
+        String url = driver.getCurrentUrl();
+        return url.substring(url.lastIndexOf("/"));
+    }
 
     void clearDb() {
         repoUser.deleteAll();
@@ -23,9 +26,9 @@ public class Registration extends E2EBaseTest {
         clearDb();
 
         driver.get(baseDomain() + "register");
-        assertEquals("Register", driver.getTitle());
-
         RegistrationPage registrationPage = new RegistrationPage(this.driver);
+        assertEquals("I'm supposed to be in /register" ,"/register", url());
+
 
         Runnable assertNotClickable = () -> {
             assertEquals("Oh, shit i am not supposed to be clickable yet","none", registrationPage.getButtonClickable());
@@ -51,9 +54,8 @@ public class Registration extends E2EBaseTest {
         // Now clickable
         assertNotEquals("I should be clickable by now","none", registrationPage.getButtonClickable());
 
-        // TODO:Click the button
-        //CoursesPage coursesPage = registrationPage.register();
-        //assertEquals("Ettore", coursesPage.getTitle());
+        CoursesPage coursesPage = registrationPage.register();
+        assertEquals("I'm supposed to be in /courses" ,"/courses", url());
 
     }
 
@@ -63,6 +65,8 @@ public class Registration extends E2EBaseTest {
 
         driver.get(baseDomain() + "register");
         RegistrationPage registrationPage = new RegistrationPage(this.driver);
+        assertEquals("I'm supposed to be in /register" ,"/register", url());
+
 
         // Start registering a new user with an invalid email
         registrationPage.setFirstName("Definitely");
@@ -89,7 +93,7 @@ public class Registration extends E2EBaseTest {
         CoursesPage coursesPage = registrationPage.register();
 
         //check that the registration redirected us correctly
-        //assertEquals("Ettore",coursesPage.getTitle());
+        assertEquals("I'm supposed to be in /courses" ,"/courses", url());
     }
 
     @Test
@@ -98,7 +102,7 @@ public class Registration extends E2EBaseTest {
 
         driver.get(baseDomain() + "register");
         RegistrationPage registrationPage = new RegistrationPage(this.driver);
-        //assertEquals("Register",registrationPage.getTitle()); //maybe delete bcs its repetitive even in other tests?
+        assertEquals("I'm supposed to be in /register" ,"/register", url());
 
         // Start registering a new user with an invalid email
         registrationPage.setFirstName("Definitely");
@@ -123,7 +127,7 @@ public class Registration extends E2EBaseTest {
 
         //click the register button and conclude the registration
         CoursesPage coursesPage = registrationPage.register();
-        //assertEquals("Ettore",coursesPage.getTitle());
+        assertEquals("I'm supposed to be in /register" ,"/register", url());
     }
 
     @Test
@@ -131,7 +135,7 @@ public class Registration extends E2EBaseTest {
         clearDb();
         driver.get(baseDomain() + "register");
         RegistrationPage registrationPage = new RegistrationPage(this.driver);
-        //assertEquals("Register", registrationPage.getTitle());
+        assertEquals("I'm supposed to be in /register" ,"/register", url());
 
         // Register once
         registrationPage.setFirstName("Real");
@@ -140,13 +144,12 @@ public class Registration extends E2EBaseTest {
         registrationPage.setPassword("alien_spy");
         registrationPage.setConfirmPassword("alien_spy");
 
-        CoursesPage coursesPage = registrationPage.register();
-        //assertEquals("Ettore",coursesPage.getTitle());
+        registrationPage.register();
+        assertEquals("I'm supposed to be in /courses" ,"/courses", url());
 
-        //TODO should i change the driver url like this or use another way?
         driver.get(baseDomain() + "register");
         registrationPage = new RegistrationPage(this.driver);
-        //assertEquals("Register", registrationPage.getTitle());
+        assertEquals("I'm supposed to be in /register" ,"/register", url());
 
         // Try to register again, use the same email
         registrationPage.setFirstName("Definitely Human");
@@ -159,7 +162,7 @@ public class Registration extends E2EBaseTest {
         registrationPage.register();
         //TODO: hmm in this case should i still save the return value? or just assert the error?
         // Assert we're still on register
-        //assertEquals("Register", registrationPage.getTitle());
+        assertEquals("I'm supposed to remain in /register" ,"/register", url());
         assertEquals("Email already taken", registrationPage.getError());
     }
 }
