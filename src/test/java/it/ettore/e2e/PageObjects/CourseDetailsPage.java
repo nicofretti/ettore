@@ -8,9 +8,6 @@ public class CourseDetailsPage extends PageObject{
         super(driver);
     }
 
-    @FindBy(xpath = "//head/title")
-    private WebElement title;
-
     @FindBy(xpath = "//body/div[1]/p")
     private WebElement fullName;
 
@@ -43,14 +40,6 @@ public class CourseDetailsPage extends PageObject{
 
     @FindBy(xpath = "//body/div[3]/a")
     private WebElement courseStudentsLink;
-
-    public String getCurrentUrl() {
-        return driver.getCurrentUrl();
-    }
-
-    public String getTitle() {
-        return title.getText();
-    }
 
     public String getFullName() {
         return fullName.getText();

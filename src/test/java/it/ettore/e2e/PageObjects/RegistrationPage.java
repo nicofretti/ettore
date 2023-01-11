@@ -9,10 +9,6 @@ public class RegistrationPage extends PageObject {
     public RegistrationPage(WebDriver driver) {
         super(driver);
     }
-
-    @FindBy(xpath = "//head/title")
-    private WebElement title;
-
     @FindBy(name = "first_name")
     private WebElement firstName;
 
@@ -42,15 +38,6 @@ public class RegistrationPage extends PageObject {
 
     @FindBy(id = "error")
     private WebElement error;
-
-    public String getCurrentUrl() {
-        return driver.getCurrentUrl();
-    }
-
-    public String getTitle() {
-        return title.getText();
-    }
-
     public String getError() {
         return error.getText();
     }
