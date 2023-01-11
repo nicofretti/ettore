@@ -9,39 +9,30 @@ public class CoursesPage extends PageObject{
     public CoursesPage(WebDriver driver) {
         super(driver);
     }
-
-    @FindBy(xpath = "//head/title")
-    private WebElement title;
-
-    @FindBy(xpath = "//body/div[1]/p")
+    @FindBy(id = "fullName")
     private WebElement fullName;
 
-    @FindBy(xpath = "//body/div[1]/a")
+    @FindBy(xpath = "//a[@href='/logout']")
     private WebElement logout;
 
-    @FindBy(xpath = "//body/div[2]/div/a")
+    @FindBy(xpath = "//a[@href='']")
     private WebElement returnToMyCourses;
 
-    @FindBy(xpath = "//body/div[3]/button")
+    @FindBy(tagName = "button")
     private WebElement addNewCourse;
 
-    @FindBy(xpath = "//body/div[3]/div/div/a")
+    @FindBy(id = "courseDetailsLink")
     private WebElement courseDetailsLink;
 
-    @FindBy(xpath = "//body/div[3]/div/div/p")
+    @FindBy(id = "coursePeriod")
     private WebElement coursePeriod;
 
-    @FindBy(xpath = "//body/div[3]/div/p")
+    @FindBy(id = "courseDescription")
     private WebElement courseDescription;
 
     public String getCurrentUrl() {
         return driver.getCurrentUrl();
     }
-
-    public String getTitle() {
-        return title.getText();
-    }
-
     public String getFullName() {
         return fullName.getText();
     }
@@ -73,8 +64,4 @@ public class CoursesPage extends PageObject{
     public String getCourseDescription() {
         return courseDescription.getText();
     }
-
-
-
-
 }
