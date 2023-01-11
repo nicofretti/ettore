@@ -1,14 +1,25 @@
 package it.ettore.e2e;
 
+import it.ettore.model.UserRepository;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.*;
 
 public class UserTest extends E2EBaseTest {
+    @Autowired
+    protected UserRepository repoUser;
+
+    void clearDb() {
+        repoUser.deleteAll();
+    }
+
     @Test
     public void userRegisteringAndLoggingIn() {
+        clearDb();
+
         //try logging in with a non-existent user
         driver.get(baseDomain() + "login");
         assertEquals("Log In", driver.getTitle());
@@ -27,7 +38,7 @@ public class UserTest extends E2EBaseTest {
         driver.findElement(By.name("email")).sendKeys("human.being@earth.space");
         driver.findElement(By.name("password")).sendKeys("haha_gotcha");
         driver.findElement(By.name("confirm_password")).sendKeys("haha_gotcha");
-        driver.findElement(By.tagName("button")).click();
+        driver.findElement(By.id("btn-register")).click();
         //check if we got redirected on index.html
         assertEquals("Ettore", driver.getTitle());
 
