@@ -32,7 +32,7 @@ public class RegistrationPage extends PageObject {
     @FindBy(name = "confirm_password")
     private WebElement confirmPassword;
 
-    @FindBy(id = "password-not-ok")
+    @FindBy(id = "password-too-short")
     private WebElement passwordNotOk;
 
     @FindBy(id = "btn-register")
