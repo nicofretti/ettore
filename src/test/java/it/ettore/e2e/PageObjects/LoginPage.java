@@ -25,6 +25,11 @@ public class LoginPage extends PageObject{
     @FindBy(name = "register")
     private WebElement registerButton;
 
+
+    public String getCurrentUrl() {
+        return driver.getCurrentUrl();
+    }
+
     public String getTitle() {
         return title.getText();
     }

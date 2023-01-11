@@ -43,6 +43,10 @@ public class RegistrationPage extends PageObject {
     @FindBy(id = "error")
     private WebElement error;
 
+    public String getCurrentUrl() {
+        return driver.getCurrentUrl();
+    }
+
     public String getTitle() {
         return title.getText();
     }
