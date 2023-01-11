@@ -7,8 +7,6 @@ import org.junit.Test;
 
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class UserTest {
     static User user;
@@ -43,10 +41,8 @@ public class UserTest {
 
     @Test
     public void testUsersPswHash() {
-        // had to mock since the hashPsw method is private static and returns a different value each time
-        User user = mock(User.class);
-        when(user.getPswHash()).thenReturn("ACAB");
-        assertEquals("ACAB", user.getPswHash());
+        String pswHash = user.getPswHash();
+        assertEquals(User.hashPsw("ACAB"), pswHash);
     }
 
     @Test
