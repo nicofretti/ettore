@@ -42,7 +42,7 @@ public class UserTest {
     @Test
     public void testUsersPswHash() {
         String pswHash = user.getPswHash();
-        assertEquals(User.hashPsw("ACAB"), pswHash);
+        assertEquals(User.hashPsw("ACABACAB"), pswHash);
     }
 
     @Test
