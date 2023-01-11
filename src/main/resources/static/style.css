@@ -135,10 +135,10 @@ button.et-button-disabled{
 .et-content{
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     flex-direction: column;
-    margin-left: 10rem;
-    margin-right: 10rem;
+    margin-left: 15rem;
+    margin-right: 15rem;
     gap: 1.5rem;
 }
 

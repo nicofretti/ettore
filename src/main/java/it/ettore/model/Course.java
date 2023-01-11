@@ -46,6 +46,28 @@ public class Course {
         return String.format("(%d/%d)", startingYear, startingYear + 1);
     }
 
+    public String getIcon(){
+        // fa fa-book
+        switch(category){
+            case Maths:
+                return "fa fa-calculator";
+            case Science:
+                return "fa fa-flask";
+            case History:
+                return "fa fa-book";
+            case Geography:
+                return "fa fa-globe";
+            case Art:
+                return "fa fa-palette";
+            case Music:
+                return "fa fa-music";
+            case Languages:
+                return "fa-language";
+            default:
+                return "fa fa-question";
+        }
+    }
+
     @Override
     public String toString() {
         return String.format("Course{id=%d,name=%s}", id, name);
