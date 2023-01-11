@@ -10,7 +10,7 @@ public class CoursesPage extends PageObject{
         super(driver);
     }
 
-    @FindBy(tagName = "title")
+    @FindBy(xpath = "//head/title")
     private WebElement title;
 
     public String getTitle() {

@@ -10,7 +10,7 @@ public class RegistrationPage extends PageObject {
         super(driver);
     }
 
-    @FindBy(tagName = "title")
+    @FindBy(xpath = "//head/title")
     private WebElement title;
 
     @FindBy(name = "first_name")
@@ -27,7 +27,6 @@ public class RegistrationPage extends PageObject {
 
     @FindBy(name = "password")
     private WebElement password;
-
 
     @FindBy(name = "confirm_password")
     private WebElement confirmPassword;
@@ -90,7 +89,6 @@ public class RegistrationPage extends PageObject {
         this.confirmPassword.clear();
         this.confirmPassword.sendKeys(confirmPassword);
     }
-
 
     public CoursesPage register() {
         registerButton.click();

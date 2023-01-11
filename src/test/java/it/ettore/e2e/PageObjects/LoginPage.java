@@ -10,7 +10,7 @@ public class LoginPage extends PageObject{
         super(driver);
     }
 
-    @FindBy(tagName = "title")
+    @FindBy(xpath = "//head/title")
     private WebElement title;
 
     @FindBy(name = "email")
@@ -19,7 +19,7 @@ public class LoginPage extends PageObject{
     @FindBy(name = "password")
     private WebElement password;
 
-    @FindBy(name = "login")
+    @FindBy(xpath = "//form/button")
     private WebElement loginButton;
 
     @FindBy(name = "register")
