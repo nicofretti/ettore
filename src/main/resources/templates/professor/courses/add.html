@@ -3,15 +3,6 @@
 <head>
     <title>Add New Course</title>
     <meta th:replace="common/meta"/>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- TailWind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../../../static/style.css">
 </head>
 <body>
 <!-- Header with logo, logout and breadcrumbs -->
@@ -19,25 +10,46 @@
 <!-- Content -->
 <div class="et-content gap-4">
     <!-- Form -->
-    <form class="et-card flex p-5">
-        <div class="flex justify-start justify-items-center gap-5 w-full">
-            <select name="type">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
+    <form class="et-card flex flex-col p-5 lg:w-[900px] m-auto">
+        <div class="flex justify-start justify-items-center gap-2">
+            <select class="text-xl font-bold" name="type">
+                <option value="Maths">
+                    <span>Maths</span>
+                </option>
+                <option value="Science">
+                    <span>Science</span>
+                </option>
+                <option value="History">
+                    <span>History</span>
+                </option>
+                <option value="Geography">
+                    <span>Geography</span>
+                </option>
+                <option value="Art">
+                    <span>Art</span>
+                </option>
+                <option value="Music">
+                    <span>Music</span>
+                </option>
+                <option value="Languages">
+                    <span>Languages</span>
+                </option>
             </select>
             <input class="text-xl font-bold" name="name" type="text" placeholder="Course name"
-                style="border: 1px solid #6b7280 !important; border-radius: 0 !important"
+                   style="border: 1px solid #6b7280 !important; border-radius: 0 !important"
             >
             <select name="year">
                 <option value="1">2022/2023</option>
                 <option value="2">2021/2022</option>
             </select>
-            <button class="et-button-primary ml-auto px-10">Save</button>
+            <button class="et-button-success ml-auto px-8 my-auto h-[30px]">Save</button>
         </div>
-
+        <textarea class="mt-1" name="description" placeholder="Course description"
+                  style="border: 1px solid #6b7280 !important; border-radius: 0 !important"
+        ></textarea>
+        <button class="et-button-danger px-10 mt-2 mr-auto">Delete course</button>
     </form>
+
 </div>
 </body>
 </html>
