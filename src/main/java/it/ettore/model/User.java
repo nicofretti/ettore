@@ -1,17 +1,12 @@
 package it.ettore.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.SneakyThrows;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.regex.Pattern;
 
@@ -25,8 +20,7 @@ import java.util.regex.Pattern;
 @NoArgsConstructor
 public class User {
     public enum Role {
-        PROFESSOR,
-        STUDENT,
+        PROFESSOR, STUDENT,
     }
 
     @Id
@@ -86,8 +80,9 @@ public class User {
         this.email = email;
     }
 
-    public void setPswHash(String pswHash) {
-        this.pswHash = hashPsw(pswHash);
+    public void setPassword(String psw) {
+        assertPassword(psw);
+        this.pswHash = hashPsw(psw);
     }
 
     @Override
