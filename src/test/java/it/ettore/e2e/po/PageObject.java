@@ -1,4 +1,4 @@
-package it.ettore.e2e.PageObjects;
+package it.ettore.e2e.po;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;

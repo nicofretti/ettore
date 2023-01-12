@@ -1,5 +1,6 @@
 package it.ettore.e2e;
 
+import it.ettore.e2e.po.LoginPage;
 import it.ettore.model.User;
 import it.ettore.model.UserRepository;
 import org.junit.Test;
@@ -16,54 +17,54 @@ public class Authentication extends E2EBaseTest {
         repoUser.deleteAll();
     }
 
-    @Test
-    public void testCanGoToLogin() {
+    void ensureLoggedOut() {
         clearDb();
-
         // Make sure we're logged out
         driver.get(baseDomain() + "logout");
+    }
 
+    @Test
+    public void canGoToLogin() {
+        ensureLoggedOut();
+
+        // Can go freely to login page, even when unauthenticated
         driver.get(baseDomain() + "login");
-        // Can go freely to login page, even when unauthorized
-        assertEquals("Log In", driver.getTitle());
+        assertEquals("/login", currentPath());
     }
 
     @Test
-    public void testCanGoToRegister() {
-        clearDb();
+    public void canGoToRegister() {
+        ensureLoggedOut();
 
-        // Make sure we're logged out
-        driver.get(baseDomain() + "logout");
-
+        // Can go freely to register page, even when unauthenticated
         driver.get(baseDomain() + "register");
-        // Can go freely to register page, even when unauthorized
-        assertEquals("Register", driver.getTitle());
+        assertEquals("/register", currentPath());
     }
 
     @Test
-    public void testCannotGoToIndex() {
-        clearDb();
+    public void cannotGoToSecurePages() {
+        ensureLoggedOut();
 
-        // Make sure we're logged out
-        driver.get(baseDomain() + "logout");
-
-        driver.get(baseDomain());
         // Check that we get redirected to login page
-        assertEquals("Log In", driver.getTitle());
+        driver.get(baseDomain() + "any-url-doesnt-matter");
+        assertEquals("/login", currentPath());
     }
 
     @Test
-    public void testCanGoToIndexWhenLoggedIn() {
-        clearDb();
-        repoUser.save(new User("FirstName", "LastName", "a.professor@ettore.it", "SomeSecurePassword", User.Role.PROFESSOR));
+    public void canGoToCoursesList() {
+        ensureLoggedOut();
+        String email = "a.professor@ettore.it";
+        String password = "SomeSecurePassword";
+        repoUser.save(new User("FirstName", "LastName", email, password, User.Role.PROFESSOR));
 
         // Login
         driver.get(baseDomain() + "login");
-        driver.findElement(By.name("email")).sendKeys("a.professor@ettore.it");
-        driver.findElement(By.name("password")).sendKeys("SomeSecurePassword");
-        driver.findElement(By.name("login")).click();
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.setEmail(email);
+        loginPage.setPassword(password);
+        loginPage.loginAsProfessor();
 
-        // Check that we get redirected to index page
-        assertEquals("Ettore", driver.getTitle());
+        // Check that we get redirected to the courses list page
+        assertEquals("/professor/courses", currentPath());
     }
 }

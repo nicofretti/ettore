@@ -1,6 +1,7 @@
 package it.ettore.e2e;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import lombok.SneakyThrows;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -9,6 +10,9 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -43,6 +47,15 @@ public abstract class E2EBaseTest {
 
     @LocalServerPort
     private int port;
+
+    protected String currentPath() {
+        try {
+            URL url = new URL(driver.getCurrentUrl());
+            return url.getPath();
+        } catch (MalformedURLException exc) {
+            return "bad url";
+        }
+    }
 
     // Returns the base domain that end-to-end tests should work with. This is necessary because the port for the
     // testing web server is chosen at random to allow for running E2E tests while the default port is already in use.

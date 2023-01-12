@@ -1,10 +1,12 @@
-package it.ettore.e2e.PageObjects;
+package it.ettore.e2e.po.professor;
+import it.ettore.e2e.po.LoginPage;
+import it.ettore.e2e.po.PageObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CourseDetailsPage extends PageObject{
-    public CourseDetailsPage(WebDriver driver) {
+public class ProfessorCoursePage extends PageObject {
+    public ProfessorCoursePage(WebDriver driver) {
         super(driver);
     }
 
@@ -50,14 +52,14 @@ public class CourseDetailsPage extends PageObject{
         return new LoginPage(driver);
     }
 
-    public CoursesPage clickReturnToMyCourses() {
+    public ProfessorCoursesPage clickReturnToMyCourses() {
         returnToMyCourses.click();
-        return new CoursesPage(driver);
+        return new ProfessorCoursesPage(driver);
     }
 
-    public CourseDetailsPage clickCurrentCourse() {
+    public ProfessorCoursePage clickCurrentCourse() {
         currentCourse.click();
-        return new CourseDetailsPage(driver);
+        return new ProfessorCoursePage(driver);
     }
 
     public String getCourseName() {
