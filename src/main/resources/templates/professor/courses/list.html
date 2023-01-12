@@ -9,7 +9,7 @@
 <div th:replace="common/header"></div>
 <!-- Content -->
 <div class="et-content">
-    <button class="et-button-primary w-full h-12" onclick="document.location='/professor/courses/new'">New course
+    <button id="btn-new-course" class="et-button-primary w-full h-12" onclick="document.location='/professor/courses/new'">New course
     </button>
     <!-- Iterate over courses -->
     <div th:each="course: ${courses}" class="et-card p-5 w-100">
@@ -17,13 +17,13 @@
             <!-- Icon -->
             <i th:class="'et-icon-course fa-2x '+${course.getIcon()}" class="fa fa-book fa-2x"></i>
             <!-- Title -->
-            <a th:text="${course.getName()}" th:href="'/professor/courses/'+${course.getId()}" class="text-2xl font-bold">Course
+            <a th:text="${course.getName()}" th:href="'/professor/courses/'+${course.getId()}" class="et-name text-2xl font-bold">Course
                 name</a>
             <!-- Year -->
-            <p th:text="${course.formatPeriod()}" class="text-xl">(FromYear/ToYear)</p>
+            <p th:text="${course.formatPeriod()}" class="et-period text-xl">(FromYear/ToYear)</p>
         </div>
         <!-- Description -->
-        <p th:text="${course.description}" class="mt-4">
+        <p th:text="${course.description}" class="et-description mt-4">
             Descrizione del corso Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non est magna.
         </p>
     </div>

@@ -20,11 +20,6 @@ public class Login extends E2EBaseTest {
         repoUser.deleteAll();
     }
 
-    public String url() {
-        String url = driver.getCurrentUrl();
-        return url.substring(url.lastIndexOf("/"));
-    }
-
     @Test
     public void login() {
         clearDb();
