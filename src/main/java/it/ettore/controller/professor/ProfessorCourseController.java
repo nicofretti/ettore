@@ -64,4 +64,19 @@ public class ProfessorCourseController {
 
         return "professor/courses/details";
     }
+
+    @GetMapping(value = "/professor/courses/add")
+    public String courseAddPage(Model model, HttpServletRequest request){
+        User professor = Utils.loggedUser(request);
+        model.addAllAttributes(
+                Map.of(
+                        "user", professor,
+                        "breadcrumbs", List.of(
+                                new Breadcrumb("Courses", "/professor/courses"),
+                                new Breadcrumb("Add", "/professor/courses/add")
+                        )
+                )
+        );
+        return "professor/courses/add";
+    }
 }
