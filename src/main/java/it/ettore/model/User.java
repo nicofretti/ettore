@@ -3,6 +3,7 @@ package it.ettore.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +15,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.regex.Pattern;
 
+/**
+ * A register user of Ettore is either a professor or a student. A professor teaches many courses and a student is
+ * subscribed to many course. A student is only taught by one professor but is subscribed to by many students.
+ */
 @Entity
 @Getter
 @Setter
@@ -35,7 +40,7 @@ public class User {
     private String pswHash;
     private Role role;
 
-    @OneToMany(mappedBy="professor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
     private List<Course> coursesTaught = new ArrayList<>();
 
     public User(String firstName, String lastName, String email, String psw, Role role) {
@@ -48,28 +53,23 @@ public class User {
         this.role = role;
     }
 
+    @SneakyThrows
     public static String hashPsw(String psw) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            byte[] salt = new byte[16];
-            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-            salt = "kokarkokarkokar1".getBytes();
-            md.update(salt);
-            byte[] hashedPsw = md.digest(psw.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b : hashedPsw) {
-                sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        byte[] salt = new byte[16];
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+        salt = "kokarkokarkokar1".getBytes();
+        md.update(salt);
+        byte[] hashedPsw = md.digest(psw.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashedPsw) {
+            sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
         }
-        return null; //Todo return null in case it fails or we can return un-hashed password?
+        return sb.toString();
     }
 
     static void assertEmail(String email) {
-        String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        String regexPattern = "^[\\w.]+@[\\w.]+$";
         if (!Pattern.compile(regexPattern).matcher(email).matches()) {
             throw new IllegalArgumentException("Invalid email format");
         }

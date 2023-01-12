@@ -46,9 +46,8 @@ public class Course {
         return String.format("(%d/%d)", startingYear, startingYear + 1);
     }
 
-    public String getIcon(){
-        // fa fa-book
-        switch(category){
+    public String getIcon() {
+        switch (category) {
             case Maths:
                 return "fa fa-calculator";
             case Science:

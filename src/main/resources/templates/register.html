@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Register</title>
-    <meta th:replace="common/imports"/>
+    <meta th:replace="common/meta"/>
 </head>
 <body class="et-flex-centered flex-col h-screen" onload="updateForm()">
 <div class="et-card et-flex-centered flex-col p-12">
@@ -33,16 +33,18 @@
             <label class="text-sm">I'm a</label>
             <div class="flex flex-row items-center">
                 <input class="mr-2" type="radio" name="role" value="student" checked>
-                <span>Studente</span>
+                <span>Student</span>
             </div>
             <div class="flex flex-row items-center">
                 <input class="mr-2" type="radio" name="role" value="professor">
                 <span>Professor</span>
             </div>
         </div>
-        <span style="display: none" class="text-red-700 self-start" id="email-not-ok">Invalid email format</span>
+        <span style="display: none" class="text-red-700 self-start"
+              id="invalid-email-format">Invalid email format</span>
         <span style="display: none" class="text-red-700 self-start" id="password-too-short">Password is too short</span>
-        <span style="display: none" class="text-red-700 self-start" id="confirm-password-not-ok">Password don't match</span>
+        <span style="display: none" class="text-red-700 self-start"
+              id="passwords-dont-match">Password don't match</span>
         <button class="et-button-primary et-button-disabled w-full h-12 mt-2" id="btn-register">Register</button>
     </form>
     <div class="flex-row w-full et-already-registered mt-6">
@@ -57,7 +59,7 @@
         // Don't show email error if email has never been edited so far
         let isEmailUntouched = true;
 
-        // Updates the clickable status of the submit button and the visibility of the confirm password error
+        // Updates the clickable status of the register button and the visibility of the error messages
         function updateForm() {
             if (document.querySelector("input[name='password']").value !== "") {
                 isPasswordUntouched = false;
@@ -66,39 +68,39 @@
                 isEmailUntouched = false;
             }
 
-            let submitButton = document.querySelector("button");
-            if (isSubmittable()) {
-                submitButton.classList.remove("et-button-disabled");
+            let registerButton = document.querySelector("#btn-register");
+            if (canRegister()) {
+                registerButton.classList.remove("et-button-disabled");
             } else {
-                submitButton.classList.add("et-button-disabled");
+                registerButton.classList.add("et-button-disabled");
             }
 
-            // This check is also done server-side but we do it client-side first for better interactivity
-            let emailError = document.querySelector("#email-not-ok");
-            if (isEmailUntouched || isEmailOk()) {
-                emailError.style = "display: none";
+            // This check is also done server-side, but we do it client-side first for better interactivity
+            let invalidEmailFormatMsg = document.querySelector("#invalid-email-format");
+            if (isEmailUntouched || isEmailFormatOk()) {
+                invalidEmailFormatMsg.style = "display: none";
             } else {
-                emailError.style = "";
+                invalidEmailFormatMsg.style = "";
             }
 
-            // This check is also done server-side but we do it client-side first for better interactivity
-            let passwordTooShortError = document.querySelector("#password-too-short");
+            // This check is also done server-side, but we do it client-side first for better interactivity
+            let passwordTooShortMsg = document.querySelector("#password-too-short");
             if (isPasswordUntouched || isPasswordLongEnough()) {
-                passwordTooShortError.style = "display: none";
+                passwordTooShortMsg.style = "display: none";
             } else {
-                passwordTooShortError.style = "";
+                passwordTooShortMsg.style = "";
             }
 
-            let confirmPasswordError = document.querySelector("#confirm-password-not-ok");
+            let passwordsDontMatchMsg = document.querySelector("#passwords-dont-match");
             if (doPasswordsMatch()) {
-                confirmPasswordError.style = "display: none";
+                passwordsDontMatchMsg.style = "display: none";
             } else {
-                confirmPasswordError.style = "";
+                passwordsDontMatchMsg.style = "";
             }
         }
 
-        // Returns true if the submit button should be clickable
-        function isSubmittable() {
+        // Returns true if the register button should be clickable
+        function canRegister() {
             // These must have a non-empty value
             let textInputs = ["first_name", "last_name", "email", "password", "confirm_password"];
             for (let i = 0; i < textInputs.length; i++) {
@@ -106,12 +108,12 @@
                     return false;
                 }
             }
-            return isEmailOk() && isPasswordLongEnough() && doPasswordsMatch();
+            return isEmailFormatOk() && isPasswordLongEnough() && doPasswordsMatch();
         }
 
-        function isEmailOk() {
+        function isEmailFormatOk() {
             let value = document.querySelector("input[name='email']").value;
-            return /^(?=.{1,64}@)[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/.test(value);
+            return /^[\w.]+@[\w.]+$/.test(value);
         }
 
         function isPasswordLongEnough() {

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${course.getName()}"></title>
+    <meta th:replace="common/meta"/>
+</head>
+<body>
+<!-- Header with logo, logout and breadcrumbs -->
+<div th:replace="common/header"></div>
+<!-- Content -->
+<div class="et-content gap-4">
+    <!-- Course info -->
+    <div class="et-card p-5">
+        <div class="flex flex-row place-content-between justify-items-center">
+            <div class="flex flex-row justify-items-center gap-5">
+                <!-- Icon -->
+                <i th:class="'et-icon-course fa-2x '+${course.getIcon()}" class="fa fa-book fa-2x"></i>
+                <!-- Title -->
+                <p th:text="${course.getName()}" class="text-2xl font-bold">Course name</p>
+                <!-- Year -->
+                <p th:text="${course.formatPeriod()}" class="text-xl">(FromYear/ToYear)</p>
+            </div>
+            <!-- Edit button -->
+            <button th:onclick="'document.location=\'/professor/courses/'+${course.getId()}+'/edit\''" class="et-button-primary w-28">Edit</button>
+        </div>
+        <!-- Description -->
+        <p th:text="${course.getDescription()}" class="mt-4">Course description</p>
+    </div>
+    <!-- Lessons and Quiz -->
+    <div class="grid grid-cols-2 gap-4">
+        <a th:href="'/professor/courses/'+${course.getId()}+'/lessons'" class="et-flex-centered flex-col et-card px-5 py-10">
+            <i class="fa fa-file-alt fa-2x"></i>
+            <p class="text-xl">Lectures</p>
+        </a>
+        <a th:href="'/professor/courses/'+${course.getId()}+'/quizzes'" class="et-flex-centered flex-col et-card px-5 py-10">
+            <i class="fa fa-clipboard-check fa-2x"></i>
+            <p class="text-xl">Quizzes</p>
+        </a>
+    </div>
+    <!-- Students -->
+    <a th:href="'/professor/courses/'+${course.getId()}+'/students'" class="et-flex-centered flex-col et-card px-5 py-10">
+        <i class="fa fa-users fa-2x"></i>
+        <p class="text-xl">Students</p>
+    </a>
+</div>
+</body>
+</html>
