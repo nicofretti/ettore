@@ -6,6 +6,9 @@ import it.ettore.model.User;
 import org.junit.Test;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class UserModel {
@@ -88,5 +91,161 @@ public class UserModel {
         // Test that no exception is raised when adding a course to the ones taught by a professor
         professor.getCoursesTaught().add(new Course("Computer Architecture", "Bits are bits", 2023, Course.Category.Science, professor));
         professor.getCoursesTaught().remove(0);
+    }
+
+    @Test
+    public void requestCourseJoin() {
+        User professor = dummyProfessor();
+        Course course = CourseModel.dummyCourse(professor);
+
+        User student = dummyStudent();
+        course.requestJoin(student);
+
+        // Check that the list of students that want to join the course is exactly a 1-length list containing our dummy
+        // student
+        assertEquals(List.of(student), course.getStudentsRequesting());
+    }
+
+    @Test
+    public void approveCourseJoin() {
+        User professor = dummyProfessor();
+        Course course = CourseModel.dummyCourse(professor);
+
+        User student = dummyStudent();
+        // We need to use this trickery because List.of return an immutable List
+        course.setStudentsRequesting(new ArrayList<>(List.of(student)));
+
+        course.acceptStudent(student);
+
+        // There should be no pending join requests anymore, and one student that has joined
+        assertEquals(0, course.getStudentsRequesting().size());
+        assertEquals(List.of(student), course.getStudentsJoined());
+    }
+
+    @Test
+    public void rejectCourseJoin() {
+        User professor = dummyProfessor();
+        Course course = CourseModel.dummyCourse(professor);
+
+        User student = dummyStudent();
+        // We need to use this trickery because List.of return an immutable List
+        course.setStudentsRequesting(new ArrayList<>(List.of(student)));
+
+        course.rejectStudent(student);
+
+        // There should be no pending join requests anymore, and no students that have joined
+        assertEquals(0, course.getStudentsRequesting().size());
+        assertEquals(0, course.getStudentsJoined().size());
+    }
+
+    @Test
+    public void removeStudentFromCourse() {
+        User professor = dummyProfessor();
+        Course course = CourseModel.dummyCourse(professor);
+
+        User student = dummyStudent();
+        // We need to use this trickery because List.of return an immutable List
+        course.setStudentsJoined(new ArrayList<>(List.of(student)));
+
+        course.removeStudent(student);
+
+        // There should be no students that have joined
+        assertEquals(0, course.getStudentsJoined().size());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void requestCourseJoinButAlreadyDid() {
+        User professor = dummyProfessor();
+        Course course = CourseModel.dummyCourse(professor);
+
+        User student = dummyStudent();
+        // Say the student has already requested to join
+        // We need to use this trickery because List.of return an immutable List
+        course.setStudentsRequesting(new ArrayList<>(List.of(student)));
+
+        course.requestJoin(student);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void requestCourseJoinButAlreadyIn() {
+        User professor = dummyProfessor();
+        Course course = CourseModel.dummyCourse(professor);
+
+        User student = dummyStudent();
+        // Say the student has already joined
+        // We need to use this trickery because List.of return an immutable List
+        course.setStudentsJoined(new ArrayList<>(List.of(student)));
+
+        course.requestJoin(student);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void approveCourseJoinButDidntAsk() {
+        User professor = dummyProfessor();
+        Course course = CourseModel.dummyCourse(professor);
+
+        User student = dummyStudent();
+
+        course.acceptStudent(student);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void rejectCourseJoinButDidntAsk() {
+        User professor = dummyProfessor();
+        Course course = CourseModel.dummyCourse(professor);
+
+        User student = dummyStudent();
+
+        course.rejectStudent(student);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void approveCourseJoinButAlreadyIn() {
+        User professor = dummyProfessor();
+        Course course = CourseModel.dummyCourse(professor);
+
+        User student = dummyStudent();
+        // Say the student is already in
+        // We need to use this trickery because List.of return an immutable List
+        course.setStudentsJoined(new ArrayList<>(List.of(student)));
+
+        course.acceptStudent(student);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void rejectCourseJoinButAlreadyIn() {
+        User professor = dummyProfessor();
+        Course course = CourseModel.dummyCourse(professor);
+
+        User student = dummyStudent();
+        // Say the student is already in
+        // We need to use this trickery because List.of return an immutable List
+        course.setStudentsJoined(new ArrayList<>(List.of(student)));
+
+        course.rejectStudent(student);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void removeStudentFromCourseButNotApprovedYet() {
+        User professor = dummyProfessor();
+        Course course = CourseModel.dummyCourse(professor);
+
+        User student = dummyStudent();
+        // Say the student has requested to join but hasn't been approved yet
+        // We need to use this trickery because List.of return an immutable List
+        course.setStudentsRequesting(new ArrayList<>(List.of(student)));
+
+        course.removeStudent(student);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void removeStudentFromCourseButNotIn() {
+        User professor = dummyProfessor();
+        Course course = CourseModel.dummyCourse(professor);
+
+        User student = dummyStudent();
+        // Say the student is not in the course and hasn't requested to join
+
+        course.removeStudent(student);
     }
 }

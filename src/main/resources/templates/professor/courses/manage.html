@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="'Edit - ' + ${course.getName()}"></title>
+    <meta th:replace="common/meta"/>
+</head>
+<body>
+<!-- Header with logo, logout and breadcrumbs -->
+<div th:replace="common/header"></div>
+<!-- Content -->
+<div class="et-content gap-4">
+    <!-- Incoming join requests -->
+    <div class="et-card p-5" id="list-students-requesting">
+        <h2 class="text-xl text-center mb-6 font-bold uppercase">Join Requests</h2>
+        <div class="flex flex-row items-center mb-2" th:each="student: ${studentsRequesting}">
+            <span class="text-xl" th:text="${student.fullName()}">Student</span>
+            <div class="flex-1"></div>
+            <button class="et-button-good h-9 px-2 mr-2" th:onclick="'document.location = \'/professor/courses/' + ${course.getId()} + '/accept/' + ${student.getId()} + '\''">Accept</button>
+            <button class="et-button-bad h-9 px-2" th:onclick="'document.location = \'/professor/courses/' + ${course.getId()} + '/reject/' + ${student.getId()} + '\''">Reject</button>
+        </div>
+    </div>
+    <!-- Students already joined -->
+    <div class="et-card p-5" id="list-students-joined">
+        <h2 class="text-xl text-center mb-6 font-bold uppercase">Students</h2>
+        <div class="flex flex-row items-center mb-2" th:each="student: ${studentsJoined}">
+            <span class="text-xl" th:text="${student.fullName()}">Student</span>
+            <div class="flex-1"></div>
+            <button class="et-button-bad h-9 px-2" th:onclick="'document.location = \'/professor/courses/' + ${course.getId()} + '/remove/' + ${student.getId()} + '\''">Remove</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

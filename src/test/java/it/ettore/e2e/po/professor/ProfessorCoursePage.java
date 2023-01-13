@@ -27,6 +27,9 @@ public class ProfessorCoursePage extends PageObject {
     @FindBy(id = "btn-edit")
     private WebElement editButton;
 
+    @FindBy(id = "btn-goto-manage")
+    private WebElement gotoManageButton;
+
     public String getName() {
         return name.getText();
     }
@@ -37,6 +40,11 @@ public class ProfessorCoursePage extends PageObject {
 
     public String getDescription() {
         return description.getText();
+    }
+
+    public ProfessorManagePage gotoManage() {
+        gotoManageButton.click();
+        return new ProfessorManagePage(driver);
     }
 }
 

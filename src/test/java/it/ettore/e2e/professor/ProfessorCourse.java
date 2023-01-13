@@ -14,18 +14,10 @@ import static org.junit.Assert.assertEquals;
 
 public class ProfessorCourse extends E2EBaseTest {
     @Autowired
-    protected UserRepository repoUser;
-    @Autowired
     protected CourseRepository repoCourse;
-
-    void clearDb() {
-        repoCourse.deleteAll();
-        repoUser.deleteAll();
-    }
 
     @Test
     public void course() {
-        clearDb();
         String email = "some.professor@ettore.it";
         String password = "SomeSecurePassword";
         User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
