@@ -8,11 +8,11 @@
 <!-- Header with logo, logout and breadcrumbs -->
 <div th:replace="common/header"></div>
 <!-- Content -->
-<div class="et-content gap-4">
+<div class="et-flex-centered gap-4 px-20">
     <!-- Form -->
-    <form class="et-card flex flex-col p-5 lg:w-[900px] m-auto">
-        <div class="flex justify-start justify-items-center gap-2">
-            <select class="text-xl font-bold" name="type">
+    <form class="et-card p-5">
+        <div class="flex justify-start justify-items-center gap-2 ">
+            <select class="text-xl font-bold w-1/6" name="type">
                 <option value="Maths">
                     <span>Maths</span>
                 </option>
@@ -35,21 +35,20 @@
                     <span>Languages</span>
                 </option>
             </select>
-            <input class="text-xl font-bold" name="name" type="text" placeholder="Course name"
+            <input class="text-xl font-bold w-1/3" name="name" type="text" placeholder="Course name"
                    style="border: 1px solid #6b7280 !important; border-radius: 0 !important"
             >
-            <select name="year">
+            <select class="w-1/6" name="year">
                 <option value="1">2022/2023</option>
                 <option value="2">2021/2022</option>
             </select>
-            <button class="et-button-success ml-auto px-8 my-auto h-[30px]">Save</button>
+            <button class="et-button-good ml-auto my-auto h-9 px-2 w-1/6">Save</button>
         </div>
-        <textarea class="mt-1" name="description" placeholder="Course description"
+        <textarea class="mt-1 w-full" name="description" placeholder="Course description"
                   style="border: 1px solid #6b7280 !important; border-radius: 0 !important"
         ></textarea>
-        <button class="et-button-danger px-10 mt-2 mr-auto">Delete course</button>
+        <button class="et-button-bad h-9 px-2 mt-1 mr-auto">Delete course</button>
     </form>
-
 </div>
 </body>
 </html>
