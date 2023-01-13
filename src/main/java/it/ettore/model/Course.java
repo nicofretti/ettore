@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -12,13 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Course {
     public enum Category {
-        Maths,
-        Science,
-        History,
-        Geography,
-        Art,
-        Music,
-        Languages,
+        Maths, Science, History, Geography, Art, Music, Languages,
     }
 
     @Id
@@ -34,6 +30,9 @@ public class Course {
     @JoinColumn(name = "professor_id", nullable = false)
     private User professor;
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<Lesson> lessons = new ArrayList<>();
+
     public Course(String name, String description, int startingYear, Category category, User professor) {
         this.name = name;
         this.description = description;
@@ -41,7 +40,6 @@ public class Course {
         this.category = category;
         this.professor = professor;
     }
-
     public String formatPeriod() {
         return String.format("(%d/%d)", startingYear, startingYear + 1);
     }
@@ -66,7 +64,6 @@ public class Course {
                 return "fa fa-question";
         }
     }
-
     @Override
     public String toString() {
         return String.format("Course{id=%d,name=%s}", id, name);

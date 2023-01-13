@@ -22,6 +22,11 @@ public class CourseModel {
     }
 
     @Test
+    public void getIcon() {
+        assertEquals("fa fa-flask", dummyCourse(UserModel.dummyProfessor()).getIcon());
+    }
+
+    @Test
     public void getStartingYear() {
         assertEquals(2023, dummyCourse(UserModel.dummyProfessor()).getStartingYear());
     }
