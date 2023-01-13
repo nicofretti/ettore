@@ -25,9 +25,12 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(nullable = false)
     private String name;
     private String description;
+    @Column(nullable = false)
     private int startingYear;
+    @Column(nullable = false)
     private Category category;
 
     @ManyToOne(cascade = CascadeType.ALL)

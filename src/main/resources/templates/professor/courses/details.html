@@ -16,15 +16,15 @@
                 <!-- Icon -->
                 <i th:class="'et-icon-course fa-2x '+${course.getIcon()}" class="fa fa-book fa-2x"></i>
                 <!-- Title -->
-                <p th:text="${course.getName()}" class="text-2xl font-bold">Course name</p>
+                <p th:text="${course.getName()}" class="et-name text-2xl font-bold">Course name</p>
                 <!-- Year -->
-                <p th:text="${course.formatPeriod()}" class="text-xl">(FromYear/ToYear)</p>
+                <p th:text="${course.formatPeriod()}" class="et-period text-xl">(FromYear/ToYear)</p>
             </div>
             <!-- Edit button -->
-            <button th:onclick="'document.location=\'/professor/courses/'+${course.getId()}+'/edit\''" class="et-button-primary w-28">Edit</button>
+            <button id="btn-edit" th:onclick="'document.location=\'/professor/courses/'+${course.getId()}+'/edit\''" class="et-button-primary w-28">Edit</button>
         </div>
         <!-- Description -->
-        <p th:text="${course.getDescription()}" class="mt-4">Course description</p>
+        <p th:text="${course.getDescription()}" class="et-description mt-4">Course description</p>
     </div>
     <!-- Lessons and Quiz -->
     <div class="grid grid-cols-2 gap-4">

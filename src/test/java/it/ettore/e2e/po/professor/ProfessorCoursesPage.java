@@ -1,69 +1,69 @@
 package it.ettore.e2e.po.professor;
 
+import it.ettore.e2e.po.Header;
 import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.PageObject;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.WebElement;
 
-public class ProfessorCoursesPage extends PageObject {
+import java.util.List;
+import java.util.stream.Collectors;
 
+public class ProfessorCoursesPage extends PageObject {
     public ProfessorCoursesPage(WebDriver driver) {
         super(driver);
     }
-    @FindBy(id = "fullName")
-    private WebElement fullName;
 
-    @FindBy(xpath = "//a[@href='/logout']")
-    private WebElement logout;
+    public Header headerComponent() {
+        return new Header(driver);
+    }
 
-    @FindBy(xpath = "//a[@href='']")
-    private WebElement returnToMyCourses;
-
-    @FindBy(tagName = "button")
+    @FindBy(id = "btn-new-course")
     private WebElement addNewCourse;
 
-    @FindBy(id = "courseDetailsLink")
-    private WebElement courseDetailsLink;
-
-    @FindBy(id = "coursePeriod")
-    private WebElement coursePeriod;
-
-    @FindBy(id = "courseDescription")
-    private WebElement courseDescription;
-
-    public String getCurrentUrl() {
-        return driver.getCurrentUrl();
-    }
-    public String getFullName() {
-        return fullName.getText();
-    }
-
-    public LoginPage clickLogout() {
-        logout.click();
-        return new LoginPage(driver);
-    }
-
-    public ProfessorCoursesPage clickReturnToMyCourses() {
-        returnToMyCourses.click();
-        return new ProfessorCoursesPage(driver);
-    }
-
-   /* public AddNewCoursePage clickAddNewCourse() {
+    // TODO Update when we have a new course page
+    public Object newCourse() {
         addNewCourse.click();
-        return new AddNewCoursePage(driver);
-    }*/
-
-    public ProfessorCoursePage clickCourseDetailsLink() {
-        courseDetailsLink.click();
-        return new ProfessorCoursePage(driver);
+        return null;
     }
 
-    public String getCoursePeriod() {
-        return coursePeriod.getText();
+    @EqualsAndHashCode
+    public static class CourseComponent {
+        private WebDriver driver;
+        private WebElement element;
+
+        public CourseComponent(WebDriver driver, WebElement element) {
+            this.driver = driver;
+            this.element = element;
+        }
+
+        public String getName() {
+            return element.findElement(By.className("et-name")).getText();
+        }
+
+        public String getPeriod() {
+            return element.findElement(By.className("et-period")).getText();
+        }
+
+        public String getDescription() {
+            return element.findElement(By.className("et-description")).getText();
+        }
+
+        public ProfessorCoursePage goTo() {
+            element.findElement(By.className("et-name")).click();
+            return new ProfessorCoursePage(driver);
+        }
     }
 
-    public String getCourseDescription() {
-        return courseDescription.getText();
+    @FindBy(css = ".et-content > div")
+    private List<WebElement> courses;
+
+    public List<CourseComponent> getCourses() {
+        return courses.stream().map(element -> new CourseComponent(driver, element)).collect(Collectors.toList());
     }
 }
