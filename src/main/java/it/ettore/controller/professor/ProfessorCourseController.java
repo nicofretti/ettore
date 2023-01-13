@@ -65,6 +65,107 @@ public class ProfessorCourseController {
         return "professor/courses/details";
     }
 
+    @GetMapping(value = "/professor/courses/{id}/manage")
+    public String courseManagePage(@PathVariable @NotNull long id, Model model, HttpServletRequest request) {
+        User professor = Utils.loggedUser(request);
+
+        Optional<Course> maybeCourse = repoCourse.findById(id);
+        // On wrong ID, redirect to courses list
+        if (maybeCourse.isEmpty()) {
+            return "redirect:/professor/courses";
+        }
+        Course course = maybeCourse.get();
+
+        // Add attributes
+        model.addAllAttributes(
+                Map.of(
+                        "user", professor,
+                        "breadcrumbs", List.of(
+                                new Breadcrumb("Courses", "/professor/courses"),
+                                new Breadcrumb(course.getName(), String.format("/professor/courses/%d", course.getId())),
+                                new Breadcrumb("Manage", String.format("/professor/courses/%d/manage", course.getId()))
+                        ),
+                        "course", course,
+                        "studentsRequesting", course.getStudentsRequesting(),
+                        "studentsJoined", course.getStudentsJoined()
+                )
+        );
+
+        return "professor/courses/manage";
+    }
+
+    @GetMapping(value = "/professor/courses/{id}/accept/{studentId}")
+    public String courseAcceptStudent(@PathVariable @NotNull long id, @PathVariable @NotNull long studentId, Model model, HttpServletRequest request) {
+        User professor = Utils.loggedUser(request);
+
+        Optional<Course> maybeCourse = repoCourse.findById(id);
+        // On wrong ID, redirect to courses list
+        if (maybeCourse.isEmpty()) {
+            return "redirect:/professor/courses";
+        }
+        Course course = maybeCourse.get();
+
+        Optional<User> maybeStudent = repoUser.findById(studentId);
+        // On wrong ID, redirect to course manage page as if nothing had happened
+        if (maybeStudent.isEmpty()) {
+            return String.format("redirect:/professor/courses/%d/manage", id);
+        }
+        User student = maybeStudent.get();
+
+        course.acceptStudent(student);
+        repoCourse.save(course);
+
+        return String.format("redirect:/professor/courses/%d/manage", id);
+    }
+
+    @GetMapping(value = "/professor/courses/{id}/reject/{studentId}")
+    public String courseRejectStudent(@PathVariable @NotNull long id, @PathVariable @NotNull long studentId, Model model, HttpServletRequest request) {
+        User professor = Utils.loggedUser(request);
+
+        Optional<Course> maybeCourse = repoCourse.findById(id);
+        // On wrong ID, redirect to courses list
+        if (maybeCourse.isEmpty()) {
+            return "redirect:/professor/courses";
+        }
+        Course course = maybeCourse.get();
+
+        Optional<User> maybeStudent = repoUser.findById(studentId);
+        // On wrong ID, redirect to course manage page as if nothing had happened
+        if (maybeStudent.isEmpty()) {
+            return String.format("redirect:/professor/courses/%d/manage", id);
+        }
+        User student = maybeStudent.get();
+
+        course.rejectStudent(student);
+        repoCourse.save(course);
+
+        return String.format("redirect:/professor/courses/%d/manage", id);
+    }
+
+    @GetMapping(value = "/professor/courses/{id}/remove/{studentId}")
+    public String courseRemoveStudent(@PathVariable @NotNull long id, @PathVariable @NotNull long studentId, Model model, HttpServletRequest request) {
+        User professor = Utils.loggedUser(request);
+
+        Optional<Course> maybeCourse = repoCourse.findById(id);
+        // On wrong ID, redirect to courses list
+        if (maybeCourse.isEmpty()) {
+            return "redirect:/professor/courses";
+        }
+        Course course = maybeCourse.get();
+
+        Optional<User> maybeStudent = repoUser.findById(studentId);
+        // On wrong ID, redirect to course manage page as if nothing had happened
+        if (maybeStudent.isEmpty()) {
+            return String.format("redirect:/professor/courses/%d/manage", id);
+        }
+        User student = maybeStudent.get();
+
+        course.removeStudent(student);
+        repoCourse.save(course);
+
+        return String.format("redirect:/professor/courses/%d/manage", id);
+    }
+
     @GetMapping(value = "/professor/courses/add")
     public String courseAddPage(Model model, HttpServletRequest request){
         User professor = Utils.loggedUser(request);

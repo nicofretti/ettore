@@ -22,14 +22,8 @@ public class ProfessorCourses extends E2EBaseTest {
     @Autowired
     protected CourseRepository repoCourse;
 
-    void clearDb() {
-        repoCourse.deleteAll();
-        repoUser.deleteAll();
-    }
-
     @Test
     public void breadcrumbs() {
-        clearDb();
         String email = "some.professor@ettore.it";
         String password = "SomeSecurePassword";
         repoUser.save(new User("Some", "Professor", email, password, User.Role.PROFESSOR));
@@ -48,7 +42,6 @@ public class ProfessorCourses extends E2EBaseTest {
 
     @Test
     public void courses() {
-        clearDb();
         String email = "some.professor@ettore.it";
         String password = "SomeSecurePassword";
         User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);

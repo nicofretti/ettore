@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,6 +38,14 @@ public class Course {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "professor_id", nullable = false)
     private User professor;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "course_request", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> studentsRequesting;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "course_join", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> studentsJoined;
 
     public Course(String name, String description, int startingYear, Category category, User professor) {
         this.name = name;
@@ -73,5 +83,56 @@ public class Course {
     @Override
     public String toString() {
         return String.format("Course{id=%d,name=%s}", id, name);
+    }
+
+    public void requestJoin(User student) {
+        if (studentsJoined != null && studentsJoined.contains(student)) {
+            throw new IllegalStateException("This student has already joined, no need to request");
+        }
+
+        if (studentsRequesting == null) {
+            studentsRequesting = new ArrayList<>();
+        } else if (studentsRequesting.contains(student)) {
+            throw new IllegalStateException("This student has already requested to join");
+        }
+
+        studentsRequesting.add(student);
+    }
+
+    public void acceptStudent(User student) {
+        if (studentsRequesting == null || !studentsRequesting.contains(student)) {
+            throw new IllegalStateException("This student has no pending request to join this course");
+        }
+
+        if (studentsJoined == null) {
+            studentsJoined = new ArrayList<>();
+        } else if (studentsJoined.contains(student)) {
+            throw new IllegalStateException("This student has already been accepted to join the course");
+        }
+
+        studentsRequesting.remove(student);
+        studentsJoined.add(student);
+    }
+
+    public void rejectStudent(User student) {
+        if (studentsRequesting == null || !studentsRequesting.contains(student)) {
+            throw new IllegalStateException("This student has no pending request to join this course");
+        }
+
+        if (studentsJoined == null) {
+            studentsJoined = new ArrayList<>();
+        } else if (studentsJoined.contains(student)) {
+            throw new IllegalStateException("This student has already been accepted to join the course");
+        }
+
+        studentsRequesting.remove(student);
+    }
+
+    public void removeStudent(User student) {
+        if (studentsJoined == null || !studentsJoined.contains(student)) {
+            throw new IllegalStateException("This student hasn't joined the course");
+        }
+
+        studentsJoined.remove(student);
     }
 }

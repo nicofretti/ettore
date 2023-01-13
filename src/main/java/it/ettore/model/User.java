@@ -41,6 +41,12 @@ public class User {
     @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
     private List<Course> coursesTaught = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "studentsRequesting", cascade = CascadeType.ALL)
+    private List<Course> coursesRequesting;
+
+    @ManyToMany(mappedBy = "studentsJoined", cascade = CascadeType.ALL)
+    private List<Course> coursesJoined;
+
     public User(String firstName, String lastName, String email, String psw, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -87,6 +93,10 @@ public class User {
     public void setPassword(String psw) {
         assertPassword(psw);
         this.pswHash = hashPsw(psw);
+    }
+
+    public String fullName() {
+        return firstName + " " + lastName;
     }
 
     @Override
