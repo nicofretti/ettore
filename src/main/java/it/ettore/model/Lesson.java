@@ -15,8 +15,10 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(nullable = false)
     private String title;
     private String description;
+    @Column(nullable = false)
     private String content;
 
     @ManyToOne(cascade = CascadeType.ALL)
