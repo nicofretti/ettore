@@ -1,9 +1,6 @@
 package it.ettore.utils;
 
-import it.ettore.model.User;
-import it.ettore.model.UserRepository;
-import it.ettore.model.Course;
-import it.ettore.model.CourseRepository;
+import it.ettore.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,17 +18,26 @@ public class DbBootstrapper {
     @Autowired
     CourseRepository repoCourse;
 
+    @Autowired
+    LessonRepository repoLesson;
+
     @PostConstruct
     public void bootstrap() {
         repoUser.save(new User("A", "Student", "a.student@ettore.it", "a.student@ettore.it", User.Role.STUDENT));
         User professor = new User("B", "Professor", "a.professor@ettore.it", "a.professor@ettore.it", User.Role.PROFESSOR);
         // Add math and history course to the professor
-        repoCourse.saveAll(List.of(
-                        new Course("Maths", "Maths course", 2023, Course.Category.Maths, professor),
-                        new Course("History", "History course", 2023, Course.Category.History, professor),
-                        new Course("Art", "Art course", 2023, Course.Category.Art, professor)
-                )
-        );
+        Course Math = new Course("Maths", "Maths course", 2023, Course.Category.Maths, professor);
+        Course History = new Course("History", "History course", 2023, Course.Category.History, professor);
+        Course Art = new Course("Art", "Art course", 2023, Course.Category.Art, professor);
+
+        // Add lessons to the courses
+        Lesson derivatives = new Lesson("Derivatives", "Some nice description on Derivation","Derivatives lesson content and stuff", Math);
+        Lesson integrals = new Lesson("Integrals", "Some nice description on Integration","Integrals lesson content and stuff", Math);
+        Lesson history = new Lesson("WW2", "Some nice description on History","History lesson content and stuff", History);
+        Lesson art = new Lesson("Art", "Some nice description on Art","Art lesson content and stuff", Art);
+
+        //repoCourse.saveAll(List.of(Math, History, art));
+        repoLesson.saveAll(List.of(derivatives, integrals, history, art));
     }
 
 }
