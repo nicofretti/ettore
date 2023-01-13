@@ -16,13 +16,8 @@ public class Login extends E2EBaseTest {
     @Autowired
     protected UserRepository repoUser;
 
-    void clearDb() {
-        repoUser.deleteAll();
-    }
-
     @Test
     public void login() {
-        clearDb();
         String email = "some.user@ettore.it";
         String password = "SomeSecurePassword";
         repoUser.save(new User("First", "Last", email, password, User.Role.PROFESSOR));
@@ -43,8 +38,6 @@ public class Login extends E2EBaseTest {
 
     @Test
     public void noSuchUser() {
-        clearDb();
-
         driver.get(baseDomain() + "login");
         // Check that we are on the right page
         assertEquals("I'm supposed to be in /login", "/login", currentPath());
@@ -62,7 +55,6 @@ public class Login extends E2EBaseTest {
 
     @Test
     public void wrongPassword() {
-        clearDb();
         String email = "some.user@ettore.it";
         String password = "SomeSecurePassword";
         repoUser.save(new User("First", "Last", email, password, User.Role.PROFESSOR));
