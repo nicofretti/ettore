@@ -8,10 +8,13 @@ import it.ettore.model.UserRepository;
 import it.ettore.utils.Breadcrumb;
 import it.ettore.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -180,4 +183,31 @@ public class ProfessorCourseController {
         );
         return "professor/courses/add";
     }
+
+    @PostMapping(value = "/professor/courses/add")
+    public String courseAdd(@RequestParam @NotNull String name,
+                            @RequestParam String description,
+                            @RequestParam @NotNull Integer startingYear,
+                            @RequestParam @NotNull String category,
+                            Model model,
+                            HttpServletRequest request){
+        User professor = repoUser.findById(Utils.loggedUser(request).getId()).get();
+        Course course = new Course(name, description.isBlank() ? null : description, startingYear, Course.Category.fromString(category), professor);
+
+        try{
+            repoCourse.save(course);
+        } catch (Exception exc) {
+            description = description==null ? "" : description;
+            model.addAllAttributes(
+                Map.of(
+                "error", "Course already exists",
+                "course", course
+                )
+            );
+            return "professor/courses/add";
+        }
+
+        return "redirect:/professor/courses";
+    }
+
 }

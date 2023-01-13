@@ -12,6 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(uniqueConstraints={@UniqueConstraint(columnNames = {"name", "startingYear"})})
 public class Course {
     public enum Category {
         Maths,
@@ -20,7 +21,48 @@ public class Course {
         Geography,
         Art,
         Music,
-        Languages,
+        Languages;
+
+        public static Category fromString(String s) {
+            switch (s){
+                case "Maths":
+                    return Maths;
+                case "Science":
+                    return Science;
+                case "History":
+                    return History;
+                case "Geography":
+                    return Geography;
+                case "Art":
+                    return Art;
+                case "Music":
+                    return Music;
+                case "Languages":
+                    return Languages;
+                default:
+                    return null;
+            }
+        }
+        public String toString() {
+            switch (this){
+                case Maths:
+                    return "Maths";
+                case Science:
+                    return "Science";
+                case History:
+                    return "History";
+                case Geography:
+                    return "Geography";
+                case Art:
+                    return "Art";
+                case Music:
+                    return "Music";
+                case Languages:
+                    return "Languages";
+                default:
+                    return null;
+            }
+        }
     }
 
     @Id

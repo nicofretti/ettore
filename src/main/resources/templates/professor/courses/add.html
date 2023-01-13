@@ -10,45 +10,52 @@
 <!-- Content -->
 <div class="et-flex-centered gap-4 px-20">
     <!-- Form -->
-    <form class="et-card p-5">
+    <form class="et-card p-5" method="POST">
         <div class="flex justify-start justify-items-center gap-2 ">
-            <select class="text-xl font-bold w-1/6" name="type">
-                <option value="Maths">
-                    <span>Maths</span>
-                </option>
-                <option value="Science">
-                    <span>Science</span>
-                </option>
-                <option value="History">
-                    <span>History</span>
-                </option>
-                <option value="Geography">
-                    <span>Geography</span>
-                </option>
-                <option value="Art">
-                    <span>Art</span>
-                </option>
-                <option value="Music">
-                    <span>Music</span>
-                </option>
-                <option value="Languages">
-                    <span>Languages</span>
-                </option>
+            <select name="category" class="text-xl font-bold w-1/6">
+                <option th:selected="${course!=null ? course.getCategory().toString()=='Maths':false}" value="Maths"><span>Maths</span></option>
+                <option th:selected="${course!=null ? course.getCategory().toString()=='Science':false}" value="Science"><span>Science</span></option>
+                <option th:selected="${course!=null ? course.getCategory().toString()=='History':false}" value="History"><span>History</span></option>
+                <option th:selected="${course!=null ? course.getCategory().toString()=='Geography':false}" value="Geography"><span>Geography</span></option>
+                <option th:selected="${course!=null ? course.getCategory().toString()=='Art':false}" value="Art"><span>Art</span></option>
+                <option th:selected="${course!=null ? course.getCategory().toString()=='Music':false}" value="Music"><span>Music</span></option>
+                <option th:selected="${course!=null ? course.getCategory().toString()=='Languages':false}" value="Languages"><span>Languages</span></option>
             </select>
-            <input class="text-xl font-bold w-1/3" name="name" type="text" placeholder="Course name"
+            <input name="name" class="text-xl font-bold w-1/3" type="text" placeholder="Course name"
+                   required
+                   onchange="changeInput()" th:value="${course!=null ? course.getName(): ''}"
                    style="border: 1px solid #6b7280 !important; border-radius: 0 !important"
             >
-            <select class="w-1/6" name="year">
-                <option value="1">2022/2023</option>
-                <option value="2">2021/2022</option>
+            <select name="startingYear" class="w-1/6" >
+                <option th:selected="${course!=null ? course.getStartingYear()==2023 : false}" value=2023>2023/2024</option>
+                <option th:selected="${course!=null ? course.getStartingYear()==2022 : false}" value=2022>2022/2023</option>
+                <option th:selected="${course!=null ? course.getStartingYear()==2021 : false}" value=2021>2021/2022</option>
             </select>
-            <button class="et-button-good ml-auto my-auto h-9 px-2 w-1/6">Save</button>
+            <button type="submit" id="btn-save"  class="et-button-good et-button-disabled ml-auto my-auto h-9 px-2 w-1/6">Save</button>
         </div>
-        <textarea class="mt-1 w-full" name="description" placeholder="Course description"
+        <textarea name="description" class="mt-1 w-full" placeholder="Course description"
+                  th:value="${course!=null ? course.getDescription(): ''}"
                   style="border: 1px solid #6b7280 !important; border-radius: 0 !important"
         ></textarea>
-        <button class="et-button-bad h-9 px-2 mt-1 mr-auto">Delete course</button>
+        <div class="flex flex-row mt-1">
+            <button type="button" class="et-button-bad h-9 px-2 mr-auto" onclick="window.location.href='../'">Delete course</button>
+            <!-- If error -->
+            <div class="mt-1" th:if="${error}">
+                <span class="text-red-400 p-2" th:text="${error}"></span>
+            </div>
+        </div>
     </form>
 </div>
 </body>
+<script>
+    function changeInput(){
+        let saveButton = document.getElementById("btn-save");
+        let courseName = document.getElementsByName("name")[0].value;
+        if(courseName.toString().length > 0){
+            saveButton.classList.remove("et-button-disabled");
+            return;
+        }
+        saveButton.classList.add("et-button-disabled");
+    }
+</script>
 </html>
