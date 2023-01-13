@@ -1,4 +1,4 @@
-package it.ettore.e2e.professor;
+package it.ettore.e2e.professor.courses;
 
 import it.ettore.e2e.E2EBaseTest;
 import it.ettore.e2e.po.LoginPage;
