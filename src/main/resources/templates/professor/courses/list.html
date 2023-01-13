@@ -12,10 +12,10 @@
     <button class="et-button-primary w-full h-12" onclick="document.location='/professor/courses/add'">New course
     </button>
     <!-- Iterate over courses -->
-    <div th:each="course: ${courses}" class="et-card p-5 w-100">
+    <div th:each="course: ${courses}" class="et-card p-4 w-100">
         <div class="flex flex-row justify-items-center gap-5">
             <!-- Icon -->
-            <i th:class="'et-icon-course fa-2x '+${course.getIcon()}" class="fa fa-book fa-2x"></i>
+            <i th:class="'et-icon-course fa-2x fa-fw '+${course.getIcon()}" class="fa fa-book fa-2x"></i>
             <!-- Title -->
             <a th:text="${course.getName()}" th:href="'/professor/courses/'+${course.getId()}" class="et-name text-2xl font-bold">Course
                 name</a>

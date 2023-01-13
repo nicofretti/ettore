@@ -31,14 +31,15 @@
                 <option th:selected="${course!=null ? course.getStartingYear()==2022 : false}" value=2022>2022/2023</option>
                 <option th:selected="${course!=null ? course.getStartingYear()==2021 : false}" value=2021>2021/2022</option>
             </select>
-            <button type="submit" id="btn-save"  class="et-button-good et-button-disabled ml-auto my-auto h-9 px-2 w-1/6">Save</button>
+            <button type="submit" id="btn-save" th:class="${course!=null ? 'et-button-good ml-auto my-auto h-9 px-2 w-1/6' : 'et-button-good ml-auto my-auto h-9 px-2 w-1/6 et-button-disabled'}"
+            >Save</button>
         </div>
         <textarea name="description" class="mt-1 w-full" placeholder="Course description"
                   th:value="${course!=null ? course.getDescription(): ''}"
                   style="border: 1px solid #6b7280 !important; border-radius: 0 !important"
         ></textarea>
         <div class="flex flex-row mt-1">
-            <button type="button" class="et-button-bad h-9 px-2 mr-auto" onclick="window.location.href='../'">Delete course</button>
+            <button type="button" class="et-button-bad h-9 px-2 mr-auto" onclick="window.location.href='/professor/courses/'">Delete course</button>
             <!-- If error -->
             <div class="mt-1" th:if="${error}">
                 <span class="text-red-400 p-2" th:text="${error}"></span>

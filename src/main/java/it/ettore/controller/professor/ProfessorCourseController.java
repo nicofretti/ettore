@@ -197,9 +197,13 @@ public class ProfessorCourseController {
         try{
             repoCourse.save(course);
         } catch (Exception exc) {
-            description = description==null ? "" : description;
             model.addAllAttributes(
                 Map.of(
+                "user", professor,
+                "breadcrumbs", List.of(
+                        new Breadcrumb("Courses", "/professor/courses"),
+                        new Breadcrumb("Add", "/professor/courses/add")
+                ),
                 "error", "Course already exists",
                 "course", course
                 )
