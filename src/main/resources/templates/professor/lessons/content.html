@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${lesson.getTitle()}">Lesson Title</title>
+    <meta th:replace="common/meta"/>
+</head>
+<body>
+<!-- Header with logo, logout and breadcrumbs -->
+<div th:replace="common/header"></div>
+<!-- Content -->
+<div class="et-content gap-4">
+    <!-- Lesson content -->
+    <div class="et-card p-5">
+        <div class="flex flex-row place-content-between justify-items-center">
+            <div class="flex flex-row justify-items-center gap-5">
+                <!-- Title -->
+                <p th:text="${lesson.getTitle()}" class="et-name text-2xl font-bold">Lesson name</p>
+                <!-- Lesson content -->
+                <p th:text="${lesson.getContent()}" class="et-period text-xl">This lesson is so interesting</p>
+            </div>
+            <!-- Modify button is disabled for students-->
+                <button th:if="${canEdit}" id="btn-edit-lesson-from-content"
+                        th:onclick="'document.location=\'/professor/courses/'+${lesson.getCourse().getId()}+'/lessons/'+${lesson.getId()}+'/edit\''"
+                        class="et-button-primary w-28">Modify
+                </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
