@@ -1,4 +1,4 @@
-package it.ettore.unit;
+package it.ettore.unit.model;
 
 import it.ettore.model.Course;
 import it.ettore.model.Lesson;
