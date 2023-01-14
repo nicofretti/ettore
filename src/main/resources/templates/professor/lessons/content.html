@@ -3,8 +3,10 @@
 <head>
     <title th:text="${lesson.getTitle()}">Lesson Title</title>
     <meta th:replace="common/meta"/>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="/markdown.css" rel="stylesheet">
 </head>
-<body>
+<body onload="renderMarkdown()">
 <!-- Header with logo, logout and breadcrumbs -->
 <div th:replace="common/header"></div>
 <!-- Content -->
@@ -14,7 +16,7 @@
         <div class="flex flex-col justify-items-center">
             <!-- Title and Button -->
             <div class="flex justify-between w-100">
-                <p class="et-name text-2xl font-bold" th:text="${lesson.getTitle()}">Lesson name</p>
+                <p class="et-name text-3xl font-bold" th:text="${lesson.getTitle()}">Lesson name</p>
                 <button class="et-button-primary w-28" id="btn-edit-lesson"
                         th:if="${canEdit}"
                         th:onclick="'document.location=\'/professor/courses/'+${lesson.getCourse().getId()}+'/lessons/'+${lesson.getId()}+'/edit\''">
@@ -22,9 +24,17 @@
                 </button>
             </div>
             <!-- Lesson content -->
-            <p class="et-description mt-4" th:text="${lesson.getContent()}">This lesson is so interesting</p>
+            <article class="markdown-body" th:text="${lesson.getContent()}">
+                This lesson is so interesting
+            </article>
         </div>
     </div>
 </div>
 </body>
+<script>
+    function renderMarkdown() {
+        let content = document.getElementsByClassName("markdown-body")[0].innerHTML;
+        document.getElementsByClassName("markdown-body")[0].innerHTML = marked.parse(content);
+    }
+</script>
 </html>

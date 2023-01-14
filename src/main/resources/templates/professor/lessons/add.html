@@ -42,7 +42,7 @@
                           onchange="changeInput()"
                           placeholder="Course description"
                           required
-                          style="border: 1px solid #6b7280 !important; border-radius: 0 !important">[[${course!=null ? course.getContent(): ''}]]</textarea>
+                          style="border: 1px solid #6b7280 !important; border-radius: 0 !important">[[${lesson!=null ? lesson.getContent(): ''}]]</textarea>
             </div>
         </div>
         <!-- Buttons -->
@@ -56,7 +56,7 @@
                     onclick="window.location.href=this.getAttribute('data-redirect')"
                     th:data-redirect="${btnUndo}"
                     type="button">
-                Delete course
+                Delete lesson
             </button>
         </div>
     </form>
