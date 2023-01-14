@@ -9,13 +9,11 @@ import it.ettore.utils.Breadcrumb;
 import it.ettore.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -99,7 +97,7 @@ public class StudentCourseController {
         Course course = maybeCourse.get();
 
         if (!course.isStudentJoined(student)) {
-            Utils.addRedirectionError(redirectAttributes, "NYou have not joined this course, or are waiting to be approved");
+            Utils.addRedirectionError(redirectAttributes, "You have not joined this course, or are waiting to be approved");
             return "redirect:/student/courses";
         }
 
