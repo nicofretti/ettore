@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProfessorCourses extends E2EBaseTest {
     @Autowired
@@ -46,7 +46,8 @@ public class ProfessorCourses extends E2EBaseTest {
         String password = "SomeSecurePassword";
         User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
-        repoCourse.save(course);
+        professor.getCoursesTaught().add(course);
+        repoUser.save(professor);
 
         driver.get(baseDomain() + "login");
         LoginPage loginPage = new LoginPage(driver);

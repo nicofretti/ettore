@@ -4,25 +4,18 @@ import it.ettore.e2e.E2EBaseTest;
 import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.professor.ProfessorCoursePage;
 import it.ettore.e2e.po.professor.ProfessorCoursesPage;
-import it.ettore.e2e.po.professor.ProfessorCoursesPage.CourseComponent;
 import it.ettore.e2e.po.professor.ProfessorManagePage;
 import it.ettore.model.Course;
-import it.ettore.model.CourseRepository;
 import it.ettore.model.User;
 import it.ettore.model.UserRepository;
-import it.ettore.unit.CourseModel;
-import it.ettore.unit.UserModel;
-import it.ettore.utils.Breadcrumb;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProfessorManage extends E2EBaseTest {
     @Autowired
-    protected CourseRepository repoCourse;
+    protected UserRepository repoUser;
 
     @Test
     public void approveJoinRequest() {
@@ -33,9 +26,11 @@ public class ProfessorManage extends E2EBaseTest {
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
 
         User student = new User("Some", "Student", "some.student@ettore.it", "ChocolatePizza", User.Role.STUDENT);
+        repoUser.save(student);
         course.requestJoin(student);
 
-        repoCourse.save(course);
+        professor.getCoursesTaught().add(course);
+        repoUser.save(professor);
 
         // Login with the professor's account
         driver.get(baseDomain() + "login");
@@ -78,10 +73,11 @@ public class ProfessorManage extends E2EBaseTest {
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
 
         User student = new User("Some", "Student", "some.student@ettore.it", "ChocolatePizza", User.Role.STUDENT);
+        repoUser.save(student);
         course.requestJoin(student);
 
-        repoCourse.save(course);
-
+        professor.getCoursesTaught().add(course);
+        repoUser.save(professor);
         // Login with the professor's account
         driver.get(baseDomain() + "login");
         LoginPage loginPage = new LoginPage(driver);
@@ -122,11 +118,13 @@ public class ProfessorManage extends E2EBaseTest {
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
 
         User student = new User("Some", "Student", "some.student@ettore.it", "ChocolatePizza", User.Role.STUDENT);
+        repoUser.save(student);
         course.requestJoin(student);
         // Immediately accept join request so we can remove him
         course.acceptStudent(student);
 
-        repoCourse.save(course);
+        professor.getCoursesTaught().add(course);
+        repoUser.save(professor);
 
         // Login with the professor's account
         driver.get(baseDomain() + "login");
