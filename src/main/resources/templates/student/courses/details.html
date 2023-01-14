@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${course.getName()}"></title>
+    <meta th:replace="common/meta"/>
+</head>
+<body>
+<div th:replace="common/errors"/>
+<!-- Header with logo, logout and breadcrumbs -->
+<div th:replace="common/header"></div>
+<!-- Content -->
+<div class="et-content gap-4">
+    <!-- Course info -->
+    <div class="et-card p-5">
+        <div class="flex flex-row place-content-between justify-items-center">
+            <div class="flex flex-row justify-items-center gap-5">
+                <!-- Icon -->
+                <i th:class="'et-icon-course fa-2x '+${course.getIcon()}" class="fa fa-book fa-2x"></i>
+                <!-- Title -->
+                <p th:text="${course.getName()}" class="et-name text-2xl font-bold">Course name</p>
+                <!-- Year -->
+                <p th:text="${course.formatPeriod()}" class="et-period text-xl">(FromYear/ToYear)</p>
+            </div>
+            <!-- Unsubscribe button -->
+            <button id="btn-unjoin" th:onclick="'document.location=\'/student/courses/'+${course.getId()}+'/unjoin\''" class="et-button-bad w-28">Unsubscribe</button>
+        </div>
+        <!-- Description -->
+        <p th:text="${course.getDescription()}" class="et-description mt-4">Course description</p>
+    </div>
+    <!-- Lessons -->
+    <a id="btn-goto-lessons" th:href="'/student/courses/'+${course.getId()}+'/lessons'" class="et-flex-centered flex-col et-card px-5 py-10">
+        <i class="fa fa-file-alt fa-2x"></i>
+        <p class="text-xl">Lectures</p>
+    </a>
+</div>
+</body>
+</html>

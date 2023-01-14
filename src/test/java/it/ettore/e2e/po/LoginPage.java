@@ -1,6 +1,7 @@
 package it.ettore.e2e.po;
 
 import it.ettore.e2e.po.professor.ProfessorCoursesPage;
+import it.ettore.e2e.po.student.StudentCoursesPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.WebElement;
@@ -45,10 +46,9 @@ public class LoginPage extends PageObject{
         return new ProfessorCoursesPage(driver);
     }
 
-    // TODO Update when student pages are created
-    public Object loginAsStudent() {
+    public StudentCoursesPage loginAsStudent() {
         loginButton.click();
-        return null;
+        return new StudentCoursesPage(driver);
     }
 
     public RegisterPage register() {

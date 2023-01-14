@@ -85,54 +85,61 @@ public class Course {
         return String.format("Course{id=%d,name=%s}", id, name);
     }
 
+    public boolean isStudentRequesting(User student) {
+        if (studentsRequesting == null) return false;
+        return studentsRequesting.stream().anyMatch(someStudent -> someStudent.getId() == student.getId());
+    }
+
+    public boolean isStudentJoined(User student) {
+        if (studentsJoined == null) return false;
+        return studentsJoined.stream().anyMatch(someStudent -> someStudent.getId() == student.getId());
+    }
+
     public void requestJoin(User student) {
-        if (studentsJoined != null && studentsJoined.contains(student)) {
+        if (isStudentJoined(student)) {
             throw new IllegalStateException("This student has already joined, no need to request");
+        }
+        if (isStudentRequesting(student)) {
+            throw new IllegalStateException("This student has already requested to join");
         }
 
         if (studentsRequesting == null) {
             studentsRequesting = new ArrayList<>();
-        } else if (studentsRequesting.contains(student)) {
-            throw new IllegalStateException("This student has already requested to join");
         }
-
         studentsRequesting.add(student);
     }
 
     public void acceptStudent(User student) {
-        if (studentsRequesting == null || !studentsRequesting.contains(student)) {
+        if (!isStudentRequesting(student)) {
             throw new IllegalStateException("This student has no pending request to join this course");
         }
-
-        if (studentsJoined == null) {
-            studentsJoined = new ArrayList<>();
-        } else if (studentsJoined.contains(student)) {
+        if (isStudentJoined(student)) {
             throw new IllegalStateException("This student has already been accepted to join the course");
         }
 
-        studentsRequesting.remove(student);
+        studentsRequesting.removeIf(someStudent -> someStudent.getId() == student.getId());
+        if (studentsJoined == null) {
+            studentsJoined = new ArrayList<>();
+        }
         studentsJoined.add(student);
     }
 
     public void rejectStudent(User student) {
-        if (studentsRequesting == null || !studentsRequesting.contains(student)) {
+        if (!isStudentRequesting(student)) {
             throw new IllegalStateException("This student has no pending request to join this course");
         }
-
-        if (studentsJoined == null) {
-            studentsJoined = new ArrayList<>();
-        } else if (studentsJoined.contains(student)) {
+        if (isStudentJoined(student)) {
             throw new IllegalStateException("This student has already been accepted to join the course");
         }
 
-        studentsRequesting.remove(student);
+        studentsRequesting.removeIf(someStudent -> someStudent.getId() == student.getId());
     }
 
     public void removeStudent(User student) {
-        if (studentsJoined == null || !studentsJoined.contains(student)) {
+        if (!isStudentJoined(student)) {
             throw new IllegalStateException("This student hasn't joined the course");
         }
 
-        studentsJoined.remove(student);
+        studentsJoined.removeIf(someStudent -> someStudent.getId() == student.getId());
     }
 }
