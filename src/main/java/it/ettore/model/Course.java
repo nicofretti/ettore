@@ -35,6 +35,9 @@ public class Course {
     @JoinTable(name = "course_join", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> studentsJoined;
 
+    @OneToMany(mappedBy = "course", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Lesson> lessons = new ArrayList<>();
+
     public Course(String name, String description, int startingYear, Category category, User professor) {
         this.name = name;
         this.description = description;
@@ -42,6 +45,7 @@ public class Course {
         this.category = category;
         this.professor = professor;
     }
+
     public String formatPeriod() {
         return String.format("(%d/%d)", startingYear, startingYear + 1);
     }
@@ -66,6 +70,7 @@ public class Course {
                 return "fa fa-question";
         }
     }
+
     @Override
     public String toString() {
         return String.format("Course{id=%d,name=%s}", id, name);

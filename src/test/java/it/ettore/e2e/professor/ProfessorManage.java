@@ -2,9 +2,9 @@ package it.ettore.e2e.professor;
 
 import it.ettore.e2e.E2EBaseTest;
 import it.ettore.e2e.po.LoginPage;
-import it.ettore.e2e.po.professor.ProfessorCoursePage;
-import it.ettore.e2e.po.professor.ProfessorCoursesPage;
 import it.ettore.e2e.po.professor.ProfessorManagePage;
+import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
+import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
 import it.ettore.model.Course;
 import it.ettore.model.User;
 import it.ettore.model.UserRepository;

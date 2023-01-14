@@ -5,10 +5,9 @@ import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage.CourseComponent;
+import it.ettore.e2e.po.professor.lessons.ProfessorLessonPage;
 import it.ettore.e2e.po.professor.lessons.ProfessorLessonsPage;
 import it.ettore.e2e.po.professor.lessons.ProfessorLessonsPage.LessonComponent;
-import it.ettore.e2e.po.professor.lessons.ProfessorLessonPage;
-
 import it.ettore.model.*;
 import it.ettore.utils.Breadcrumb;
 import org.junit.Test;
@@ -36,8 +35,11 @@ public class ProfessorLessons extends E2EBaseTest {
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
         Lesson lesson = new Lesson("Lesson name", "Lesson description", "Lesson content", course);
         Lesson lesson2 = new Lesson("Lesson name 2", "Lesson description 2", "Lesson content 2", course);
-        repoLesson.saveAll(List.of(lesson, lesson2));
-        
+        professor.getCoursesTaught().add(course);
+        professor.getCoursesTaught().get(0).getLessons().add(lesson);
+        professor.getCoursesTaught().get(0).getLessons().add(lesson2);
+        repoUser.save(professor);
+
         driver.get(baseDomain() + "login");
         LoginPage loginPage = new LoginPage(driver);
 
@@ -86,7 +88,10 @@ public class ProfessorLessons extends E2EBaseTest {
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
         Lesson lesson = new Lesson("Lesson name", "Lesson description", "Lesson content", course);
         Lesson lesson2 = new Lesson("Lesson name 2", "Lesson description 2", "Lesson content 2", course);
-        repoLesson.saveAll(List.of(lesson, lesson2));
+        professor.getCoursesTaught().add(course);
+        professor.getCoursesTaught().get(0).getLessons().add(lesson);
+        professor.getCoursesTaught().get(0).getLessons().add(lesson2);
+        repoUser.save(professor);
 
         driver.get(baseDomain() + "login");
         LoginPage loginPage = new LoginPage(driver);

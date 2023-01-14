@@ -1,9 +1,6 @@
 package it.ettore.utils;
 
-import it.ettore.model.Course;
-import it.ettore.model.CourseRepository;
-import it.ettore.model.User;
-import it.ettore.model.UserRepository;
+import it.ettore.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,11 +31,8 @@ public class DbBootstrapper {
         repoUser.saveAll(List.of(student1, student2, student3, student4));
 
         User professor = new User("B", "Professor", "a.professor@ettore.it", "a.professor@ettore.it", User.Role.PROFESSOR);
-        // Add math and history course to the professor
-        Course Math = new Course("Maths", "Maths course", 2023, Course.Category.Maths, professor);
-        Course History = new Course("History", "History course", 2023, Course.Category.History, professor);
-        Course Art = new Course("Art", "Art course", 2023, Course.Category.Art, professor);
 
+        // Add math and history course to the professor
         Course math = new Course("Maths", "Maths course", 2023, Course.Category.Maths, professor);
         Course history = new Course("History", "History course", 2023, Course.Category.History, professor);
         Course art = new Course("Art", "Art course", 2023, Course.Category.Art, professor);
@@ -49,13 +43,18 @@ public class DbBootstrapper {
         history.setStudentsRequesting(List.of(student1, student3));
         history.setStudentsJoined(List.of(student2, student4));
 
-        //art.setStudentsJoined(List.of(student1, student2, student3));
+        // Add lessons to the courses
+        Lesson lessonDerivatives = new Lesson("Derivatives", "Some nice description on Derivation", "Derivatives lesson content and stuff", math);
+        Lesson lessonIntegrals = new Lesson("Integrals", "Some nice description on Integration", "Integrals lesson content and stuff", math);
+
+        math.getLessons().add(lessonDerivatives);
+        math.getLessons().add(lessonIntegrals);
+
         professor.getCoursesTaught().add(math);
         professor.getCoursesTaught().add(history);
         professor.getCoursesTaught().add(art);
 
         repoUser.save(professor);
-
     }
 
 }

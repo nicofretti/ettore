@@ -10,8 +10,6 @@ import it.ettore.model.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 
 public class ProfessorLesson extends E2EBaseTest {
@@ -32,7 +30,12 @@ public class ProfessorLesson extends E2EBaseTest {
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
         Lesson lesson = new Lesson("Lesson name", "Lesson description", "Lesson content", course);
         Lesson lesson2 = new Lesson("Lesson name 2", "Lesson description 2", "Lesson content 2", course);
-        repoLesson.saveAll(List.of(lesson, lesson2));
+
+        professor.getCoursesTaught().add(course);
+        professor.getCoursesTaught().get(0).getLessons().add(lesson);
+        professor.getCoursesTaught().get(0).getLessons().add(lesson2);
+
+        repoUser.save(professor);
 
         driver.get(baseDomain() + "login");
         LoginPage loginPage = new LoginPage(driver);
