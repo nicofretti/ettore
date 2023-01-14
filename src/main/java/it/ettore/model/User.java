@@ -34,12 +34,16 @@ public class User {
     private String pswHash;
     @Column(nullable = false)
     private Role role;
-    @OneToMany(mappedBy = "professor", orphanRemoval = true, cascade = CascadeType.ALL)
+
+    // For the professor
+    @OneToMany(mappedBy = "professor")
     private List<Course> coursesTaught = new ArrayList<>();
-    @ManyToMany(mappedBy = "studentsRequesting", cascade = CascadeType.ALL)
-    private List<Course> coursesRequesting;
-    @ManyToMany(mappedBy = "studentsJoined", cascade = CascadeType.ALL)
-    private List<Course> coursesJoined;
+
+    // For the student
+    @ManyToMany(mappedBy = "studentsRequesting")
+    private List<Course> coursesRequesting = new ArrayList<>();
+    @ManyToMany(mappedBy = "studentsJoined")
+    private List<Course> coursesJoined = new ArrayList<>();
 
     public User(String firstName, String lastName, String email, String psw, Role role) {
         this.firstName = firstName;

@@ -25,17 +25,18 @@ public class Course {
     @Column(nullable = false)
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne
     @JoinColumn(name = "professor_id")
     private User professor;
-    @ManyToMany(cascade = CascadeType.REFRESH)
-    @JoinTable(name = "course_request", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> studentsRequesting;
-    @ManyToMany(cascade = CascadeType.REFRESH)
-    @JoinTable(name = "course_join", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> studentsJoined;
 
-    @OneToMany(mappedBy = "course", orphanRemoval = true, cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(name = "course_request", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> studentsRequesting = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "course_join", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> studentsJoined = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course")
     private List<Lesson> lessons = new ArrayList<>();
 
     public Course(String name, String description, int startingYear, Category category, User professor) {
