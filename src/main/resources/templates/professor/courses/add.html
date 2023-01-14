@@ -57,7 +57,9 @@
                   placeholder="Course description"
                   style="border: 1px solid #6b7280 !important; border-radius: 0 !important">[[${course!=null ? course.getDescription(): ''}]]</textarea>
         <div class="flex flex-row mt-1">
-            <button class="et-button-bad h-9 px-2 mr-auto" onclick="window.location.href=document.referrer"
+            <button class="et-button-bad h-9 px-2 mr-auto"
+                    onclick="window.location.href=this.getAttribute('data-redirect')"
+                    th:data-redirect="${btnUndo}"
                     type="button">
                 Delete course
             </button>

@@ -179,7 +179,8 @@ public class ProfessorCourseController {
                         "breadcrumbs", List.of(
                                 new Breadcrumb("Courses", "/professor/courses"),
                                 new Breadcrumb("Add", "/professor/courses/add")
-                        )
+                        ),
+                        "btnUndo", "/professor/courses"
                 )
         );
         return "professor/courses/add";
@@ -206,7 +207,8 @@ public class ProfessorCourseController {
                                     new Breadcrumb("Add", "/professor/courses/add")
                             ),
                             "error", "Course already exists",
-                            "course", course
+                            "course", course,
+                            "btnUndo", "/professor/courses"
                     )
             );
             return "professor/courses/add";
@@ -233,7 +235,8 @@ public class ProfessorCourseController {
                                 new Breadcrumb(course.getName(), String.format("/professor/courses/%d", course.getId())),
                                 new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", course.getId()))
                         ),
-                        "course", course
+                        "course", course,
+                        "btnUndo", String.format("/professor/courses/%d/delete", course.getId())
                 )
         );
         return "professor/courses/add";
@@ -264,7 +267,6 @@ public class ProfessorCourseController {
         try {
             repoCourse.save(course);
         } catch (Exception exc) {
-            System.out.println(exc);
             model.addAllAttributes(
                     Map.of(
                             "user", professor,
@@ -274,13 +276,33 @@ public class ProfessorCourseController {
                                     new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", course.getId()))
                             ),
                             "error", "Course already exists",
-                            "course", course
+                            "course", course,
+                            "btnUndo", String.format("/professor/courses/%d/delete", course.getId())
                     )
             );
             return String.format("professor/courses/%d/edit", course.getId());
         }
 
         return String.format("redirect:/professor/courses/%d", course.getId());
+    }
+
+
+    @GetMapping(value = "/professor/courses/{id}/delete")
+    public String courseDelete(@PathVariable @NotNull long id, Model model, HttpServletRequest request) {
+        User professor = repoUser.findById(Utils.loggedUser(request).getId()).get();
+        Optional<Course> maybeCourse = repoCourse.findById(id);
+        // On wrong ID, redirect to courses list
+        if (maybeCourse.isEmpty()) {
+            return "redirect:/professor/courses";
+        }
+        Course course = maybeCourse.get();
+        professor.getCoursesTaught().remove(course);
+        repoUser.save(professor);
+
+        course.setProfessor(null);
+        repoCourse.delete(course);
+
+        return "redirect:/professor/courses";
     }
 
 }

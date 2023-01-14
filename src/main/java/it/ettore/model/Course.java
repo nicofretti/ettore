@@ -12,63 +12,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(uniqueConstraints={@UniqueConstraint(columnNames = {"name", "startingYear"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "startingYear"})})
 public class Course {
-    public enum Category {
-        Maths,
-        Science,
-        History,
-        Geography,
-        Art,
-        Music,
-        Languages;
-
-        public static Category fromString(String s) {
-            switch (s){
-                case "Maths":
-                    return Maths;
-                case "Science":
-                    return Science;
-                case "History":
-                    return History;
-                case "Geography":
-                    return Geography;
-                case "Art":
-                    return Art;
-                case "Music":
-                    return Music;
-                case "Languages":
-                    return Languages;
-                default:
-                    return null;
-            }
-        }
-        public String toString() {
-            switch (this){
-                case Maths:
-                    return "Maths";
-                case Science:
-                    return "Science";
-                case History:
-                    return "History";
-                case Geography:
-                    return "Geography";
-                case Art:
-                    return "Art";
-                case Music:
-                    return "Music";
-                case Languages:
-                    return "Languages";
-                default:
-                    return null;
-            }
-        }
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     @Column(nullable = false)
     private String name;
     private String description;
@@ -77,14 +25,12 @@ public class Course {
     @Column(nullable = false)
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "professor_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "professor_id")
     private User professor;
-
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "course_request", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> studentsRequesting;
-
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "course_join", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> studentsJoined;
@@ -176,5 +122,57 @@ public class Course {
         }
 
         studentsJoined.remove(student);
+    }
+
+    public enum Category {
+        Maths,
+        Science,
+        History,
+        Geography,
+        Art,
+        Music,
+        Languages;
+
+        public static Category fromString(String s) {
+            switch (s) {
+                case "Maths":
+                    return Maths;
+                case "Science":
+                    return Science;
+                case "History":
+                    return History;
+                case "Geography":
+                    return Geography;
+                case "Art":
+                    return Art;
+                case "Music":
+                    return Music;
+                case "Languages":
+                    return Languages;
+                default:
+                    return null;
+            }
+        }
+
+        public String toString() {
+            switch (this) {
+                case Maths:
+                    return "Maths";
+                case Science:
+                    return "Science";
+                case History:
+                    return "History";
+                case Geography:
+                    return "Geography";
+                case Art:
+                    return "Art";
+                case Music:
+                    return "Music";
+                case Languages:
+                    return "Languages";
+                default:
+                    return null;
+            }
+        }
     }
 }
