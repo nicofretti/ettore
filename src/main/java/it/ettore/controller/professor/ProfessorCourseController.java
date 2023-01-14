@@ -1,10 +1,7 @@
 package it.ettore.controller.professor;
 
 import com.sun.istack.NotNull;
-import it.ettore.model.Course;
-import it.ettore.model.CourseRepository;
-import it.ettore.model.User;
-import it.ettore.model.UserRepository;
+import it.ettore.model.*;
 import it.ettore.utils.Breadcrumb;
 import it.ettore.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,9 @@ public class ProfessorCourseController {
     private CourseRepository repoCourse;
     @Autowired
     private UserRepository repoUser;
+
+    @Autowired
+    private LessonRepository repoLesson;
 
     @GetMapping("/professor/courses")
     public String coursesPage(Model model, HttpServletRequest request) {
@@ -290,7 +290,10 @@ public class ProfessorCourseController {
         if (maybeCourse.isEmpty()) {
             return "redirect:/professor/courses";
         }
+        Course course = maybeCourse.get();
 
+        repoLesson.deleteAll(course.getLessons());
+        repoCourse.delete(course);
         repoCourse.delete(maybeCourse.get());
 
         return "redirect:/professor/courses";
