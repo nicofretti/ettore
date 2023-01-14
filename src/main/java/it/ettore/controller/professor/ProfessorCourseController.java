@@ -1,10 +1,7 @@
 package it.ettore.controller.professor;
 
 import com.sun.istack.NotNull;
-import it.ettore.model.Course;
-import it.ettore.model.CourseRepository;
-import it.ettore.model.User;
-import it.ettore.model.UserRepository;
+import it.ettore.model.*;
 import it.ettore.utils.Breadcrumb;
 import it.ettore.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,9 @@ public class ProfessorCourseController {
     private CourseRepository repoCourse;
     @Autowired
     private UserRepository repoUser;
+
+    @Autowired
+    private LessonRepository repoLesson;
 
     @GetMapping("/professor/courses")
     public String coursesPage(Model model, HttpServletRequest request) {
@@ -174,6 +174,7 @@ public class ProfessorCourseController {
                                 new Breadcrumb("Courses", "/professor/courses"),
                                 new Breadcrumb("Add", "/professor/courses/add")
                         ),
+                        "title", "Add course",
                         "btnUndo", "/professor/courses"
                 )
         );
@@ -188,11 +189,11 @@ public class ProfessorCourseController {
                             Model model,
                             HttpServletRequest request) {
         User professor = Utils.loggedUser(request);
-        Course course = new Course(name, description.isBlank() ? null : description, startingYear, Course.Category.fromString(category), professor);
-
+        Course course;
         try {
-            repoCourse.save(course);
+            course = new Course(name, description.isBlank() ? null : description, startingYear, Course.Category.fromString(category), professor);
         } catch (Exception exc) {
+            Utils.addError(model, "Parameters errors: " + exc.getClass().getCanonicalName());
             model.addAllAttributes(
                     Map.of(
                             "user", professor,
@@ -200,7 +201,25 @@ public class ProfessorCourseController {
                                     new Breadcrumb("Courses", "/professor/courses"),
                                     new Breadcrumb("Add", "/professor/courses/add")
                             ),
-                            "error", "Course already exists",
+                            "title", "Add course",
+                            "btnUndo", "/professor/courses"
+                    )
+            );
+            return "professor/courses/add";
+        }
+
+        try {
+            repoCourse.save(course);
+        } catch (Exception exc) {
+            Utils.addError(model, "Error while adding course: " + exc.getClass().getCanonicalName());
+            model.addAllAttributes(
+                    Map.of(
+                            "user", professor,
+                            "breadcrumbs", List.of(
+                                    new Breadcrumb("Courses", "/professor/courses"),
+                                    new Breadcrumb("Add", "/professor/courses/add")
+                            ),
+                            "title", "Add course",
                             "course", course,
                             "btnUndo", "/professor/courses"
                     )
@@ -230,6 +249,7 @@ public class ProfessorCourseController {
                                 new Breadcrumb(course.getName(), String.format("/professor/courses/%d", course.getId())),
                                 new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", course.getId()))
                         ),
+                        "title", "Edit course",
                         "course", course,
                         "btnUndo", String.format("/professor/courses/%d/delete", course.getId())
                 )
@@ -255,14 +275,14 @@ public class ProfessorCourseController {
         }
         Course course = maybeCourse.get();
 
-        course.setName(name);
-        course.setDescription(description.isBlank() ? null : description);
-        course.setStartingYear(startingYear);
-        course.setCategory(Course.Category.fromString(category));
-
         try {
+            course.setName(name);
+            course.setDescription(description.isBlank() ? null : description);
+            course.setStartingYear(startingYear);
+            course.setCategory(Course.Category.fromString(category));
             repoCourse.save(course);
         } catch (Exception exc) {
+            Utils.addError(model, "Error while editing course: " + exc.getClass().getCanonicalName());
             model.addAllAttributes(
                     Map.of(
                             "user", professor,
@@ -271,14 +291,13 @@ public class ProfessorCourseController {
                                     new Breadcrumb(course.getName(), String.format("/professor/courses/%d", course.getId())),
                                     new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", course.getId()))
                             ),
-                            "error", "Course already exists",
+                            "title", "Edit course",
                             "course", course,
                             "btnUndo", String.format("/professor/courses/%d/delete", course.getId())
                     )
             );
-            return String.format("professor/courses/%d/edit", course.getId());
+            return String.format("/professor/courses/add", course.getId());
         }
-
         return String.format("redirect:/professor/courses/%d", course.getId());
     }
 
@@ -291,7 +310,29 @@ public class ProfessorCourseController {
             return "redirect:/professor/courses";
         }
 
-        repoCourse.delete(maybeCourse.get());
+        Course course = maybeCourse.get();
+        try {
+            //course.getStudentsJoined().forEach(student -> student.getCoursesJoined().remove(course));
+            //course.getStudentsRequesting().forEach(student -> student.getCoursesRequesting().remove(course));
+            repoLesson.deleteAll(course.getLessons());
+            repoCourse.delete(course);
+        } catch (Exception exc) {
+            Utils.addError(model, String.format("Error deleting course: %s", exc.getClass().getCanonicalName()));
+            model.addAllAttributes(
+                    Map.of(
+                            "user", Utils.loggedUser(request),
+                            "breadcrumbs", List.of(
+                                    new Breadcrumb("Courses", "/professor/courses"),
+                                    new Breadcrumb(course.getName(), String.format("/professor/courses/%d", course.getId())),
+                                    new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", course.getId()))
+                            ),
+                            "title", "Edit course",
+                            "course", course,
+                            "btnUndo", String.format("/professor/courses/%d/delete", course.getId())
+                    )
+            );
+            return String.format("professor/courses/%d/edit", course.getId());
+        }
 
         return "redirect:/professor/courses";
     }

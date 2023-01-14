@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Add New Course</title>
+    <title th:text="${title}">New Course</title>
     <meta th:replace="common/meta"/>
 </head>
 <body>
@@ -53,7 +53,7 @@
                 Save
             </button>
         </div>
-        <textarea class="mt-1 w-full" maxlength="255" name="description"
+        <textarea class="mt-1 w-full" maxlength="256" name="description"
                   placeholder="Course description"
                   style="border: 1px solid #6b7280 !important; border-radius: 0 !important">[[${course!=null ? course.getDescription(): ''}]]</textarea>
         <div class="flex flex-row mt-1">
@@ -63,12 +63,9 @@
                     type="button">
                 Delete course
             </button>
-            <!-- If error -->
-            <div class="mt-1" th:if="${error}">
-                <span class="text-red-400 p-2" th:text="${error}"></span>
-            </div>
         </div>
     </form>
+    <div th:replace="common/errors"></div>
 </div>
 </body>
 <script>
