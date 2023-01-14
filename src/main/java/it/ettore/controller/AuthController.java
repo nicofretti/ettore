@@ -3,9 +3,6 @@ package it.ettore.controller;
 import it.ettore.model.User;
 import it.ettore.model.UserRepository;
 import it.ettore.utils.Utils;
-
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @Controller
 public class AuthController {
