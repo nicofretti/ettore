@@ -12,21 +12,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "startingYear"})})
 public class Course {
-    public enum Category {
-        Maths,
-        Science,
-        History,
-        Geography,
-        Art,
-        Music,
-        Languages,
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     @Column(nullable = false)
     private String name;
     private String description;
@@ -35,17 +25,19 @@ public class Course {
     @Column(nullable = false)
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "professor_id", nullable = false)
     private User professor;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "course_request", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> studentsRequesting;
-
-    @ManyToMany(cascade = CascadeType.ALL)
+    private List<User> studentsRequesting = new ArrayList<>();
+    @ManyToMany
     @JoinTable(name = "course_join", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> studentsJoined;
+    private List<User> studentsJoined = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course")
+    private List<Lesson> lessons = new ArrayList<>();
 
     public Course(String name, String description, int startingYear, Category category, User professor) {
         this.name = name;
@@ -141,5 +133,57 @@ public class Course {
         }
 
         studentsJoined.removeIf(someStudent -> someStudent.getId() == student.getId());
+    }
+
+    public enum Category {
+        Maths,
+        Science,
+        History,
+        Geography,
+        Art,
+        Music,
+        Languages;
+
+        public static Category fromString(String s) {
+            switch (s) {
+                case "Maths":
+                    return Maths;
+                case "Science":
+                    return Science;
+                case "History":
+                    return History;
+                case "Geography":
+                    return Geography;
+                case "Art":
+                    return Art;
+                case "Music":
+                    return Music;
+                case "Languages":
+                    return Languages;
+                default:
+                    return null;
+            }
+        }
+
+        public String toString() {
+            switch (this) {
+                case Maths:
+                    return "Maths";
+                case Science:
+                    return "Science";
+                case History:
+                    return "History";
+                case Geography:
+                    return "Geography";
+                case Art:
+                    return "Art";
+                case Music:
+                    return "Music";
+                case Languages:
+                    return "Languages";
+                default:
+                    return null;
+            }
+        }
     }
 }

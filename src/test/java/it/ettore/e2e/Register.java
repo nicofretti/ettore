@@ -2,14 +2,14 @@ package it.ettore.e2e;
 
 import it.ettore.e2e.po.ErrorsComponent;
 import it.ettore.e2e.po.LoginPage;
-import it.ettore.e2e.po.professor.ProfessorCoursesPage;
 import it.ettore.e2e.po.RegisterPage;
 import it.ettore.model.User;
 import it.ettore.model.UserRepository;
+import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.*;

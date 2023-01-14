@@ -21,7 +21,7 @@ public class Lesson {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 

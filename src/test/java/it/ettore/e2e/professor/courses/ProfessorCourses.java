@@ -1,9 +1,9 @@
-package it.ettore.e2e.professor;
+package it.ettore.e2e.professor.courses;
 
 import it.ettore.e2e.E2EBaseTest;
 import it.ettore.e2e.po.LoginPage;
-import it.ettore.e2e.po.professor.ProfessorCoursesPage;
-import it.ettore.e2e.po.professor.ProfessorCoursesPage.CourseComponent;
+import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
+import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage.CourseComponent;
 import it.ettore.model.Course;
 import it.ettore.model.CourseRepository;
 import it.ettore.model.User;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProfessorCourses extends E2EBaseTest {
     @Autowired
@@ -45,8 +45,13 @@ public class ProfessorCourses extends E2EBaseTest {
         String email = "some.professor@ettore.it";
         String password = "SomeSecurePassword";
         User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
+        repoUser.save(professor);
+
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
         repoCourse.save(course);
+        // Link the course to the professor
+        professor.getCoursesTaught().add(course);
+        repoUser.save(professor);
 
         driver.get(baseDomain() + "login");
         LoginPage loginPage = new LoginPage(driver);

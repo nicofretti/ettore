@@ -1,10 +1,10 @@
-package it.ettore.unit;
+package it.ettore.unit.model;
 
 import it.ettore.model.Course;
 import it.ettore.model.User;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CourseModel {
     public static Course dummyCourse(User professor) {
@@ -19,6 +19,11 @@ public class CourseModel {
     @Test
     public void getDescription() {
         assertEquals("Castles and knights go boom", dummyCourse(UserModel.dummyProfessor()).getDescription());
+    }
+
+    @Test
+    public void getIcon() {
+        assertEquals("fa fa-book", dummyCourse(UserModel.dummyProfessor()).getIcon());
     }
 
     @Test

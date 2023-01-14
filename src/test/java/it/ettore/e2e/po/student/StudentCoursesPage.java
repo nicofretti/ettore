@@ -2,8 +2,8 @@ package it.ettore.e2e.po.student;
 
 import it.ettore.e2e.po.Header;
 import it.ettore.e2e.po.PageObject;
-import it.ettore.e2e.po.professor.ProfessorCoursePage;
-import it.ettore.e2e.po.professor.ProfessorCoursesPage;
+import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
+import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
 import lombok.EqualsAndHashCode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

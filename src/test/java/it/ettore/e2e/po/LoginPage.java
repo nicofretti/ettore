@@ -1,14 +1,13 @@
 package it.ettore.e2e.po;
 
-import it.ettore.e2e.po.professor.ProfessorCoursesPage;
 import it.ettore.e2e.po.student.StudentCoursesPage;
+import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.WebElement;
 
-import java.util.Optional;
-
-public class LoginPage extends PageObject{
+public class LoginPage extends PageObject {
     public LoginPage(WebDriver driver) {
         super(driver);
     }

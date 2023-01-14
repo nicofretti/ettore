@@ -3,9 +3,7 @@ package it.ettore.controller;
 import it.ettore.model.User;
 import it.ettore.model.UserRepository;
 import it.ettore.utils.Utils;
-
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;

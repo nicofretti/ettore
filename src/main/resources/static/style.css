@@ -56,6 +56,18 @@ button.et-button-secondary{
     border-radius: 0.5rem;
 }
 
+button.et-button-success{
+    background-color: var(--color-green);
+    color: var(--color-secondary);
+    border-radius: 0.5rem;
+}
+
+button.et-button-danger{
+    background-color: var(--color-red);
+    color: var(--color-window);
+    border-radius: 0.5rem;
+}
+
 button.et-button-disabled{
     pointer-events: none;
     filter: grayscale(1);

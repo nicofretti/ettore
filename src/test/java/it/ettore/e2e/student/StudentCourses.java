@@ -2,7 +2,6 @@ package it.ettore.e2e.student;
 
 import it.ettore.e2e.E2EBaseTest;
 import it.ettore.e2e.po.LoginPage;
-import it.ettore.e2e.po.professor.ProfessorCoursesPage;
 import it.ettore.e2e.po.student.StudentCoursePage;
 import it.ettore.e2e.po.student.StudentCoursesPage;
 import it.ettore.model.Course;
@@ -51,15 +50,18 @@ public class StudentCourses extends E2EBaseTest {
     @Test
     public void canSeeJoinedCourse() {
         User professor = new User("Some", "Professor", "some.professor@ettore.it", "SomeSecurePasswordProfessor", User.Role.PROFESSOR);
+        repoUser.save(professor);
+
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
+        repoCourse.save(course);
 
         String email = "some.student@ettore.it";
         String password = "SomeSecurePasswordStudent";
         User student = new User("Some", "Student", email, password, User.Role.STUDENT);
+        repoUser.save(student);
 
         course.requestJoin(student);
         course.acceptStudent(student);
-
         repoCourse.save(course);
 
         driver.get(baseDomain() + "login");
@@ -82,6 +84,8 @@ public class StudentCourses extends E2EBaseTest {
     @Test
     public void cannotSeeUnrequestedCourse() {
         User professor = new User("Some", "Professor", "some.professor@ettore.it", "SomeSecurePasswordProfessor", User.Role.PROFESSOR);
+        repoUser.save(professor);
+
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
         repoCourse.save(course);
 
@@ -108,11 +112,15 @@ public class StudentCourses extends E2EBaseTest {
     @Test
     public void cannotSeeUnjoinedCourse() {
         User professor = new User("Some", "Professor", "some.professor@ettore.it", "SomeSecurePasswordProfessor", User.Role.PROFESSOR);
+        repoUser.save(professor);
+
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
+        repoCourse.save(course);
 
         String email = "some.student@ettore.it";
         String password = "SomeSecurePasswordStudent";
         User student = new User("Some", "Student", email, password, User.Role.STUDENT);
+        repoUser.save(student);
 
         course.requestJoin(student);
         repoCourse.save(course);
@@ -135,15 +143,18 @@ public class StudentCourses extends E2EBaseTest {
     @Test
     public void canSeeCourseDetails() {
         User professor = new User("Some", "Professor", "some.professor@ettore.it", "SomeSecurePasswordProfessor", User.Role.PROFESSOR);
+        repoUser.save(professor);
+
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
+        repoCourse.save(course);
 
         String email = "some.student@ettore.it";
         String password = "SomeSecurePasswordStudent";
         User student = new User("Some", "Student", email, password, User.Role.STUDENT);
+        repoUser.save(student);
 
         course.requestJoin(student);
         course.acceptStudent(student);
-
         repoCourse.save(course);
 
         driver.get(baseDomain() + "login");
@@ -170,15 +181,18 @@ public class StudentCourses extends E2EBaseTest {
     @Test
     public void unjoin() {
         User professor = new User("Some", "Professor", "some.professor@ettore.it", "SomeSecurePasswordProfessor", User.Role.PROFESSOR);
+        repoUser.save(professor);
+
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
+        repoCourse.save(course);
 
         String email = "some.student@ettore.it";
         String password = "SomeSecurePasswordStudent";
         User student = new User("Some", "Student", email, password, User.Role.STUDENT);
+        repoUser.save(student);
 
         course.requestJoin(student);
         course.acceptStudent(student);
-
         repoCourse.save(course);
 
         driver.get(baseDomain() + "login");
