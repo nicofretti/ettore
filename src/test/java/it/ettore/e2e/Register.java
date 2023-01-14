@@ -1,8 +1,10 @@
 package it.ettore.e2e;
 
 import it.ettore.e2e.po.ErrorsComponent;
+import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.professor.ProfessorCoursesPage;
 import it.ettore.e2e.po.RegisterPage;
+import it.ettore.model.User;
 import it.ettore.model.UserRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 public class Register extends E2EBaseTest {
+    @Autowired
+    private UserRepository repoUser;
+
     @Test
     public void allFieldsMustBeFilled() {
         driver.get(baseDomain() + "register");
@@ -189,5 +194,38 @@ public class Register extends E2EBaseTest {
         errors.getErrors().get(0).dismiss();
         // Should now have no errors displayed
         assertEquals(Set.of(), errors.getErrorMessageSet());
+    }
+
+    /**
+     * Test that two users can have the same password
+     */
+    @Test
+    public void twoUsersCanHaveSamePassword() {
+        String password = "same_password";
+
+        repoUser.save(new User("Some", "Human", "some.human@earth.com", password, User.Role.PROFESSOR));
+
+        driver.get(baseDomain() + "register");
+        RegisterPage registerPage = new RegisterPage(driver);
+
+        String anotherUserEmail = "another.human@earth.com";
+
+        registerPage.setFirstName("Another");
+        registerPage.setLastName("Human");
+        registerPage.setEmail(anotherUserEmail);
+        registerPage.setPassword(password);
+        registerPage.setConfirmPassword(password);
+        registerPage.tickProfessor();
+        ProfessorCoursesPage professorCoursesPage = registerPage.registerAsProfessor();
+
+        LoginPage loginPage = professorCoursesPage.headerComponent().logout();
+
+        assertEquals("I'm supposed to be in /login", "/login", currentPath());
+
+        // Should be able to login to the second user that has the same email
+        loginPage.setEmail(anotherUserEmail);
+        loginPage.setPassword(password);
+        professorCoursesPage = loginPage.loginAsProfessor();
+        assertEquals("Another Human", professorCoursesPage.headerComponent().getFullName());
     }
 }

@@ -41,7 +41,8 @@ public class AuthController {
         User user = maybeUser.get();
 
         // So he/she is logged in for future requests
-        request.getSession().setAttribute("PSW_HASH", user.getPswHash());
+        request.getSession().setAttribute("ETTORE_EMAIL", user.getEmail());
+        request.getSession().setAttribute("ETTORE_PSW_HASH", user.getPswHash());
         model.addAttribute("user", user);
 
         return redirectToUserHomepage(user);
@@ -95,7 +96,8 @@ public class AuthController {
         }
 
         // So he/she is logged in for future requests
-        request.getSession().setAttribute("PSW_HASH", user.getPswHash());
+        request.getSession().setAttribute("ETTORE_EMAIL", user.getEmail());
+        request.getSession().setAttribute("ETTORE_PSW_HASH", user.getPswHash());
         model.addAttribute("user", user);
 
         return redirectToUserHomepage(user);
