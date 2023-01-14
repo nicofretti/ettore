@@ -9,26 +9,29 @@
 <div th:replace="common/header"></div>
 <!-- Content -->
 <div class="et-content">
-    <button id="btn-new-lesson" class="et-button-primary w-full h-12"
+    <button class="et-button-primary w-full h-12" id="btn-new-lesson"
             th:onclick="'document.location=\'/professor/courses/'+${course.getId()}+'/lessons/new\''">New lesson
     </button>
     <!-- Iterate over lessons -->
-    <div th:each="lesson: ${lessons}" class="et-card p-5 w-100">
+    <div class="et-card p-5 w-100" th:each="lesson: ${lessons}">
         <div class="flex flex-row justify-items-center gap-5">
             <!-- Title -->
-            <a th:text="${lesson.getTitle()}" th:href="'/professor/courses/'+${course.getId()}+'/lessons/'+${lesson.getId()}"
-               class="et-name text-2xl font-bold">Lesson's
+            <a class="et-name text-2xl font-bold"
+               th:href="'/professor/courses/'+${course.getId()}+'/lessons/'+${lesson.getId()}"
+               th:text="${lesson.getTitle()}">Lesson's
                 name</a>
         </div>
         <!-- Description -->
-        <p th:text="${lesson.description}" class="et-description mt-4">
+        <p class="et-description mt-4" th:text="${lesson.description}">
             Some nice description of the lesson.
         </p>
         <!-- Lesson Content button -->
-        <button id="btn-lesson-content-edit"
-                th:onclick="'document.location=\'/professor/courses/'+${lesson.getCourse().getId()}+'/lessons/'+${lesson.getId()}+'/edit\''"
-                class="et-button-primary w-28">Modify
+        <button class="flex et-button-primary w-28 ml-auto text-center justify-center mt-2"
+                id="btn-lesson-content-edit"
+                th:onclick="'document.location=\'/professor/courses/'+${lesson.getCourse().getId()}+'/lessons/'+${lesson.getId()}+'/edit\''">
+            Modify
         </button>
+
     </div>
 </div>
 </body>

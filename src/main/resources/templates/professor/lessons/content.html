@@ -3,26 +3,33 @@
 <head>
     <title th:text="${lesson.getTitle()}">Lesson Title</title>
     <meta th:replace="common/meta"/>
+
+    <!--<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+          integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <link href="../../../static/style.css" rel="stylesheet">-->
+
 </head>
 <body>
 <!-- Header with logo, logout and breadcrumbs -->
 <div th:replace="common/header"></div>
 <!-- Content -->
-<div class="et-content gap-4">
+<div class="et-flex-centered gap-4 px-20">
     <!-- Lesson content -->
-    <div class="et-card p-5">
-        <div class="flex flex-row place-content-between justify-items-center">
-            <div class="flex flex-row justify-items-center gap-5">
-                <!-- Title -->
-                <p th:text="${lesson.getTitle()}" class="et-name text-2xl font-bold">Lesson name</p>
-                <!-- Lesson content -->
-                <p th:text="${lesson.getContent()}" class="et-description mt-4">This lesson is so interesting</p>
-            </div>
-            <!-- Modify button is disabled for students-->
-                <button th:if="${canEdit}" id="btn-edit-lesson"
-                        th:onclick="'document.location=\'/professor/courses/'+${lesson.getCourse().getId()}+'/lessons/'+${lesson.getId()}+'/edit\''"
-                        class="et-button-primary w-28">Modify
+    <div class="et-card w-full p-5">
+        <div class="flex flex-col justify-items-center">
+            <!-- Title and Button -->
+            <div class="flex justify-between w-100">
+                <p class="et-name text-2xl font-bold" th:text="${lesson.getTitle()}">Lesson name</p>
+                <button class="et-button-primary w-28" id="btn-edit-lesson"
+                        th:if="${canEdit}"
+                        th:onclick="'document.location=\'/professor/courses/'+${lesson.getCourse().getId()}+'/lessons/'+${lesson.getId()}+'/edit\''">
+                    Modify
                 </button>
+            </div>
+            <!-- Lesson content -->
+            <p class="et-description mt-4" th:text="${lesson.getContent()}">This lesson is so interesting</p>
         </div>
     </div>
 </div>
