@@ -48,11 +48,12 @@
         <!-- Buttons -->
         <div class="flex flex-col mt-4 gap-4 w-full">
             <button class="et-button-good w-full h-14 px-2"
-                    id="btn-save"
+                    id="btn-save-lesson"
                     type="submit">
                 Save
             </button>
             <button class="et-button-bad h-10 px-2"
+                    id="btn-cancel-lesson"
                     onclick="window.location.href=this.getAttribute('data-redirect')"
                     th:data-redirect="${btnUndo}"
                     type="button">
