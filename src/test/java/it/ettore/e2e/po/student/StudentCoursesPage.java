@@ -25,10 +25,9 @@ public class StudentCoursesPage extends PageObject {
     @FindBy(id = "btn-search-course")
     private WebElement searchCourseButton;
 
-    // TODO Update when we have a search course page
-    public Object searchCourse() {
+    public StudentSearchPage searchCourse() {
         searchCourseButton.click();
-        return null;
+        return new StudentSearchPage(driver);
     }
 
     @EqualsAndHashCode

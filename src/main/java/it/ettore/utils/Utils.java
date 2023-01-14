@@ -2,6 +2,7 @@ package it.ettore.utils;
 
 import it.ettore.model.User;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -38,5 +39,12 @@ public class Utils {
             model.addAttribute("errors", new ArrayList<Error>());
         }
         ((ArrayList<Error>) model.getAttribute("errors")).add(new Error(message));
+    }
+
+    public static void addRedirectionError(RedirectAttributes redirectAttributes, String message) {
+        if (!redirectAttributes.containsAttribute("errors")) {
+            redirectAttributes.addFlashAttribute("errors", new ArrayList<Error>());
+        }
+        ((ArrayList<Error>) redirectAttributes.getFlashAttributes().get("errors")).add(new Error(message));
     }
 }

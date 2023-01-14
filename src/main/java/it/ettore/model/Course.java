@@ -39,6 +39,12 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<Lesson> lessons = new ArrayList<>();
 
+    // These two are only used when rendering the search course template
+    @Transient
+    public boolean hasRequestedAlready;
+    @Transient
+    public boolean hasJoinedAlready;
+
     public Course(String name, String description, int startingYear, Category category, User professor) {
         this.name = name;
         this.description = description;
