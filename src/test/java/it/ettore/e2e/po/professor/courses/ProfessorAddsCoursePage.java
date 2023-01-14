@@ -1,10 +1,8 @@
 package it.ettore.e2e.po.professor.courses;
 
 import it.ettore.e2e.po.Header;
-import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.PageObject;
-import it.ettore.e2e.po.professor.ProfessorManagePage;
-import it.ettore.e2e.po.professor.lessons.ProfessorLessonsPage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -37,5 +35,29 @@ public class ProfessorAddsCoursePage extends PageObject {
     @FindBy(className = "et-button-bad")
     private WebElement cancelButton;
 
+    public void selectCategory(String category) {
+        this.category.findElement(By.xpath("//option[. = '" + category + "']")).click();
+    }
 
+    public void setCourseName(String courseName) {
+        this.courseName.sendKeys(courseName);
+    }
+
+    public void setStartingYear(String startingYear) {
+        this.startingYear.findElement(By.xpath("//option[. = '" + startingYear + "']")).click();
+    }
+
+    public void setDescription(String description) {
+        this.description.sendKeys(description);
+    }
+
+    public ProfessorCoursesPage save() {
+        saveButton.click();
+        return new ProfessorCoursesPage(driver);
+    }
+
+    public ProfessorCoursesPage cancel() {
+        cancelButton.click();
+        return new ProfessorCoursesPage(driver);
+    }
 }
