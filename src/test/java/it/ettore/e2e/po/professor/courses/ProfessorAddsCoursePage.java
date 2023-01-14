@@ -35,19 +35,24 @@ public class ProfessorAddsCoursePage extends PageObject {
     @FindBy(className = "et-button-bad")
     private WebElement cancelButton;
 
+    //findBy using category value
     public void selectCategory(String category) {
-        this.category.findElement(By.xpath("//option[. = '" + category + "']")).click();
+
+        this.category.findElement(By.xpath(String.format("//option[@value='%s']", category))).click();
     }
 
     public void setCourseName(String courseName) {
+
+        this.courseName.clear();
         this.courseName.sendKeys(courseName);
     }
 
     public void setStartingYear(String startingYear) {
-        this.startingYear.findElement(By.xpath("//option[. = '" + startingYear + "']")).click();
+        this.startingYear.findElement(By.xpath(String.format("//option[@value='%s']", startingYear))).click();
     }
 
     public void setDescription(String description) {
+        this.description.clear();
         this.description.sendKeys(description);
     }
 
