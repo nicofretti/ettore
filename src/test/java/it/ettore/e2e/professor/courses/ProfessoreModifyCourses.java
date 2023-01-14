@@ -5,10 +5,9 @@ import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.professor.courses.ProfessorAddsCoursePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
-import it.ettore.e2e.po.professor.lessons.ProfessorLessonPage;
-import it.ettore.e2e.po.professor.lessons.ProfessorLessonsPage;
 import it.ettore.model.*;
 import it.ettore.utils.Breadcrumb;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,17 +23,18 @@ public class ProfessoreModifyCourses extends E2EBaseTest {
     @Autowired
     protected LessonRepository repoLesson;
 
-    //TODO: Mettere le id nelle url links
+    Course course;
 
-    /*Tests all the breadcrumb links when editing a course are correct*/
-    @Test
-    public void breadcrumbsWhenEditing() {
+    ProfessorCoursesPage coursesPage;
+
+    @Before
+    public void prepareModifyCoursesTests() {
         String email = "some.professor@ettore.it";
         String password = "SomeSecurePassword";
         User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
         repoUser.save(professor);
 
-        Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
+        course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
         repoCourse.save(course);
         // Link the course to the professor
         professor.getCoursesTaught().add(course);
@@ -46,7 +46,12 @@ public class ProfessoreModifyCourses extends E2EBaseTest {
         loginPage.setEmail(email);
         loginPage.setPassword(password);
 
-        ProfessorCoursesPage coursesPage = loginPage.loginAsProfessor();
+        coursesPage = loginPage.loginAsProfessor();
+    }
+
+    /*Tests all the breadcrumb links when editing a course are correct*/
+    @Test
+    public void breadcrumbsWhenEditing() {
         assertEquals(List.of(
                 new Breadcrumb("COURSES", "/professor/courses")
         ), coursesPage.headerComponent().getBreadcrumbs());
@@ -77,24 +82,6 @@ public class ProfessoreModifyCourses extends E2EBaseTest {
     /*Tests all the breadcrumb links when adding a new course */
     @Test
     public void breadcrumbsWhenNewCourse() {
-        String email = "some.professor@ettore.it";
-        String password = "SomeSecurePassword";
-        User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
-        repoUser.save(professor);
-
-        Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
-        repoCourse.save(course);
-        // Link the course to the professor
-        professor.getCoursesTaught().add(course);
-        repoUser.save(professor);
-
-        driver.get(baseDomain() + "login");
-        LoginPage loginPage = new LoginPage(driver);
-
-        loginPage.setEmail(email);
-        loginPage.setPassword(password);
-
-        ProfessorCoursesPage coursesPage = loginPage.loginAsProfessor();
         assertEquals(List.of(
                 new Breadcrumb("COURSES", "/professor/courses")
         ), coursesPage.headerComponent().getBreadcrumbs());
@@ -126,22 +113,8 @@ public class ProfessoreModifyCourses extends E2EBaseTest {
     /*Tests the creation of new courses*/
     @Test
     public void addNewCourse() {
-        String email = "some.professor@ettore.it";
-        String password = "SomeSecurePassword";
-        User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
-        repoUser.save(professor);
-
-        driver.get(baseDomain() + "login");
-        LoginPage loginPage = new LoginPage(driver);
-
-        loginPage.setEmail(email);
-        loginPage.setPassword(password);
-
-        ProfessorCoursesPage coursesPage = loginPage.loginAsProfessor();
-        assertEquals("/professor/courses",currentPath());
-
-        //check that there are no courses
-        assertEquals(0, coursesPage.getCourses().size());
+        //check that there are only one course
+        assertEquals(1, coursesPage.getCourses().size());
 
         //click on add new course
         ProfessorAddsCoursePage newCourse = coursesPage.newCourse();
@@ -155,8 +128,8 @@ public class ProfessoreModifyCourses extends E2EBaseTest {
 
         //click on the add button
         coursesPage = newCourse.save();
-        assertEquals("/professor/courses",currentPath());
-        assertEquals(1, coursesPage.getCourses().size());
+        assertEquals("/professor/courses", currentPath());
+        assertEquals(2, coursesPage.getCourses().size());
 
         //check the course details
         assertEquals("New course name", coursesPage.getCourses().get(coursesPage.getCourses().size() - 1).getName());
@@ -171,25 +144,7 @@ public class ProfessoreModifyCourses extends E2EBaseTest {
     /* Test modifying existing course */
     @Test
     public void modifyCourse() {
-        String email = "some.professor@ettore.it";
-        String password = "SomeSecurePassword";
-        User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
-        repoUser.save(professor);
-
-        Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
-        repoCourse.save(course);
-        // Link the course to the professor
-        professor.getCoursesTaught().add(course);
-        repoUser.save(professor);
-
-        driver.get(baseDomain() + "login");
-        LoginPage loginPage = new LoginPage(driver);
-
-        loginPage.setEmail(email);
-        loginPage.setPassword(password);
-
-        ProfessorCoursesPage coursesPage = loginPage.loginAsProfessor();
-        assertEquals("/professor/courses",currentPath());
+        assertEquals("/professor/courses", currentPath());
         assertEquals(1, coursesPage.getCourses().size());
 
         //click on the course details
@@ -212,7 +167,7 @@ public class ProfessoreModifyCourses extends E2EBaseTest {
         //assertEquals(String.format("/professor/courses/%d", course.getId()), currentPath());
 
         //check the course details
-        assertEquals("New course name", coursesPage.getCourses().get(coursesPage.getCourses().size()-2).getName());
+        assertEquals("New course name", coursesPage.getCourses().get(coursesPage.getCourses().size() - 2).getName());
         assertEquals("(2023/2024)", coursesPage.getCourses().get(coursesPage.getCourses().size() - 2).getPeriod());
         assertEquals("New course description", coursesPage.getCourses().get(coursesPage.getCourses().size() - 2).getDescription());
 
@@ -226,24 +181,6 @@ public class ProfessoreModifyCourses extends E2EBaseTest {
     /* Test deleting existing course */
     @Test
     public void deleteCourse() {
-        String email = "some.professor@ettore.it";
-        String password = "SomeSecurePassword";
-        User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
-        repoUser.save(professor);
-
-        Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
-        repoCourse.save(course);
-        // Link the course to the professor
-        professor.getCoursesTaught().add(course);
-        repoUser.save(professor);
-
-        driver.get(baseDomain() + "login");
-        LoginPage loginPage = new LoginPage(driver);
-
-        loginPage.setEmail(email);
-        loginPage.setPassword(password);
-
-        ProfessorCoursesPage coursesPage = loginPage.loginAsProfessor();
         assertEquals("/professor/courses", currentPath());
         assertEquals(1, coursesPage.getCourses().size());
 

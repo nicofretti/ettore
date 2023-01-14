@@ -61,7 +61,7 @@ public class ProfessorCourseController {
                         "user", professor,
                         "breadcrumbs", List.of(
                                 new Breadcrumb("Courses", "/professor/courses"),
-                                new Breadcrumb(course.getName(), String.format("/professor/courses/%d", course.getId()))
+                                new Breadcrumb(course.getName(), String.format("/professor/courses/%d", id))
                         ),
                         "course", course
                 )
@@ -87,8 +87,8 @@ public class ProfessorCourseController {
                         "user", professor,
                         "breadcrumbs", List.of(
                                 new Breadcrumb("Courses", "/professor/courses"),
-                                new Breadcrumb(course.getName(), String.format("/professor/courses/%d", course.getId())),
-                                new Breadcrumb("Manage", String.format("/professor/courses/%d/manage", course.getId()))
+                                new Breadcrumb(course.getName(), String.format("/professor/courses/%d", id)),
+                                new Breadcrumb("Manage", String.format("/professor/courses/%d/manage", id))
                         ),
                         "course", course,
                         "studentsRequesting", course.getStudentsRequesting(),
@@ -251,12 +251,12 @@ public class ProfessorCourseController {
                         "user", professor,
                         "breadcrumbs", List.of(
                                 new Breadcrumb("Courses", "/professor/courses"),
-                                new Breadcrumb(course.getName(), String.format("/professor/courses/%d", course.getId())),
-                                new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", course.getId()))
+                                new Breadcrumb(course.getName(), String.format("/professor/courses/%d", id)),
+                                new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", id))
                         ),
                         "title", "Edit course",
                         "course", course,
-                        "btnUndo", String.format("/professor/courses/%d/delete", course.getId())
+                        "btnUndo", String.format("/professor/courses/%d/delete", id)
                 )
         );
 
@@ -297,17 +297,17 @@ public class ProfessorCourseController {
                             "user", professor,
                             "breadcrumbs", List.of(
                                     new Breadcrumb("Courses", "/professor/courses"),
-                                    new Breadcrumb(course.getName(), String.format("/professor/courses/%d", course.getId())),
-                                    new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", course.getId()))
+                                    new Breadcrumb(course.getName(), String.format("/professor/courses/%d", id)),
+                                    new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", id))
                             ),
                             "title", "Edit course",
                             "course", course,
-                            "btnUndo", String.format("/professor/courses/%d/delete", course.getId())
+                            "btnUndo", String.format("/professor/courses/%d/delete", id)
                     )
             );
             return "/professor/courses/add";
         }
-        return String.format("redirect:/professor/courses/%d", course.getId());
+        return String.format("redirect:/professor/courses/%d", id);
     }
 
 
@@ -321,8 +321,6 @@ public class ProfessorCourseController {
 
         Course course = maybeCourse.get();
         try {
-            //course.getStudentsJoined().forEach(student -> student.getCoursesJoined().remove(course));
-            //course.getStudentsRequesting().forEach(student -> student.getCoursesRequesting().remove(course));
             repoLesson.deleteAll(course.getLessons());
             repoCourse.delete(course);
         } catch (Exception exc) {
@@ -332,15 +330,15 @@ public class ProfessorCourseController {
                             "user", Utils.loggedUser(request),
                             "breadcrumbs", List.of(
                                     new Breadcrumb("Courses", "/professor/courses"),
-                                    new Breadcrumb(course.getName(), String.format("/professor/courses/%d", course.getId())),
-                                    new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", course.getId()))
+                                    new Breadcrumb(course.getName(), String.format("/professor/courses/%d", id)),
+                                    new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", id))
                             ),
                             "title", "Edit course",
                             "course", course,
-                            "btnUndo", String.format("/professor/courses/%d/delete", course.getId())
+                            "btnUndo", String.format("/professor/courses/%d/delete", id)
                     )
             );
-            return String.format("professor/courses/%d/edit", course.getId());
+            return String.format("professor/courses/%d/edit", id);
         }
 
         return "redirect:/professor/courses";
