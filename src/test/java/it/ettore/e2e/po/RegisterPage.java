@@ -48,17 +48,6 @@ public class RegisterPage extends PageObject {
     @FindBy(id = "btn-goto-login")
     private WebElement gotoLoginButton;
 
-    @FindBy(id = "error")
-    private WebElement errorMsg;
-
-    public Optional<String> getError() {
-        if (errorMsg != null) {
-            return Optional.of(errorMsg.getText());
-        } else {
-            return Optional.empty();
-        }
-    }
-
     public boolean isInvalidEmailFormatVisible() {
         return !invalidEmailFormatMsg.getCssValue("display").equals("none");
     }

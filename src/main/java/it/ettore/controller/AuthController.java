@@ -33,7 +33,7 @@ public class AuthController {
     ) {
         Optional<User> maybeUser = repoUser.findByEmail(email);
         if (maybeUser.isEmpty() || !maybeUser.get().getPswHash().equals(User.hashPsw(password))) { //maybe move hashPsw to Utils?
-            model.addAttribute("error", "Invalid credentials");
+            Utils.addError(model, "Invalid credentials");
             return "login";
         }
         User user = maybeUser.get();
@@ -69,7 +69,7 @@ public class AuthController {
                 role = User.Role.PROFESSOR;
                 break;
             default:
-                model.addAttribute("error", "Invalid role");
+                Utils.addError(model, "Invalid role");
                 return "register";
         }
 
@@ -77,7 +77,7 @@ public class AuthController {
         try {
             user = new User(firstName, lastName, email, password, role);
         } catch (IllegalArgumentException exc) {
-            model.addAttribute("error", exc.getMessage());
+            Utils.addError(model, exc.getMessage());
             return "register";
         }
 
@@ -85,7 +85,7 @@ public class AuthController {
             repoUser.save(user);
         } catch (Exception exc) {
             if (Utils.IsCause(exc, DataIntegrityViolationException.class)) {
-                model.addAttribute("error", "Email already taken");
+                Utils.addError(model, "Email already taken");
                 return "register";
             }
             // Unhandled exception

@@ -30,17 +30,6 @@ public class LoginPage extends PageObject{
     @FindBy(name = "btn-goto-register")
     private WebElement gotoRegisterButton;
 
-    @FindBy(id = "error")
-    private WebElement errorMsg;
-
-    public Optional<String> getError() {
-        if (errorMsg != null) {
-            return Optional.of(errorMsg.getText());
-        } else {
-            return Optional.empty();
-        }
-    }
-
     public void setEmail(String email) {
         this.email.clear();
         this.email.sendKeys(email);

@@ -1,8 +1,10 @@
 package it.ettore.utils;
 
 import it.ettore.model.User;
+import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 public class Utils {
     /**
@@ -29,5 +31,12 @@ public class Utils {
         Object userObj = request.getAttribute("user");
         if (!(userObj instanceof User)) throw new IllegalStateException("expected user");
         return (User) userObj;
+    }
+
+    public static void addError(Model model, String message) {
+        if (!model.containsAttribute("errors")) {
+            model.addAttribute("errors", new ArrayList<Error>());
+        }
+        ((ArrayList<Error>) model.getAttribute("errors")).add(new Error(message));
     }
 }

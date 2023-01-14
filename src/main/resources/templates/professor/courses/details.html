@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="${course.getName()}"></title>
     <meta th:replace="common/meta"/>
 </head>
 <body>
+<div th:replace="common/errors"/>
 <!-- Header with logo, logout and breadcrumbs -->
 <div th:replace="common/header"></div>
 <!-- Content -->
