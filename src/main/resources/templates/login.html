@@ -5,6 +5,7 @@
     <meta th:replace="common/meta"/>
 </head>
 <body class="et-flex-centered flex-col h-screen" onload="updateForm()">
+<div th:replace="common/errors"/>
 <div class="et-card et-flex-centered flex-col p-12">
     <h1 class="et-logo">ETTORE</h1>
     <form class="et-flex-centered flex-col mt-12" method="post" action="/login">
@@ -21,7 +22,6 @@
         <span style="display: none" class="text-red-700 self-start" id="password-too-short">Password is too short</span>
         <button class="et-button-primary et-button-disabled w-full h-12 mt-2" id="btn-login">Login</button>
     </form>
-    <div class="w-full mt-6 bg-red-400 p-2 rounded-md" id="error" th:if="${ error != null }" th:text="${ error }"></div>
     <hr class="w-2/3 my-8 bg-text-light"/>
     <button class="et-button-secondary w-full h-12" id="btn-goto-register" onclick="document.location = '/register'">Register
     </button>

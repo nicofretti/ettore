@@ -5,6 +5,7 @@
     <meta th:replace="common/meta"/>
 </head>
 <body class="et-flex-centered flex-col h-screen" onload="updateForm()">
+<div th:replace="common/errors"/>
 <div class="et-card et-flex-centered flex-col p-12">
     <h1 class="et-logo">ETTORE</h1>
     <span class="et-subtitle">REGISTER</span>
@@ -51,7 +52,6 @@
         <span>Already a member?</span>
         <a href="/login" id="btn-goto-login">Go back to login</a>
     </div>
-    <div class="w-full mt-6 bg-red-400 p-2 rounded-md" id="error" th:if="${ error != null }" th:text="${ error }"></div>
 
     <script>
         // Don't show password error if password never been edited so far
