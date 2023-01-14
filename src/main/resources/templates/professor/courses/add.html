@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Add New Course</title>
+    <title th:text="${title}">New Course</title>
     <meta th:replace="common/meta"/>
 </head>
 <body>
@@ -63,12 +63,9 @@
                     type="button">
                 Delete course
             </button>
-            <!-- If error -->
-            <div class="mt-1" th:if="${error}">
-                <span class="text-red-400 p-2" th:text="${error}"></span>
-            </div>
         </div>
     </form>
+    <div th:replace="common/errors"></div>
 </div>
 </body>
 <script>
