@@ -124,9 +124,13 @@ public class ProfessorLessonController {
             return "redirect:/professor/lessons";
         }
         Course course = maybeCourse.get();
+        Lesson lesson;
+        try {
+            lesson = new Lesson(title, description.isBlank() ? null : description, content, course);
+        } catch (Exception exc) {
+            return "redirect:/professor/courses/" + id + "/lessons/add";
+        }
 
-
-        Lesson lesson = new Lesson(title, description.isBlank() ? null : description, content.isBlank() ? null : content, course);
 
         try {
             repoLesson.save(lesson);
@@ -147,7 +151,7 @@ public class ProfessorLessonController {
             return "professor/lessons/add";
         }
 
-        return String.format("redirect:/professor/courses/%d", course.getId());
+        return String.format("redirect:/professor/courses/%d/lessons", course.getId());
     }
 
 }
