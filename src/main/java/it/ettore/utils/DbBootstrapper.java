@@ -36,6 +36,11 @@ public class DbBootstrapper {
         Course History = new Course("History", "History course", 2023, Course.Category.History, professor);
         Course Art = new Course("Art", "Art course", 2023, Course.Category.Art, professor);
 
+        // Add some students to the math course
+        Math.requestJoin(student1);
+        Math.requestJoin(student2);
+        Math.requestJoin(student3);
+
         // Add lessons to the courses
         Lesson derivatives = new Lesson("Derivatives", "Some nice description on Derivation","Derivatives lesson content and stuff", Math);
         Lesson integrals = new Lesson("Integrals", "Some nice description on Integration","Integrals lesson content and stuff", Math);
