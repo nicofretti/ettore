@@ -16,4 +16,9 @@ public class BreadcrumbTest {
         assertEquals("/", breadcrumb.getUrl());
     }
 
+    @Test
+    public void testToString() {
+        assertEquals("Breadcrumb(name=Home, url=/)", breadcrumb.toString());
+    }
+
 }
