@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class ProfessoreModifyCourses extends E2EBaseTest {
+public class ProfessorModifyCourses extends E2EBaseTest {
     @Autowired
     protected UserRepository repoUser;
     @Autowired
@@ -136,9 +136,6 @@ public class ProfessoreModifyCourses extends E2EBaseTest {
         assertEquals("(2023/2024)", coursesPage.getCourses().get(coursesPage.getCourses().size() - 1).getPeriod());
         assertEquals("New course description", coursesPage.getCourses().get(coursesPage.getCourses().size() - 1).getDescription());
 
-        //click on the course
-        ProfessorCoursePage courseDetails = coursesPage.getCourses().get(coursesPage.getCourses().size() - 1).goTo();
-        //assertEquals(String.format("/professor/courses/%d", 1), currentPath());
     }
 
     /* Test modifying existing course */
@@ -171,11 +168,8 @@ public class ProfessoreModifyCourses extends E2EBaseTest {
         assertEquals("(2023/2024)", coursesPage.getCourses().get(coursesPage.getCourses().size() - 2).getPeriod());
         assertEquals("New course description", coursesPage.getCourses().get(coursesPage.getCourses().size() - 2).getDescription());
 
-        //TODO: check Course list size
-        //assertEquals(1, coursesPage.getCourses().size());
-        //click on the course
-        courseDetails = coursesPage.getCourses().get(coursesPage.getCourses().size() - 2).goTo();
-        assertEquals(String.format("/professor/courses/%d", course.getId()), currentPath());
+        //now there are two courses
+        assertEquals(2, coursesPage.getCourses().size());
     }
 
     /* Test deleting existing course */
