@@ -37,18 +37,23 @@ public class AuthInterceptor implements HandlerInterceptor {
             return HandlerInterceptor.super.preHandle(request, response, handler);
         }
 
-        // Else, get the password hash from the session. If it is null (or not a string, which would be weird) then
-        // redirect the user to the login page
-        Object pswHashObj = request.getSession().getAttribute("PSW_HASH");
-        if (!(pswHashObj instanceof String)) {
+        // Else, get the email and the password hash from the session. If they are null (or not a string, which would be
+        // weird) then redirect the user to the login page
+        Object emailObj = request.getSession().getAttribute("ETTORE_EMAIL");
+        Object pswHashObj = request.getSession().getAttribute("ETTORE_PSW_HASH");
+
+        if (!(emailObj instanceof String) || !(pswHashObj instanceof String)) {
             response.sendRedirect("/login");
             return false;
         }
+
+        String email = (String) emailObj;
         String pswHash = (String) pswHashObj;
 
-        // Find the user with the matching password hash. If none exists, redirect the user to the login page
-        Optional<User> user = repoUser.findByPswHash(pswHash);
-        if (user.isEmpty()) {
+        // Find the user with the matching email and check that the password hash is correct. Otherwise, go back to the
+        // login
+        Optional<User> user = repoUser.findByEmail(email);
+        if (user.isEmpty() || !user.get().getPswHash().equals(pswHash)) {
             response.sendRedirect("/login");
             return false;
         }
