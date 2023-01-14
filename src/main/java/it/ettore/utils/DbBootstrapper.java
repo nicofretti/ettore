@@ -2,9 +2,11 @@ package it.ettore.utils;
 
 import it.ettore.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -23,7 +25,11 @@ public class DbBootstrapper {
 
     @PostConstruct
     public void bootstrap() {
-        repoUser.save(new User("A", "Student", "a.student@ettore.it", "a.student@ettore.it", User.Role.STUDENT));
+        User student1 = new User("Student", "One", "student.one@ettore.it", "student.one@ettore.it", User.Role.STUDENT);
+        User student2 = new User("Student", "Two", "student.two@ettore.it", "student.two@ettore.it", User.Role.STUDENT);
+        User student3 = new User("Student", "Three", "student.three@ettore.it", "student.three@ettore.it", User.Role.STUDENT);
+        User student4 = new User("Student", "Four", "student.four@ettore.it", "student.four@ettore.it", User.Role.STUDENT);
+
         User professor = new User("B", "Professor", "a.professor@ettore.it", "a.professor@ettore.it", User.Role.PROFESSOR);
         // Add math and history course to the professor
         Course Math = new Course("Maths", "Maths course", 2023, Course.Category.Maths, professor);

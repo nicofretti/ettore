@@ -10,17 +10,8 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 
 public class Register extends E2EBaseTest {
-    @Autowired
-    protected UserRepository repoUser;
-
-    void clearDb() {
-        repoUser.deleteAll();
-    }
-
     @Test
     public void allFieldsMustBeFilled() {
-        clearDb();
-
         driver.get(baseDomain() + "register");
         assertEquals("I'm supposed to be in /register", "/register", currentPath());
         RegisterPage registerPage = new RegisterPage(driver);
@@ -57,8 +48,6 @@ public class Register extends E2EBaseTest {
 
     @Test
     public void emailMustBeValid() {
-        clearDb();
-
         driver.get(baseDomain() + "register");
         assertEquals("I'm supposed to be in /register", "/register", currentPath());
         RegisterPage registerPage = new RegisterPage(driver);
@@ -94,8 +83,6 @@ public class Register extends E2EBaseTest {
 
     @Test
     public void passwordMustBeLongEnough() {
-        clearDb();
-
         driver.get(baseDomain() + "register");
         assertEquals("I'm supposed to be in /register", "/register", currentPath());
         RegisterPage registerPage = new RegisterPage(driver);
@@ -129,8 +116,6 @@ public class Register extends E2EBaseTest {
 
     @Test
     public void passwordsMustMatch() {
-        clearDb();
-
         driver.get(baseDomain() + "register");
         assertEquals("I'm supposed to be in /register", "/register", currentPath());
         RegisterPage registerPage = new RegisterPage(driver);
@@ -163,8 +148,6 @@ public class Register extends E2EBaseTest {
 
     @Test
     public void cannotRegisterSameEmailTwice() {
-        clearDb();
-
         driver.get(baseDomain() + "register");
         assertEquals("I'm supposed to be in /register", "/register", currentPath());
         RegisterPage registerPage = new RegisterPage(driver);
