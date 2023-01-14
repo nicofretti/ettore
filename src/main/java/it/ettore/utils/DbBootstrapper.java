@@ -43,8 +43,8 @@ public class DbBootstrapper {
         repoUser.save(professor);
 
         // Set students that want to join and that have already joined the math course
-        math.setStudentsRequesting(List.of(student2));
-        math.setStudentsJoined(List.of(student1, student3, student4));
+        math.setStudentsRequesting(List.of(student3));
+        math.setStudentsJoined(List.of(student1, student4));
         repoCourse.save(math);
 
         // Set students that want to join and that have already joined the history course
