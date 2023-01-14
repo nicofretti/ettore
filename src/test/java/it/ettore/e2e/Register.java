@@ -1,6 +1,5 @@
 package it.ettore.e2e;
 
-import it.ettore.e2e.po.professor.ProfessorCoursesPage;
 import it.ettore.e2e.po.RegisterPage;
 import it.ettore.model.UserRepository;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package it.ettore.e2e.po.professor;
+package it.ettore.e2e.po.professor.courses;
 import it.ettore.e2e.po.Header;
 import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.PageObject;

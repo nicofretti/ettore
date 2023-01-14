@@ -1,11 +1,8 @@
-package it.ettore.e2e.po.professor;
+package it.ettore.e2e.po.professor.courses;
 
 import it.ettore.e2e.po.Header;
-import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.PageObject;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
