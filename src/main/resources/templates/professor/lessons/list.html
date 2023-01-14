@@ -10,7 +10,7 @@
 <!-- Content -->
 <div class="et-content">
     <button class="et-button-primary w-full h-12" id="btn-new-lesson"
-            th:onclick="'document.location=\'/professor/courses/'+${course.getId()}+'/lessons/new\''">New lesson
+            th:onclick="'document.location=\'/professor/courses/'+${course.getId()}+'/lessons/add\''">New lesson
     </button>
     <!-- Iterate over lessons -->
     <div class="et-card p-5 w-100" th:each="lesson: ${lessons}">

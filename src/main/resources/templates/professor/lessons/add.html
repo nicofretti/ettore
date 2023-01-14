@@ -3,79 +3,75 @@
 <head>
     <title>Add New Course</title>
     <meta th:replace="common/meta"/>
+    <!--<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+          integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <link href="../../../static/style.css" rel="stylesheet">-->
 </head>
-<body>
+<body onload="changeInput()">
 <!-- Header with logo, logout and breadcrumbs -->
 <div th:replace="common/header"></div>
 <!-- Content -->
-<div class="et-flex-centered gap-4 px-20">
+<div class="gap-4 px-20">
     <!-- Form -->
-    <form class="et-card p-5" method="POST">
-        <div class="flex justify-start justify-items-center gap-2 ">
-            <select class="text-xl font-bold w-1/6" name="category">
-                <option th:selected="${course!=null ? course.getCategory().toString()=='Maths':false}" value="Maths">
-                    <span>Maths</span>
-                </option>
-                <option th:selected="${course!=null ? course.getCategory().toString()=='Science':false}"
-                        value="Science">
-                    <span>Science</span>
-                </option>
-                <option th:selected="${course!=null ? course.getCategory().toString()=='History':false}"
-                        value="History">
-                    <span>History</span>
-                </option>
-                <option th:selected="${course!=null ? course.getCategory().toString()=='Geography':false}"
-                        value="Geography"><span>Geography</span></option>
-                <option th:selected="${course!=null ? course.getCategory().toString()=='Art':false}" value="Art"><span>Art</span>
-                </option>
-                <option th:selected="${course!=null ? course.getCategory().toString()=='Music':false}" value="Music">
-                    <span>Music</span></option>
-                <option th:selected="${course!=null ? course.getCategory().toString()=='Languages':false}"
-                        value="Languages"><span>Languages</span></option>
-            </select>
-            <input class="text-xl font-bold w-1/3" name="name" onchange="changeInput()" placeholder="Course name"
-                   required
-                   style="border: 1px solid #6b7280 !important; border-radius: 0 !important"
-                   th:value="${course!=null ? course.getName(): ''}"
-                   type="text"
-            >
-            <select class="w-1/6" name="startingYear">
-                <option th:selected="${course!=null ? course.getStartingYear()==2023 : false}" value=2023>2023/2024
-                </option>
-                <option th:selected="${course!=null ? course.getStartingYear()==2022 : false}" value=2022>2022/2023
-                </option>
-                <option th:selected="${course!=null ? course.getStartingYear()==2021 : false}" value=2021>2021/2022
-                </option>
-            </select>
-            <button id="btn-save"
-                    th:class="${course!=null ? 'et-button-good ml-auto my-auto h-9 px-2 w-1/6' : 'et-button-good ml-auto my-auto h-9 px-2 w-1/6 et-button-disabled'}"
+    <form method="POST">
+        <!-- Card -->
+        <div class="et-card flex flex-col gap-4 p-5">
+            <div>
+                <label class="et-label" for="title">Lesson title:</label>
+                <input class="text-xl font-bold w-full" name="title" onchange="changeInput()"
+                       placeholder="Lesson title"
+                       required
+                       style="border: 1px solid #6b7280 !important; border-radius: 0 !important"
+                       th:value="${lesson!=null ? lesson.getTitle(): ''}"
+                       type="text"
+                >
+            </div>
+            <!-- Description -->
+            <div>
+                <label class="et-label" for="description">Lesson description:</label>
+                <textarea class="w-full h-20" maxlength="255" name="description"
+                          placeholder="Course description"
+                          style="border: 1px solid #6b7280 !important; border-radius: 0 !important">[[${lesson!=null ? lesson.getDescription(): ''}]]</textarea>
+            </div>
+            <!-- Content -->
+            <div>
+                <label class="et-label" for="content">Lesson content:</label>
+                <textarea class="w-full h-60" maxlength="1000" name="content"
+                          onchange="changeInput()"
+                          placeholder="Course description"
+                          required
+                          style="border: 1px solid #6b7280 !important; border-radius: 0 !important">[[${course!=null ? course.getContent(): ''}]]</textarea>
+            </div>
+        </div>
+        <!-- Buttons -->
+        <div class="flex flex-col mt-4 gap-4 w-full">
+            <button class="et-button-good w-full h-14 px-2"
+                    id="btn-save"
                     type="submit">
                 Save
             </button>
-        </div>
-        <textarea class="mt-1 w-full" maxlength="255" name="description"
-                  placeholder="Course description"
-                  style="border: 1px solid #6b7280 !important; border-radius: 0 !important">[[${course!=null ? course.getDescription(): ''}]]</textarea>
-        <div class="flex flex-row mt-1">
-            <button class="et-button-bad h-9 px-2 mr-auto"
+            <button class="et-button-bad h-10 px-2"
                     onclick="window.location.href=this.getAttribute('data-redirect')"
                     th:data-redirect="${btnUndo}"
                     type="button">
                 Delete course
             </button>
-            <!-- If error -->
-            <div class="mt-1" th:if="${error}">
-                <span class="text-red-400 p-2" th:text="${error}"></span>
-            </div>
         </div>
     </form>
+    <!-- If error -->
+    <div class="mt-1" th:if="${error}">
+        <span class="text-red-400 p-2" th:text="${error}"></span>
+    </div>
 </div>
 </body>
 <script>
     function changeInput() {
         let saveButton = document.getElementById("btn-save");
-        let courseName = document.getElementsByName("name")[0].value;
-        if (courseName.toString().length > 0) {
+        let lessonTitle = document.getElementsByName("title")[0].value;
+        let lessonContent = document.getElementsByName("content")[0].value;
+        if (lessonTitle.toString().length > 0 && lessonContent.toString().length > 0) {
             saveButton.classList.remove("et-button-disabled");
             return;
         }
