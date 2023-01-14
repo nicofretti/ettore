@@ -295,12 +295,8 @@ public class ProfessorCourseController {
         if (maybeCourse.isEmpty()) {
             return "redirect:/professor/courses";
         }
-        Course course = maybeCourse.get();
-        professor.getCoursesTaught().remove(course);
+        professor.getCoursesTaught().remove(maybeCourse.get());
         repoUser.save(professor);
-
-        course.setProfessor(null);
-        repoCourse.delete(course);
 
         return "redirect:/professor/courses";
     }

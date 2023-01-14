@@ -1,13 +1,15 @@
 package it.ettore.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.SneakyThrows;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -19,14 +21,9 @@ import java.util.regex.Pattern;
 @Setter
 @NoArgsConstructor
 public class User {
-    public enum Role {
-        PROFESSOR, STUDENT,
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     @Column(nullable = false)
     private String firstName;
     @Column(nullable = false)
@@ -37,13 +34,10 @@ public class User {
     private String pswHash;
     @Column(nullable = false)
     private Role role;
-
-    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "professor", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Course> coursesTaught = new ArrayList<>();
-
     @ManyToMany(mappedBy = "studentsRequesting", cascade = CascadeType.ALL)
     private List<Course> coursesRequesting;
-
     @ManyToMany(mappedBy = "studentsJoined", cascade = CascadeType.ALL)
     private List<Course> coursesJoined;
 
@@ -102,5 +96,9 @@ public class User {
     @Override
     public String toString() {
         return String.format("User{id=%d,email=%s,role=%s}", id, email, role.toString());
+    }
+
+    public enum Role {
+        PROFESSOR, STUDENT,
     }
 }

@@ -25,7 +25,7 @@ public class Course {
     @Column(nullable = false)
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "professor_id")
     private User professor;
     @ManyToMany(cascade = CascadeType.ALL)
