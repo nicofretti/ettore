@@ -1,4 +1,4 @@
-package it.ettore.unit;
+package it.ettore.unit.model;
 
 import it.ettore.model.Course;
 import it.ettore.model.User;
@@ -19,6 +19,11 @@ public class CourseModel {
     @Test
     public void getDescription() {
         assertEquals("Castles and knights go boom", dummyCourse(UserModel.dummyProfessor()).getDescription());
+    }
+
+    @Test
+    public void getIcon() {
+        assertEquals("fa fa-flask", dummyCourse(UserModel.dummyProfessor()).getIcon());
     }
 
     @Test

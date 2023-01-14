@@ -21,6 +21,9 @@ public class DbBootstrapper {
     @Autowired
     CourseRepository repoCourse;
 
+    @Autowired
+    LessonRepository repoLesson;
+
     @PostConstruct
     public void bootstrap() {
 
@@ -31,6 +34,10 @@ public class DbBootstrapper {
         repoUser.saveAll(List.of(student1, student2, student3, student4));
 
         User professor = new User("B", "Professor", "a.professor@ettore.it", "a.professor@ettore.it", User.Role.PROFESSOR);
+        // Add math and history course to the professor
+        Course Math = new Course("Maths", "Maths course", 2023, Course.Category.Maths, professor);
+        Course History = new Course("History", "History course", 2023, Course.Category.History, professor);
+        Course Art = new Course("Art", "Art course", 2023, Course.Category.Art, professor);
 
         Course math = new Course("Maths", "Maths course", 2023, Course.Category.Maths, professor);
         Course history = new Course("History", "History course", 2023, Course.Category.History, professor);
@@ -48,7 +55,6 @@ public class DbBootstrapper {
         professor.getCoursesTaught().add(art);
 
         repoUser.save(professor);
-
 
     }
 

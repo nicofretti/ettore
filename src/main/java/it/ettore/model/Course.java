@@ -42,7 +42,6 @@ public class Course {
         this.category = category;
         this.professor = professor;
     }
-
     public String formatPeriod() {
         return String.format("(%d/%d)", startingYear, startingYear + 1);
     }
@@ -67,7 +66,6 @@ public class Course {
                 return "fa fa-question";
         }
     }
-
     @Override
     public String toString() {
         return String.format("Course{id=%d,name=%s}", id, name);
