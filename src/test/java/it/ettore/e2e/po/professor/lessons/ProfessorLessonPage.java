@@ -19,17 +19,17 @@ public class ProfessorLessonPage extends PageObject {
     private WebElement title;
 
     @FindBy(className = "et-description")
-    private WebElement description;
+    private WebElement content;
 
     @FindBy(id = "btn-edit-lesson")
     private WebElement editButton;
 
-    public String getName() {
+    public String getTitle() {
         return title.getText();
     }
 
-    public String getDescription() {
-        return description.getText();
+    public String getContent() {
+        return content.getText();
     }
 
 //    public ProfessorEditLessonPage editLesson() {

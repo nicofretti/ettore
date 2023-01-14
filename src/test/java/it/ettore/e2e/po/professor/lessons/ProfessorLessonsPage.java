@@ -24,7 +24,7 @@ public class ProfessorLessonsPage extends PageObject {
     private WebElement addNewLesson;
 
     // TODO Update when we have a new lesson page
-    public Object newCourse() {
+    public Object newLesson() {
         addNewLesson.click();
         return null;
     }
@@ -56,7 +56,7 @@ public class ProfessorLessonsPage extends PageObject {
     @FindBy(css = ".et-content > div")
     private List<WebElement> lessons;
 
-    public List<LessonComponent> getCourses() {
+    public List<LessonComponent> getLessons() {
         return lessons.stream().map(element -> new LessonComponent(driver, element)).collect(Collectors.toList());
     }
 
