@@ -5,6 +5,7 @@ import it.ettore.model.*;
 import it.ettore.utils.Breadcrumb;
 import it.ettore.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -211,7 +212,11 @@ public class ProfessorCourseController {
         try {
             repoCourse.save(course);
         } catch (Exception exc) {
-            Utils.addError(model, "Error while adding course: " + exc.getClass().getCanonicalName());
+            if (Utils.IsCause(exc, DataIntegrityViolationException.class)) {
+                Utils.addError(model, "Course already exists");
+            } else {
+                Utils.addError(model, "Error while adding course: " + exc.getClass().getCanonicalName());
+            }
             model.addAllAttributes(
                     Map.of(
                             "user", professor,
@@ -282,7 +287,11 @@ public class ProfessorCourseController {
             course.setCategory(Course.Category.fromString(category));
             repoCourse.save(course);
         } catch (Exception exc) {
-            Utils.addError(model, "Error while editing course: " + exc.getClass().getCanonicalName());
+            if (Utils.IsCause(exc, DataIntegrityViolationException.class)) {
+                Utils.addError(model, "Course already exists");
+            } else {
+                Utils.addError(model, "Error while editing course: " + exc.getClass().getCanonicalName());
+            }
             model.addAllAttributes(
                     Map.of(
                             "user", professor,
@@ -296,7 +305,7 @@ public class ProfessorCourseController {
                             "btnUndo", String.format("/professor/courses/%d/delete", course.getId())
                     )
             );
-            return String.format("/professor/courses/add", course.getId());
+            return "/professor/courses/add";
         }
         return String.format("redirect:/professor/courses/%d", course.getId());
     }
