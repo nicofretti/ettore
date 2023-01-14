@@ -1,5 +1,6 @@
 package it.ettore.e2e;
 
+import it.ettore.e2e.po.ErrorsComponent;
 import it.ettore.e2e.po.professor.ProfessorCoursesPage;
 import it.ettore.e2e.po.RegisterPage;
 import it.ettore.model.UserRepository;
@@ -7,6 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -181,6 +183,11 @@ public class Register extends E2EBaseTest {
         // Should be still in /register
         assertEquals("I'm supposed to be in /register", "/register", currentPath());
         // Assert error is shown
-        assertEquals(Optional.of("Email already taken"), registerPage.getError());
+        ErrorsComponent errors = new ErrorsComponent(driver);
+        assertEquals(Set.of("Email already taken"), errors.getErrorMessageSet());
+        // Dismiss the error
+        errors.getErrors().get(0).dismiss();
+        // Should now have no errors displayed
+        assertEquals(Set.of(), errors.getErrorMessageSet());
     }
 }
