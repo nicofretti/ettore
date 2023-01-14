@@ -32,9 +32,9 @@ public class ProfessorLessonPage extends PageObject {
         return content.getText();
     }
 
-//    public ProfessorEditLessonPage editLesson() {
-//        editButton.click();
-//        return new ProfessorEditLessonPage(driver);
-//    }
+    public ProfessorModifyLessonPage editLesson() {
+        editButton.click();
+        return new ProfessorModifyLessonPage(driver);
+    }
 }
 

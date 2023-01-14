@@ -15,7 +15,7 @@ public class ProfessorModifyLessonPage extends PageObject {
         return new Header(driver);
     }
 
-    @FindBy(name = "name")
+    @FindBy(name = "title")
     private WebElement title;
 
     @FindBy(name = "description")

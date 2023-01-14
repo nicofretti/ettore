@@ -4,6 +4,7 @@ import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.PageObject;
 import it.ettore.e2e.po.professor.ProfessorManagePage;
 import it.ettore.e2e.po.professor.lessons.ProfessorLessonsPage;
+import it.ettore.e2e.po.professor.lessons.ProfessorModifyLessonPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -55,6 +56,11 @@ public class ProfessorCoursePage extends PageObject {
     public ProfessorLessonsPage goToLessons() {
         gotoLessonsButton.click();
         return new ProfessorLessonsPage(driver);
+    }
+
+    public ProfessorModifyLessonPage editLesson() {
+        editButton.click();
+        return new ProfessorModifyLessonPage(driver);
     }
 
 }

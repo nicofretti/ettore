@@ -2,6 +2,7 @@ package it.ettore.e2e.po.professor.courses;
 
 import it.ettore.e2e.po.Header;
 import it.ettore.e2e.po.PageObject;
+import it.ettore.e2e.po.professor.lessons.ProfessorModifyLessonPage;
 import lombok.EqualsAndHashCode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -23,10 +24,9 @@ public class ProfessorCoursesPage extends PageObject {
     @FindBy(id = "btn-new-course")
     private WebElement addNewCourse;
 
-    // TODO Update when we have a new course page
-    public Object newCourse() {
+    public ProfessorModifyLessonPage newCourse() {
         addNewCourse.click();
-        return null;
+        return new ProfessorModifyLessonPage(driver);
     }
 
     @EqualsAndHashCode

@@ -24,9 +24,9 @@ public class ProfessorLessonsPage extends PageObject {
     private WebElement addNewLesson;
 
     // TODO Update when we have a new lesson page
-    public Object newLesson() {
+    public ProfessorModifyLessonPage newLesson() {
         addNewLesson.click();
-        return null;
+        return new ProfessorModifyLessonPage(driver);
     }
 
     @EqualsAndHashCode
