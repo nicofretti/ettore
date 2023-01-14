@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Courses</title>
+    <meta th:replace="common/meta"/>
+</head>
+<body>
+<div th:replace="common/errors"/>
+<!-- Header with logo, logout and breadcrumbs -->
+<div th:replace="common/header"></div>
+<!-- Content -->
+<div class="et-content">
+    <button id="btn-search-course" class="et-button-primary w-full h-12" onclick="document.location='/student/courses/search'">Search course
+    </button>
+    <!-- Iterate over courses -->
+    <div th:each="course: ${courses}" class="et-card p-5 w-100">
+        <div class="flex flex-row justify-items-center gap-5">
+            <!-- Icon -->
+            <i th:class="'et-icon-course fa-2x '+${course.getIcon()}" class="fa fa-book fa-2x"></i>
+            <!-- Title -->
+            <a th:text="${course.getName()}" th:href="'/student/courses/'+${course.getId()}" class="et-name text-2xl font-bold">Course
+                name</a>
+            <!-- Year -->
+            <p th:text="${course.formatPeriod()}" class="et-period text-xl">(FromYear/ToYear)</p>
+        </div>
+        <!-- Description -->
+        <p th:text="${course.description}" class="et-description mt-4">
+            Descrizione del corso Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non est magna.
+        </p>
+    </div>
+</div>
+</body>
+</html>
