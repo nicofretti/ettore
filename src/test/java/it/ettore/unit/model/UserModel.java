@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.ettore.TestUtil.assertEmpty;
 import static org.junit.Assert.*;
 
 public class UserModel {
@@ -118,7 +119,7 @@ public class UserModel {
         course.acceptStudent(student);
 
         // There should be no pending join requests anymore, and one student that has joined
-        assertEquals(0, course.getStudentsRequesting().size());
+        assertEmpty(course.getStudentsRequesting());
         assertEquals(List.of(student), course.getStudentsJoined());
     }
 
@@ -134,8 +135,8 @@ public class UserModel {
         course.rejectStudent(student);
 
         // There should be no pending join requests anymore, and no students that have joined
-        assertEquals(0, course.getStudentsRequesting().size());
-        assertEquals(0, course.getStudentsJoined().size());
+        assertEmpty(course.getStudentsRequesting());
+        assertEmpty(course.getStudentsJoined());
     }
 
     @Test
@@ -150,7 +151,7 @@ public class UserModel {
         course.removeStudent(student);
 
         // There should be no students that have joined
-        assertEquals(0, course.getStudentsJoined().size());
+        assertEmpty(course.getStudentsJoined());
     }
 
     @Test(expected = IllegalStateException.class)

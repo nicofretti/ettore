@@ -9,7 +9,10 @@
         --color-text: #252525;
         --color-text-light: #C2C2C2;
         --color-green: #00EA6C;
+
+        --color-red-light: #ff9790;
         --color-red: #FF5C52;
+        --color-red-dark-translucent: rgba(222, 79, 71, 0.4);
     }
 }
 
@@ -49,6 +52,18 @@ button.et-button-primary{
 
 button.et-button-secondary{
     background-color: var(--color-secondary);
+    color: var(--color-window);
+    border-radius: 0.5rem;
+}
+
+button.et-button-success{
+    background-color: var(--color-green);
+    color: var(--color-secondary);
+    border-radius: 0.5rem;
+}
+
+button.et-button-danger{
+    background-color: var(--color-red);
     color: var(--color-window);
     border-radius: 0.5rem;
 }
@@ -155,7 +170,7 @@ button.et-button-bad{
 }
 
 .et-icon-course{
-    color: var(--color-green);
+    color: var(--color-text);
 }
 
 .et-already-registered{
@@ -164,4 +179,35 @@ button.et-button-bad{
 
 .et-already-registered > a {
     text-decoration: underline;
+}
+
+.et-errors {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    gap: 0.5rem;
+
+    width: 20rem;
+}
+
+.et-error {
+    box-sizing: border-box;
+    padding: 0.75rem;
+
+    color: var(--color-window);
+
+    background: var(--color-red);
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-red-light);
+
+    box-shadow: var(--color-red-dark-translucent) 0px 8px 24px;
+
+    user-select: none;
+    cursor: pointer;
 }

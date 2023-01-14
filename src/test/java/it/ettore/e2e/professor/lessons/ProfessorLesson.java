@@ -19,20 +19,28 @@ public class ProfessorLesson extends E2EBaseTest {
     protected UserRepository repoUser;
     @Autowired
     protected CourseRepository repoCourse;
-
     @Autowired
     protected LessonRepository repoLesson;
 
     @Test
     public void lesson() {
-
         String email = "some.professor@ettore.it";
         String password = "SomeSecurePassword";
         User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
+        repoUser.save(professor);
+
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
+        repoCourse.save(course);
+        // Link the course to the professor
+        professor.getCoursesTaught().add(course);
+        repoUser.save(professor);
+
         Lesson lesson = new Lesson("Lesson name", "Lesson description", "Lesson content", course);
         Lesson lesson2 = new Lesson("Lesson name 2", "Lesson description 2", "Lesson content 2", course);
         repoLesson.saveAll(List.of(lesson, lesson2));
+
+        course.getLessons().addAll(List.of(lesson, lesson2));
+        repoCourse.save(course);
 
         driver.get(baseDomain() + "login");
         LoginPage loginPage = new LoginPage(driver);

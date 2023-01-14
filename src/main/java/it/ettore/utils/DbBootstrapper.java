@@ -2,11 +2,9 @@ package it.ettore.utils;
 
 import it.ettore.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,36 +17,53 @@ public class DbBootstrapper {
     UserRepository repoUser;
     @Autowired
     CourseRepository repoCourse;
-
     @Autowired
     LessonRepository repoLesson;
 
     @PostConstruct
     public void bootstrap() {
+        // Create a couple of students
         User student1 = new User("Student", "One", "student.one@ettore.it", "student.one@ettore.it", User.Role.STUDENT);
         User student2 = new User("Student", "Two", "student.two@ettore.it", "student.two@ettore.it", User.Role.STUDENT);
         User student3 = new User("Student", "Three", "student.three@ettore.it", "student.three@ettore.it", User.Role.STUDENT);
         User student4 = new User("Student", "Four", "student.four@ettore.it", "student.four@ettore.it", User.Role.STUDENT);
+        repoUser.saveAll(List.of(student1, student2, student3, student4));
 
         User professor = new User("B", "Professor", "a.professor@ettore.it", "a.professor@ettore.it", User.Role.PROFESSOR);
-        // Add math and history course to the professor
-        Course Math = new Course("Maths", "Maths course", 2023, Course.Category.Maths, professor);
-        Course History = new Course("History", "History course", 2023, Course.Category.History, professor);
-        Course Art = new Course("Art", "Art course", 2023, Course.Category.Art, professor);
+        repoUser.save(professor);
 
-        // Add some students to the math course
-        Math.requestJoin(student1);
-        Math.requestJoin(student2);
-        Math.requestJoin(student3);
+        // Create a couple of courses
+        Course math = new Course("Maths", "Maths course", 2023, Course.Category.Maths, professor);
+        Course history = new Course("History", "History course", 2023, Course.Category.History, professor);
+        Course art = new Course("Art", "Art course", 2023, Course.Category.Art, professor);
+        repoCourse.saveAll(List.of(math, history, art));
 
-        // Add lessons to the courses
-        Lesson derivatives = new Lesson("Derivatives", "Some nice description on Derivation","Derivatives lesson content and stuff", Math);
-        Lesson integrals = new Lesson("Integrals", "Some nice description on Integration","Integrals lesson content and stuff", Math);
-        Lesson history = new Lesson("WW2", "Some nice description on History","History lesson content and stuff", History);
-        Lesson art = new Lesson("Art", "Some nice description on Art","Art lesson content and stuff", Art);
+        // Link the courses to the professor
+        professor.getCoursesTaught().addAll(List.of(math, history, art));
+        repoUser.save(professor);
 
-        //repoCourse.saveAll(List.of(Math, History, art));
-        repoLesson.saveAll(List.of(derivatives, integrals, history, art));
+        // Set students that want to join and that have already joined the math course
+        math.setStudentsRequesting(List.of(student2));
+        math.setStudentsJoined(List.of(student1, student3, student4));
+        repoCourse.save(math);
+
+        // Set students that want to join and that have already joined the history course
+        history.setStudentsRequesting(List.of(student1, student3));
+        history.setStudentsJoined(List.of(student2, student4));
+        repoCourse.save(history);
+
+        // Set students that want to join and that have already joined the art course
+        art.setStudentsRequesting(List.of(student2));
+        art.setStudentsJoined(List.of(student1, student4));
+        repoCourse.save(art);
+
+        // Add some lessons about maths
+        Lesson lesson1 = new Lesson("Derivatives", "Some nice description on Derivation", "Derivatives lesson content and stuff", math);
+        Lesson lesson2 = new Lesson("Integrals", "Some nice description on Integration", "Integrals lesson content and stuff", math);
+        repoLesson.saveAll(List.of(lesson1, lesson2));
+
+        // And link them with the maths course
+        math.getLessons().addAll(List.of(lesson1, lesson2));
+        repoCourse.save(math);
     }
-
 }

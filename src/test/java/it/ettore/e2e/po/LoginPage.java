@@ -1,13 +1,13 @@
 package it.ettore.e2e.po;
 
+import it.ettore.e2e.po.student.StudentCoursesPage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.WebElement;
 
-import java.util.Optional;
-
-public class LoginPage extends PageObject{
+public class LoginPage extends PageObject {
     public LoginPage(WebDriver driver) {
         super(driver);
     }
@@ -30,17 +30,6 @@ public class LoginPage extends PageObject{
     @FindBy(name = "btn-goto-register")
     private WebElement gotoRegisterButton;
 
-    @FindBy(id = "error")
-    private WebElement errorMsg;
-
-    public Optional<String> getError() {
-        if (errorMsg != null) {
-            return Optional.of(errorMsg.getText());
-        } else {
-            return Optional.empty();
-        }
-    }
-
     public void setEmail(String email) {
         this.email.clear();
         this.email.sendKeys(email);
@@ -56,10 +45,9 @@ public class LoginPage extends PageObject{
         return new ProfessorCoursesPage(driver);
     }
 
-    // TODO Update when student pages are created
-    public Object loginAsStudent() {
+    public StudentCoursesPage loginAsStudent() {
         loginButton.click();
-        return null;
+        return new StudentCoursesPage(driver);
     }
 
     public RegisterPage register() {

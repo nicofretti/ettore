@@ -4,7 +4,7 @@ import it.ettore.model.Course;
 import it.ettore.model.User;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CourseModel {
     public static Course dummyCourse(User professor) {
@@ -23,7 +23,7 @@ public class CourseModel {
 
     @Test
     public void getIcon() {
-        assertEquals("fa fa-flask", dummyCourse(UserModel.dummyProfessor()).getIcon());
+        assertEquals("fa fa-book", dummyCourse(UserModel.dummyProfessor()).getIcon());
     }
 
     @Test

@@ -12,15 +12,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "startingYear"})})
 public class Course {
-    public enum Category {
-        Maths, Science, History, Geography, Art, Music, Languages,
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     @Column(nullable = false)
     private String name;
     private String description;
@@ -29,20 +25,19 @@ public class Course {
     @Column(nullable = false)
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "professor_id", nullable = false)
     private User professor;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<Lesson> lessons = new ArrayList<>();
-    
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "course_request", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> studentsRequesting;
-
-    @ManyToMany(cascade = CascadeType.ALL)
+    private List<User> studentsRequesting = new ArrayList<>();
+    @ManyToMany
     @JoinTable(name = "course_join", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> studentsJoined;
+    private List<User> studentsJoined = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course")
+    private List<Lesson> lessons = new ArrayList<>();
 
     public Course(String name, String description, int startingYear, Category category, User professor) {
         this.name = name;
@@ -51,6 +46,7 @@ public class Course {
         this.category = category;
         this.professor = professor;
     }
+
     public String formatPeriod() {
         return String.format("(%d/%d)", startingYear, startingYear + 1);
     }
@@ -75,59 +71,119 @@ public class Course {
                 return "fa fa-question";
         }
     }
+
     @Override
     public String toString() {
         return String.format("Course{id=%d,name=%s}", id, name);
     }
 
+    public boolean isStudentRequesting(User student) {
+        if (studentsRequesting == null) return false;
+        return studentsRequesting.stream().anyMatch(someStudent -> someStudent.getId() == student.getId());
+    }
+
+    public boolean isStudentJoined(User student) {
+        if (studentsJoined == null) return false;
+        return studentsJoined.stream().anyMatch(someStudent -> someStudent.getId() == student.getId());
+    }
+
     public void requestJoin(User student) {
-        if (studentsJoined != null && studentsJoined.contains(student)) {
+        if (isStudentJoined(student)) {
             throw new IllegalStateException("This student has already joined, no need to request");
+        }
+        if (isStudentRequesting(student)) {
+            throw new IllegalStateException("This student has already requested to join");
         }
 
         if (studentsRequesting == null) {
             studentsRequesting = new ArrayList<>();
-        } else if (studentsRequesting.contains(student)) {
-            throw new IllegalStateException("This student has already requested to join");
         }
-
         studentsRequesting.add(student);
     }
 
     public void acceptStudent(User student) {
-        if (studentsRequesting == null || !studentsRequesting.contains(student)) {
+        if (!isStudentRequesting(student)) {
             throw new IllegalStateException("This student has no pending request to join this course");
         }
-
-        if (studentsJoined == null) {
-            studentsJoined = new ArrayList<>();
-        } else if (studentsJoined.contains(student)) {
+        if (isStudentJoined(student)) {
             throw new IllegalStateException("This student has already been accepted to join the course");
         }
 
-        studentsRequesting.remove(student);
+        studentsRequesting.removeIf(someStudent -> someStudent.getId() == student.getId());
+        if (studentsJoined == null) {
+            studentsJoined = new ArrayList<>();
+        }
         studentsJoined.add(student);
     }
 
     public void rejectStudent(User student) {
-        if (studentsRequesting == null || !studentsRequesting.contains(student)) {
+        if (!isStudentRequesting(student)) {
             throw new IllegalStateException("This student has no pending request to join this course");
         }
-
-        if (studentsJoined == null) {
-            studentsJoined = new ArrayList<>();
-        } else if (studentsJoined.contains(student)) {
+        if (isStudentJoined(student)) {
             throw new IllegalStateException("This student has already been accepted to join the course");
         }
 
-        studentsRequesting.remove(student);
+        studentsRequesting.removeIf(someStudent -> someStudent.getId() == student.getId());
     }
 
     public void removeStudent(User student) {
-        if (studentsJoined == null || !studentsJoined.contains(student)) {
+        if (!isStudentJoined(student)) {
             throw new IllegalStateException("This student hasn't joined the course");
         }
 
-        studentsJoined.remove(student);
+        studentsJoined.removeIf(someStudent -> someStudent.getId() == student.getId());
+    }
+
+    public enum Category {
+        Maths,
+        Science,
+        History,
+        Geography,
+        Art,
+        Music,
+        Languages;
+
+        public static Category fromString(String s) {
+            switch (s) {
+                case "Maths":
+                    return Maths;
+                case "Science":
+                    return Science;
+                case "History":
+                    return History;
+                case "Geography":
+                    return Geography;
+                case "Art":
+                    return Art;
+                case "Music":
+                    return Music;
+                case "Languages":
+                    return Languages;
+                default:
+                    return null;
+            }
+        }
+
+        public String toString() {
+            switch (this) {
+                case Maths:
+                    return "Maths";
+                case Science:
+                    return "Science";
+                case History:
+                    return "History";
+                case Geography:
+                    return "Geography";
+                case Art:
+                    return "Art";
+                case Music:
+                    return "Music";
+                case Languages:
+                    return "Languages";
+                default:
+                    return null;
+            }
+        }
     }
 }

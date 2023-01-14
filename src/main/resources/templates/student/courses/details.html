@@ -21,27 +21,16 @@
                 <!-- Year -->
                 <p th:text="${course.formatPeriod()}" class="et-period text-xl">(FromYear/ToYear)</p>
             </div>
-            <!-- Edit button -->
-            <button id="btn-edit" th:onclick="'document.location=\'/professor/courses/'+${course.getId()}+'/edit\''" class="et-button-primary w-28">Edit</button>
+            <!-- Unsubscribe button -->
+            <button id="btn-unjoin" th:onclick="'document.location=\'/student/courses/'+${course.getId()}+'/unjoin\''" class="et-button-bad w-28">Unsubscribe</button>
         </div>
         <!-- Description -->
         <p th:text="${course.getDescription()}" class="et-description mt-4">Course description</p>
     </div>
-    <!-- Lessons and Quiz -->
-    <div class="grid grid-cols-2 gap-4">
-        <a id="btn-goto-lessons" th:href="'/professor/courses/'+${course.getId()}+'/lessons'" class="et-flex-centered flex-col et-card px-5 py-10">
-            <i class="fa fa-file-alt fa-2x"></i>
-            <p class="text-xl">Lectures</p>
-        </a>
-        <a id="btn-goto-quizzes" th:href="'/professor/courses/'+${course.getId()}+'/quizzes'" class="et-flex-centered flex-col et-card px-5 py-10">
-            <i class="fa fa-clipboard-check fa-2x"></i>
-            <p class="text-xl">Quizzes</p>
-        </a>
-    </div>
-    <!-- Students -->
-    <a id="btn-goto-manage" th:href="'/professor/courses/'+${course.getId()}+'/manage'" class="et-flex-centered flex-col et-card px-5 py-10">
-        <i class="fa fa-users fa-2x"></i>
-        <p class="text-xl">Students</p>
+    <!-- Lessons -->
+    <a id="btn-goto-lessons" th:href="'/student/courses/'+${course.getId()}+'/lessons'" class="et-flex-centered flex-col et-card px-5 py-10">
+        <i class="fa fa-file-alt fa-2x"></i>
+        <p class="text-xl">Lectures</p>
     </a>
 </div>
 </body>

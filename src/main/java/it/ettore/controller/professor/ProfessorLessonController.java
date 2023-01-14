@@ -21,13 +21,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ProfessorLessonController {
-
     @Autowired
     private LessonRepository repoLesson;
-
     @Autowired
     private CourseRepository repoCourse;
-
     @Autowired
     private UserRepository repoUser;
 
@@ -57,8 +54,8 @@ public class ProfessorLessonController {
                         "course", course
                 )
         );
-        return "professor/lessons/list";
 
+        return "professor/lessons/list";
     }
 
     @GetMapping("/professor/courses/{id}/lessons/{lessonId}")
@@ -71,6 +68,7 @@ public class ProfessorLessonController {
         }
         Lesson lesson = maybeLesson.get();
         Course course = lesson.getCourse();
+
         model.addAllAttributes(
                 Map.of(
                         "user", professor,
@@ -86,6 +84,7 @@ public class ProfessorLessonController {
                         "canEdit", true
                 )
         );
+
         return "professor/lessons/content";
     }
 }

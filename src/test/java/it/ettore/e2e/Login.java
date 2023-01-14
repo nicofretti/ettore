@@ -1,14 +1,15 @@
 package it.ettore.e2e;
 
+import it.ettore.e2e.po.ErrorsComponent;
 import it.ettore.e2e.po.LoginPage;
 import it.ettore.model.User;
 import it.ettore.model.UserRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
+import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class Login extends E2EBaseTest {
     @Autowired
@@ -48,7 +49,12 @@ public class Login extends E2EBaseTest {
 
         // Check that we're still in /login
         assertEquals("I'm supposed to be in /login after a bad login", "/login", currentPath());
-        assertEquals(Optional.of("Invalid credentials"), loginPage.getError());
+        ErrorsComponent errors = new ErrorsComponent(driver);
+        assertEquals(Set.of("Invalid credentials"), errors.getErrorMessageSet());
+        // Dismiss the error
+        errors.getErrors().get(0).dismiss();
+        // Should now have no errors displayed
+        assertEquals(Set.of(), errors.getErrorMessageSet());
     }
 
     @Test
@@ -69,6 +75,11 @@ public class Login extends E2EBaseTest {
 
         // Check that we're still in /login
         assertEquals("I'm supposed to be in /login after a bad login", "/login", currentPath());
-        assertEquals(Optional.of("Invalid credentials"), loginPage.getError());
+        ErrorsComponent errors = new ErrorsComponent(driver);
+        assertEquals(Set.of("Invalid credentials"), errors.getErrorMessageSet());
+        // Dismiss the error
+        errors.getErrors().get(0).dismiss();
+        // Should now have no errors displayed
+        assertEquals(Set.of(), errors.getErrorMessageSet());
     }
 }

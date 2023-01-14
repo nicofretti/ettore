@@ -11,4 +11,7 @@ public class PageObject {
         PageFactory.initElements(driver,this);
     }
 
+    public void refresh() {
+        PageFactory.initElements(driver,this);
+    }
 }

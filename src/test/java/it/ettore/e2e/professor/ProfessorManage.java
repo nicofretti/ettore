@@ -2,25 +2,21 @@ package it.ettore.e2e.professor;
 
 import it.ettore.e2e.E2EBaseTest;
 import it.ettore.e2e.po.LoginPage;
+import it.ettore.e2e.po.professor.ProfessorManagePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
-import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage.CourseComponent;
-import it.ettore.e2e.po.professor.ProfessorManagePage;
 import it.ettore.model.Course;
 import it.ettore.model.CourseRepository;
 import it.ettore.model.User;
 import it.ettore.model.UserRepository;
-import it.ettore.unit.model.CourseModel;
-import it.ettore.unit.model.UserModel;
-import it.ettore.utils.Breadcrumb;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProfessorManage extends E2EBaseTest {
+    @Autowired
+    protected UserRepository repoUser;
     @Autowired
     protected CourseRepository repoCourse;
 
@@ -29,12 +25,18 @@ public class ProfessorManage extends E2EBaseTest {
         String email = "some.professor@ettore.it";
         String password = "SomeSecurePassword";
         User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
+        repoUser.save(professor);
 
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
+        repoCourse.save(course);
+        // Link the course to the professor
+        professor.getCoursesTaught().add(course);
+        repoUser.save(professor);
 
         User student = new User("Some", "Student", "some.student@ettore.it", "ChocolatePizza", User.Role.STUDENT);
-        course.requestJoin(student);
+        repoUser.save(student);
 
+        course.requestJoin(student);
         repoCourse.save(course);
 
         // Login with the professor's account
@@ -74,12 +76,18 @@ public class ProfessorManage extends E2EBaseTest {
         String email = "some.professor@ettore.it";
         String password = "SomeSecurePassword";
         User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
+        repoUser.save(professor);
 
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
+        repoCourse.save(course);
+        // Link the course to the professor
+        professor.getCoursesTaught().add(course);
+        repoUser.save(professor);
 
         User student = new User("Some", "Student", "some.student@ettore.it", "ChocolatePizza", User.Role.STUDENT);
-        course.requestJoin(student);
+        repoUser.save(student);
 
+        course.requestJoin(student);
         repoCourse.save(course);
 
         // Login with the professor's account
@@ -118,14 +126,20 @@ public class ProfessorManage extends E2EBaseTest {
         String email = "some.professor@ettore.it";
         String password = "SomeSecurePassword";
         User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
+        repoUser.save(professor);
 
         Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
+        repoCourse.save(course);
+        // Link the course to the professor
+        professor.getCoursesTaught().add(course);
+        repoUser.save(professor);
 
         User student = new User("Some", "Student", "some.student@ettore.it", "ChocolatePizza", User.Role.STUDENT);
+        repoUser.save(student);
+
         course.requestJoin(student);
         // Immediately accept join request so we can remove him
         course.acceptStudent(student);
-
         repoCourse.save(course);
 
         // Login with the professor's account

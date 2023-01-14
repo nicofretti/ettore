@@ -12,9 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class ProfessorCourseController {
@@ -96,8 +100,6 @@ public class ProfessorCourseController {
 
     @GetMapping(value = "/professor/courses/{id}/accept/{studentId}")
     public String courseAcceptStudent(@PathVariable @NotNull long id, @PathVariable @NotNull long studentId, Model model, HttpServletRequest request) {
-        User professor = Utils.loggedUser(request);
-
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
         if (maybeCourse.isEmpty()) {
@@ -120,8 +122,6 @@ public class ProfessorCourseController {
 
     @GetMapping(value = "/professor/courses/{id}/reject/{studentId}")
     public String courseRejectStudent(@PathVariable @NotNull long id, @PathVariable @NotNull long studentId, Model model, HttpServletRequest request) {
-        User professor = Utils.loggedUser(request);
-
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
         if (maybeCourse.isEmpty()) {
@@ -144,8 +144,6 @@ public class ProfessorCourseController {
 
     @GetMapping(value = "/professor/courses/{id}/remove/{studentId}")
     public String courseRemoveStudent(@PathVariable @NotNull long id, @PathVariable @NotNull long studentId, Model model, HttpServletRequest request) {
-        User professor = Utils.loggedUser(request);
-
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
         if (maybeCourse.isEmpty()) {
@@ -164,5 +162,137 @@ public class ProfessorCourseController {
         repoCourse.save(course);
 
         return String.format("redirect:/professor/courses/%d/manage", id);
+    }
+
+    @GetMapping(value = "/professor/courses/add")
+    public String courseAddPage(Model model, HttpServletRequest request) {
+        User professor = Utils.loggedUser(request);
+        model.addAllAttributes(
+                Map.of(
+                        "user", professor,
+                        "breadcrumbs", List.of(
+                                new Breadcrumb("Courses", "/professor/courses"),
+                                new Breadcrumb("Add", "/professor/courses/add")
+                        ),
+                        "btnUndo", "/professor/courses"
+                )
+        );
+        return "professor/courses/add";
+    }
+
+    @PostMapping(value = "/professor/courses/add")
+    public String courseAdd(@RequestParam @NotNull String name,
+                            @RequestParam String description,
+                            @RequestParam @NotNull Integer startingYear,
+                            @RequestParam @NotNull String category,
+                            Model model,
+                            HttpServletRequest request) {
+        User professor = Utils.loggedUser(request);
+        Course course = new Course(name, description.isBlank() ? null : description, startingYear, Course.Category.fromString(category), professor);
+
+        try {
+            repoCourse.save(course);
+        } catch (Exception exc) {
+            model.addAllAttributes(
+                    Map.of(
+                            "user", professor,
+                            "breadcrumbs", List.of(
+                                    new Breadcrumb("Courses", "/professor/courses"),
+                                    new Breadcrumb("Add", "/professor/courses/add")
+                            ),
+                            "error", "Course already exists",
+                            "course", course,
+                            "btnUndo", "/professor/courses"
+                    )
+            );
+            return "professor/courses/add";
+        }
+
+        return "redirect:/professor/courses";
+    }
+
+    @GetMapping(value = "/professor/courses/{id}/edit")
+    public String courseEditPage(@PathVariable @NotNull long id, Model model, HttpServletRequest request) {
+        User professor = Utils.loggedUser(request);
+
+        Optional<Course> maybeCourse = repoCourse.findById(id);
+        // On wrong ID, redirect to courses list
+        if (maybeCourse.isEmpty()) {
+            return "redirect:/professor/courses";
+        }
+        Course course = maybeCourse.get();
+
+        model.addAllAttributes(
+                Map.of(
+                        "user", professor,
+                        "breadcrumbs", List.of(
+                                new Breadcrumb("Courses", "/professor/courses"),
+                                new Breadcrumb(course.getName(), String.format("/professor/courses/%d", course.getId())),
+                                new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", course.getId()))
+                        ),
+                        "course", course,
+                        "btnUndo", String.format("/professor/courses/%d/delete", course.getId())
+                )
+        );
+
+        return "professor/courses/add";
+    }
+
+    @PostMapping(value = "/professor/courses/{id}/edit")
+    public String courseEdit(@PathVariable @NotNull long id,
+                             @RequestParam @NotNull String name,
+                             @RequestParam String description,
+                             @RequestParam @NotNull Integer startingYear,
+                             @RequestParam @NotNull String category,
+                             Model model,
+                             HttpServletRequest request) {
+        User professor = Utils.loggedUser(request);
+
+        Optional<Course> maybeCourse = repoCourse.findById(id);
+        // On wrong ID, redirect to courses list
+        if (maybeCourse.isEmpty()) {
+            return "redirect:/professor/courses";
+        }
+        Course course = maybeCourse.get();
+
+        course.setName(name);
+        course.setDescription(description.isBlank() ? null : description);
+        course.setStartingYear(startingYear);
+        course.setCategory(Course.Category.fromString(category));
+
+        try {
+            repoCourse.save(course);
+        } catch (Exception exc) {
+            model.addAllAttributes(
+                    Map.of(
+                            "user", professor,
+                            "breadcrumbs", List.of(
+                                    new Breadcrumb("Courses", "/professor/courses"),
+                                    new Breadcrumb(course.getName(), String.format("/professor/courses/%d", course.getId())),
+                                    new Breadcrumb("Edit", String.format("/professor/courses/%d/edit", course.getId()))
+                            ),
+                            "error", "Course already exists",
+                            "course", course,
+                            "btnUndo", String.format("/professor/courses/%d/delete", course.getId())
+                    )
+            );
+            return String.format("professor/courses/%d/edit", course.getId());
+        }
+
+        return String.format("redirect:/professor/courses/%d", course.getId());
+    }
+
+
+    @GetMapping(value = "/professor/courses/{id}/delete")
+    public String courseDelete(@PathVariable @NotNull long id, Model model, HttpServletRequest request) {
+        Optional<Course> maybeCourse = repoCourse.findById(id);
+        // On wrong ID, redirect to courses list
+        if (maybeCourse.isEmpty()) {
+            return "redirect:/professor/courses";
+        }
+
+        repoCourse.delete(maybeCourse.get());
+
+        return "redirect:/professor/courses";
     }
 }

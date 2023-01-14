@@ -1,0 +1,8 @@
+<div class="et-errors">
+    <div class="et-error" title="Click to dismiss" th:each="error,iter: ${errors}" th:text="${error.getMessage()}" th:onclick="'dismissError('+${iter.index}+')'"></div>
+    <script>
+        function dismissError(idx) {
+            document.querySelector(".et-errors > .et-error:nth-child(" + (idx+1).toString() + ")").remove();
+        }
+    </script>
+</div>
