@@ -12,6 +12,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProfessorLessonsPage extends PageObject {
+    @FindBy(id = "btn-new-lesson")
+    private WebElement addNewLesson;
+    @FindBy(css = ".et-content > div")
+    private List<WebElement> lessons;
+
     public ProfessorLessonsPage(WebDriver driver) {
         super(driver);
     }
@@ -20,19 +25,20 @@ public class ProfessorLessonsPage extends PageObject {
         return new Header(driver);
     }
 
-    @FindBy(id = "btn-new-lesson")
-    private WebElement addNewLesson;
-
     // TODO Update when we have a new lesson page
     public ProfessorModifyLessonPage newLesson() {
         addNewLesson.click();
         return new ProfessorModifyLessonPage(driver);
     }
 
+    public List<LessonComponent> getLessons() {
+        return lessons.stream().map(element -> new LessonComponent(driver, element)).collect(Collectors.toList());
+    }
+
     @EqualsAndHashCode
     public static class LessonComponent {
-        private WebDriver driver;
-        private WebElement element;
+        private final WebDriver driver;
+        private final WebElement element;
 
         public LessonComponent(WebDriver driver, WebElement element) {
             this.driver = driver;
@@ -43,7 +49,7 @@ public class ProfessorLessonsPage extends PageObject {
             return element.findElement(By.className("et-name")).getText();
         }
 
-        public String getContent() {
+        public String getDescription() {
             return element.findElement(By.className("et-description")).getText();
         }
 
@@ -51,13 +57,6 @@ public class ProfessorLessonsPage extends PageObject {
             element.findElement(By.className("et-name")).click();
             return new ProfessorLessonPage(driver);
         }
-    }
-
-    @FindBy(css = ".et-content > div")
-    private List<WebElement> lessons;
-
-    public List<LessonComponent> getLessons() {
-        return lessons.stream().map(element -> new LessonComponent(driver, element)).collect(Collectors.toList());
     }
 
 }
