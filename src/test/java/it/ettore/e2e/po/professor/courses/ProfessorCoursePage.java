@@ -57,5 +57,9 @@ public class ProfessorCoursePage extends PageObject {
         return new ProfessorLessonsPage(driver);
     }
 
+    public ProfessorCourseAddPage editCourse() {
+        editButton.click();
+        return new ProfessorCourseAddPage(driver);
+    }
 }
 

@@ -17,7 +17,7 @@
                     <span th:text='${option.isEmpty() ? "Any category" : option}'></span>
                 </option>
             </select>
-            <input class="text-xl font-medium flex-2 min-w-0" name="text" type="text" placeholder="Type here to search.." th:value="${initialText}">
+            <input class="et-squared-input text-xl font-medium flex-2 min-w-0" name="text" type="text" placeholder="Type here to search.." th:value="${initialText}">
             <select class="text-xl font-medium flex-1 min-w-0" name="startingYear">
                 <option th:each='startingYear: ${new Object[]{"", 2023, 2022, 2021}}' th:value="${startingYear.toString()}" th:selected='${startingYear.toString().equals(initialStartingYear)}'
                         th:text='${startingYear.equals("") ? "Any year" : startingYear.toString()+"/"+(startingYear+1).toString()}'></option>

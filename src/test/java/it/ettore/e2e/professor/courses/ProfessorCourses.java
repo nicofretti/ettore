@@ -2,6 +2,7 @@ package it.ettore.e2e.professor.courses;
 
 import it.ettore.e2e.E2EBaseTest;
 import it.ettore.e2e.po.LoginPage;
+import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage.CourseComponent;
 import it.ettore.model.Course;
@@ -65,9 +66,14 @@ public class ProfessorCourses extends E2EBaseTest {
         assertEquals("Course name", courses.get(0).getName());
         assertEquals("(2023/2024)", courses.get(0).getPeriod());
         assertEquals("Course description", courses.get(0).getDescription());
-        courses.get(0).goTo();
+        ProfessorCoursePage coursePage = courses.get(0).goTo();
 
         // Should be in the details page for the course
         assertEquals(String.format("/professor/courses/%d", course.getId()), currentPath());
+
+        // Info in the course details page should match the course that we've created before
+        assertEquals("Course name", coursePage.getName());
+        assertEquals("(2023/2024)", coursePage.getPeriod());
+        assertEquals("Course description", coursePage.getDescription());
     }
 }

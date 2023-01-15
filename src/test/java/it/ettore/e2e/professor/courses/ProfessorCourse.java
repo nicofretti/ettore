@@ -15,7 +15,6 @@ import static org.junit.Assert.assertEquals;
 public class ProfessorCourse extends E2EBaseTest {
     @Autowired
     protected CourseRepository repoCourse;
-
     @Autowired
     protected UserRepository repoUser;
 
@@ -37,7 +36,6 @@ public class ProfessorCourse extends E2EBaseTest {
 
         loginPage.setEmail(email);
         loginPage.setPassword(password);
-
         loginPage.loginAsProfessor();
 
         driver.get(baseDomain() + String.format("/professor/courses/%d", course.getId()));

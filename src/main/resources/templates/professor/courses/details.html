@@ -27,17 +27,11 @@
         <!-- Description -->
         <p th:text="${course.getDescription()}" class="et-description mt-4">Course description</p>
     </div>
-    <!-- Lessons and Quiz -->
-    <div class="grid grid-cols-2 gap-4">
-        <a id="btn-goto-lessons" th:href="'/professor/courses/'+${course.getId()}+'/lessons'" class="et-flex-centered flex-col et-card px-5 py-10">
-            <i class="fa fa-file-alt fa-2x"></i>
-            <p class="text-xl">Lectures</p>
-        </a>
-        <a id="btn-goto-quizzes" th:href="'/professor/courses/'+${course.getId()}+'/quizzes'" class="et-flex-centered flex-col et-card px-5 py-10">
-            <i class="fa fa-clipboard-check fa-2x"></i>
-            <p class="text-xl">Quizzes</p>
-        </a>
-    </div>
+    <!-- Lessons -->
+    <a id="btn-goto-lessons" th:href="'/professor/courses/'+${course.getId()}+'/lessons'" class="et-flex-centered flex-col et-card px-5 py-10">
+        <i class="fa fa-file-alt fa-2x"></i>
+        <p class="text-xl">Lectures</p>
+    </a>
     <!-- Students -->
     <a id="btn-goto-manage" th:href="'/professor/courses/'+${course.getId()}+'/manage'" class="et-flex-centered flex-col et-card px-5 py-10">
         <i class="fa fa-users fa-2x"></i>

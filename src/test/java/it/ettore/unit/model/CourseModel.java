@@ -54,13 +54,28 @@ public class CourseModel {
         User professor = UserModel.dummyProfessor();
         Course course = dummyCourse(professor);
         course.setId(1);
-        assertEquals(course.toString(), "Course{id=1,name=Middle ages}");
+        assertEquals("Course{id=1,name=Middle ages}",course.toString());
     }
 
     @Test
     public void period() {
         User professor = UserModel.dummyProfessor();
         Course course = dummyCourse(professor);
-        assertEquals(course.formatPeriod(), "(2023/2024)");
+        assertEquals("(2023/2024)",course.formatPeriod());
     }
+
+    @Test
+    public void fromString() {
+        User professor = UserModel.dummyProfessor();
+        Course course = dummyCourse(professor);
+        assertEquals(Course.Category.History, Course.Category.fromString("History"));
+    }
+
+    @Test
+    public void toStringTest() {
+        User professor = UserModel.dummyProfessor();
+        Course course = dummyCourse(professor);
+        assertEquals("History", course.getCategory().toString());
+    }
+
 }
