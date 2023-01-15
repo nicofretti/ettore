@@ -73,6 +73,10 @@ button.et-button-disabled{
     filter: grayscale(1);
 }
 
+button.et-button-grayed-out{
+    filter: grayscale(1);
+}
+
 button.et-button-good{
     background-color: var(--color-green);
     color: var(--color-secondary);
@@ -165,7 +169,7 @@ button.et-button-bad{
     align-items: stretch;
     flex-direction: column;
     margin: 0 auto;
-    width: 40%;
+    width: 50%;
     gap: 1.5rem;
 }
 
@@ -210,4 +214,9 @@ button.et-button-bad{
 
     user-select: none;
     cursor: pointer;
+}
+
+input.et-squared-input, textarea.et-squared-input {
+    border: 1px solid #6b7280;
+    border-radius: 0;
 }

@@ -57,11 +57,10 @@ public class ProfessorCoursePage extends PageObject {
         gotoLessonsButton.click();
         return new ProfessorLessonsPage(driver);
     }
-
+    
     public ProfessorModifyLessonPage editLesson() {
         editButton.click();
         return new ProfessorModifyLessonPage(driver);
     }
-
 }
 

@@ -24,9 +24,9 @@ public class ProfessorCoursesPage extends PageObject {
     @FindBy(id = "btn-new-course")
     private WebElement addNewCourse;
 
-    public ProfessorModifyLessonPage newCourse() {
+    public ProfessorCourseAddPage newCourse() {
         addNewCourse.click();
-        return new ProfessorModifyLessonPage(driver);
+        return new ProfessorCourseAddPage(driver);
     }
 
     @EqualsAndHashCode

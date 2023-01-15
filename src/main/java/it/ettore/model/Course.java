@@ -14,6 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "startingYear"})})
 public class Course {
+    // These two are only used when rendering the search course template
+    @Transient
+    public boolean hasRequestedAlready;
+    @Transient
+    public boolean hasJoinedAlready;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -24,18 +29,15 @@ public class Course {
     private int startingYear;
     @Column(nullable = false)
     private Category category;
-
     @ManyToOne
     @JoinColumn(name = "professor_id", nullable = false)
     private User professor;
-
     @ManyToMany
     @JoinTable(name = "course_request", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> studentsRequesting = new ArrayList<>();
     @ManyToMany
     @JoinTable(name = "course_join", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> studentsJoined = new ArrayList<>();
-
     @OneToMany(mappedBy = "course")
     private List<Lesson> lessons = new ArrayList<>();
 
@@ -66,7 +68,7 @@ public class Course {
             case Music:
                 return "fa fa-music";
             case Languages:
-                return "fa-language";
+                return "fa fa-language";
             default:
                 return "fa fa-question";
         }
