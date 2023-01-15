@@ -168,11 +168,11 @@ public class Register extends E2EBaseTest {
         registerPage.setConfirmPassword("alien_spy");
 
         registerPage.tickProfessor();
-        registerPage.registerAsProfessor();
+        ProfessorCoursesPage coursesPage = registerPage.registerAsProfessor();
         assertEquals("I'm supposed to be in /professor/courses", "/professor/courses", currentPath());
 
-        driver.get(baseDomain() + "register");
-        registerPage = new RegisterPage(driver);
+        LoginPage loginPage = coursesPage.headerComponent().logout();
+        registerPage = loginPage.register();
         assertEquals("I'm supposed to be in /register", "/register", currentPath());
 
         // Try to register again, use the same email

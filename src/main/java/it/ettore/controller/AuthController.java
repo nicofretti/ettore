@@ -103,7 +103,8 @@ public class AuthController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
-        request.getSession().removeAttribute("PSW_HASH");
+        request.getSession().removeAttribute("ETTORE_EMAIL");
+        request.getSession().removeAttribute("ETTORE_PSW_HASH");
         return "redirect:/login";
     }
 

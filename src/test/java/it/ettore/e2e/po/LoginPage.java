@@ -27,7 +27,7 @@ public class LoginPage extends PageObject {
     @FindBy(id = "btn-login")
     private WebElement loginButton;
 
-    @FindBy(name = "btn-goto-register")
+    @FindBy(id = "btn-goto-register")
     private WebElement gotoRegisterButton;
 
     public void setEmail(String email) {
