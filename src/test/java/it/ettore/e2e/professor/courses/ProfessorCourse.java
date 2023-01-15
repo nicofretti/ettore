@@ -15,7 +15,6 @@ import static org.junit.Assert.assertEquals;
 public class ProfessorCourse extends E2EBaseTest {
     @Autowired
     protected CourseRepository repoCourse;
-
     @Autowired
     protected UserRepository repoUser;
 

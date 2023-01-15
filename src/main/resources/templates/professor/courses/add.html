@@ -43,6 +43,7 @@
                   placeholder="Course description">[[${course!=null ? course.getDescription(): ''}]]</textarea>
         <div class="flex flex-row mt-1">
             <button class="et-button-bad h-9 px-2 mr-auto"
+                    id="btn-delete"
                     th:if="${course != null}"
                     th:onclick="'document.location=\'/professor/courses/' + ${course.getId()} + '/delete\''"
                     type="button">

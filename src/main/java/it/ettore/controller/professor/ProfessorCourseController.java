@@ -25,7 +25,6 @@ public class ProfessorCourseController {
     private CourseRepository repoCourse;
     @Autowired
     private UserRepository repoUser;
-
     @Autowired
     private LessonRepository repoLesson;
 
