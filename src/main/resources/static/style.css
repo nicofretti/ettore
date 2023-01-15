@@ -215,3 +215,8 @@ button.et-button-bad{
     user-select: none;
     cursor: pointer;
 }
+
+input.et-squared-input, textarea.et-squared-input {
+    border: 1px solid #6b7280;
+    border-radius: 0;
+}
