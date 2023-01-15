@@ -15,7 +15,10 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(nullable = false)
+    // Fock ledjo some tests not passing :(
+    // Must be silver's fault\
+
+    @Column(nullable = false, unique = true)
     private String title;
     private String description;
     @Column(nullable = false, length = 1000)

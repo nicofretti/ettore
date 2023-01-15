@@ -47,8 +47,8 @@ public class ProfessorModifyLesson extends E2EBaseTest {
         professor.getCoursesTaught().add(course);
         repoUser.save(professor);
 
-        lessonOne = new Lesson("Lesson name", "Lesson description", "Lesson content", course);
-        lessonTwo = new Lesson("Lesson name 2", "Lesson description 2", "Lesson content 2", course);
+        lessonOne = new Lesson("# Lesson name 1", "Lesson description 1", "Lesson content", course);
+        lessonTwo = new Lesson("# Lesson name 2", "Lesson description 2", "Lesson content 2", course);
         repoLesson.saveAll(List.of(lessonOne, lessonTwo));
 
         course.getLessons().addAll(List.of(lessonOne, lessonTwo));
@@ -139,18 +139,18 @@ public class ProfessorModifyLesson extends E2EBaseTest {
     @Test
     public void addNewLessonCorrectness() {
         ProfessorModifyLessonPage modifyLessonPage = lessonsPage.newLesson();
-        modifyLessonPage.setTitle("Lesson name");
-        modifyLessonPage.setContent("# Lesson content");
-        modifyLessonPage.setDescription("Lesson description");
+        modifyLessonPage.setTitle("NEW LESSON");
+        modifyLessonPage.setContent("# Lesson content 11");
+        modifyLessonPage.setDescription("Lesson description 11");
         ProfessorLessonsPage lessonsPage2 = modifyLessonPage.saveLesson();
 
         assertEquals(course.getLessons().size() + 1, lessonsPage2.getLessons().size());
-        assertEquals("Lesson name", lessonsPage2.getLessons().get(0).getTitle());
-        assertEquals("Lesson description", lessonsPage2.getLessons().get(0).getDescription());
+        assertEquals("NEW LESSON", lessonsPage2.getLessons().get(course.getLessons().size()).getTitle());
+        assertEquals("Lesson description 11", lessonsPage2.getLessons().get(course.getLessons().size()).getDescription());
 
         //click on last lesson in the list to verify if also the content is correct
         ProfessorLessonPage lessonPage = lessonsPage2.getLessons().get(course.getLessons().size()).goTo();
-        assertEquals("# Lesson content", lessonPage.getContent());
+        assertEquals("# Lesson content 11", lessonPage.getContent());
     }
 
     /* Test modifying existing course */

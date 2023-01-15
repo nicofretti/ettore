@@ -26,13 +26,26 @@ public class ProfessorLessonController {
     @Autowired
     private CourseRepository repoCourse;
 
+    private boolean checkCourseAndProfessorOwnership(User professor, Optional<Course> maybeCourse, RedirectAttributes redirectAttributes) {
+        if (maybeCourse.isEmpty()) {
+            Utils.addRedirectionError(redirectAttributes, "Course not found");
+            return true;
+        }
+        Course course = maybeCourse.get();
+        if (course.getProfessor().getId() != professor.getId()) {
+            Utils.addRedirectionError(redirectAttributes, "You can't add a lesson to a course that you don't own");
+            return true;
+        }
+        return false;
+    }
+
     @GetMapping("/professor/courses/{id}/lessons")
-    public String lessonsPage(@PathVariable @NotNull long id, Model model, HttpServletRequest request) {
+    public String lessonsPage(@PathVariable @NotNull long id, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         User professor = Utils.loggedUser(request);
 
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
-        if (maybeCourse.isEmpty()) {
+        if (checkCourseAndProfessorOwnership(professor, maybeCourse, redirectAttributes)) {
             return "redirect:/professor/courses";
         }
         Course course = maybeCourse.get();
@@ -55,20 +68,21 @@ public class ProfessorLessonController {
     }
 
     @GetMapping("/professor/courses/{id}/lessons/{lessonId}")
-    public String lessonContentPage(@PathVariable @NotNull long id, @PathVariable @NotNull long lessonId, Model model, HttpServletRequest request) {
+    public String lessonContentPage(@PathVariable @NotNull long id, @PathVariable @NotNull long lessonId, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         User professor = Utils.loggedUser(request);
+
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
-        if (maybeCourse.isEmpty()) {
+        if (checkCourseAndProfessorOwnership(professor, maybeCourse, redirectAttributes)) {
             return "redirect:/professor/courses";
         }
+        Course course = maybeCourse.get();
 
         Optional<Lesson> maybeLesson = repoLesson.findById(lessonId);
         if (maybeLesson.isEmpty()) {
             return "redirect:/professor/lessons";
         }
         Lesson lesson = maybeLesson.get();
-        Course course = lesson.getCourse();
 
         model.addAllAttributes(
                 Map.of(
@@ -89,15 +103,19 @@ public class ProfessorLessonController {
     }
 
     @GetMapping(value = "/professor/courses/{id}/lessons/add")
-    public String lessonAddPage(@PathVariable @NotNull long id, Model model, HttpServletRequest request) {
+    public String lessonAddPage(@PathVariable @NotNull long id, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         User professor = Utils.loggedUser(request);
 
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
-        if (maybeCourse.isEmpty()) {
+        if (checkCourseAndProfessorOwnership(professor, maybeCourse, redirectAttributes)) {
             return "redirect:/professor/courses";
         }
         Course course = maybeCourse.get();
+        if (course.getProfessor().getId() != professor.getId()) {
+            Utils.addRedirectionError(redirectAttributes, "You can't add a lesson to a course that you don't own");
+            return "redirect:/professor/courses";
+        }
         // Add attributes
         model.addAllAttributes(
                 Map.of(
@@ -123,12 +141,17 @@ public class ProfessorLessonController {
                             HttpServletRequest request,
                             RedirectAttributes redirectAttributes) {
         User professor = Utils.loggedUser(request);
+
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
-        if (maybeCourse.isEmpty()) {
+        if (checkCourseAndProfessorOwnership(professor, maybeCourse, redirectAttributes)) {
             return "redirect:/professor/courses";
         }
         Course course = maybeCourse.get();
+        if (course.getProfessor().getId() != professor.getId()) {
+            Utils.addRedirectionError(redirectAttributes, "You can't add a lesson to a course that you don't own");
+            return "redirect:/professor/courses";
+        }
         Lesson lesson;
         // Errors with lesson parameters
         try {
@@ -153,18 +176,25 @@ public class ProfessorLessonController {
     }
 
     @GetMapping(value = "/professor/courses/{id}/lessons/{lessonId}/edit")
-    public String lessonEditPage(@PathVariable @NotNull long id, @PathVariable @NotNull long lessonId, Model model, HttpServletRequest request) {
+    public String lessonEditPage(@PathVariable @NotNull long id, @PathVariable @NotNull long lessonId, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        User professor = Utils.loggedUser(request);
+
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
-        if (maybeCourse.isEmpty()) {
-            return "redirect:/professor/courses/";
+        if (checkCourseAndProfessorOwnership(professor, maybeCourse, redirectAttributes)) {
+            return "redirect:/professor/courses";
+        }
+
+        Course course = maybeCourse.get();
+        if (course.getProfessor().getId() != professor.getId()) {
+            Utils.addRedirectionError(redirectAttributes, "You can't edit a lesson to a course that you don't own");
+            return "redirect:/professor/courses";
         }
         Optional<Lesson> maybeLesson = repoLesson.findById(lessonId);
         // On wrong ID, redirect to lessons list
         if (maybeLesson.isEmpty()) {
             return String.format("redirect:/professor/courses/%d/lessons", id);
         }
-        User professor = Utils.loggedUser(request);
         Lesson lesson = maybeLesson.get();
         model.addAllAttributes(
                 Map.of(
@@ -191,13 +221,20 @@ public class ProfessorLessonController {
                              Model model,
                              HttpServletRequest request,
                              RedirectAttributes redirectAttributes) {
+        // TODO: Lesson that already exists
         User professor = Utils.loggedUser(request);
+
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
-        if (maybeCourse.isEmpty()) {
+        if (checkCourseAndProfessorOwnership(professor, maybeCourse, redirectAttributes)) {
             return "redirect:/professor/courses";
         }
+
         Course course = maybeCourse.get();
+        if (course.getProfessor().getId() != professor.getId()) {
+            Utils.addRedirectionError(redirectAttributes, "You can't edit a lesson to a course that you don't own");
+            return "redirect:/professor/courses";
+        }
 
         Optional<Lesson> maybeLesson = repoLesson.findById(lessonId);
         // On wrong ID, redirect to lessons list
@@ -206,17 +243,11 @@ public class ProfessorLessonController {
         }
         Lesson lesson = maybeLesson.get();
         // Errors with lesson parameters
+        // Errors with database
         try {
             lesson.setTitle(title);
             lesson.setDescription(description.isBlank() ? null : description);
             lesson.setContent(content);
-        } catch (Exception exc) {
-            Utils.addRedirectionError(redirectAttributes, "Parameters errors: " + exc.getClass().getCanonicalName());
-            redirectAttributes.addFlashAttribute("lesson", lesson);
-            return String.format("/professor/courses/%d/lessons/add", id);
-        }
-        // Errors with database
-        try {
             repoLesson.save(lesson);
         } catch (Exception exc) {
             if (Utils.IsCause(exc, DataIntegrityViolationException.class)) {
@@ -231,39 +262,31 @@ public class ProfessorLessonController {
     }
 
     @GetMapping(value = "/professor/courses/{id}/lessons/{lessonId}/delete")
-    public String lessonDelete(@PathVariable @NotNull long id, @PathVariable @NotNull long lessonId, Model model, HttpServletRequest request) {
+    public String lessonDelete(@PathVariable @NotNull long id, @PathVariable @NotNull long lessonId, Model model, HttpServletRequest request
+            , RedirectAttributes redirectAttributes) {
         User professor = Utils.loggedUser(request);
+
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
-        if (maybeCourse.isEmpty()) {
+        if (checkCourseAndProfessorOwnership(professor, maybeCourse, redirectAttributes)) {
             return "redirect:/professor/courses";
         }
+
         Course course = maybeCourse.get();
+        if (course.getProfessor().getId() != professor.getId()) {
+            Utils.addRedirectionError(redirectAttributes, "You can't delete a lesson to a course that you don't own");
+            return "redirect:/professor/courses";
+        }
 
         Optional<Lesson> maybeLesson = repoLesson.findById(lessonId);
         // On wrong ID, redirect to lessons list
         if (maybeLesson.isEmpty()) {
             return String.format("redirect:/professor/courses/%d/lessons", id);
         }
-        try {
-            repoLesson.delete(maybeLesson.get());
-        } catch (Exception exc) {
-            Utils.addError(model, "Error while deleting lesson: " + exc.getClass().getCanonicalName());
-            model.addAllAttributes(
-                    Map.of(
-                            "user", professor,
-                            "breadcrumbs", List.of(
-                                    new Breadcrumb("Courses", "/professor/courses"),
-                                    new Breadcrumb(course.getName(), String.format("/professor/courses/%d", id)),
-                                    new Breadcrumb("Edit", String.format("/professor/courses/%d/lessons/%d/edit", id, lessonId))
-                            ),
-                            "error", "Course already exists",
-                            "course", course,
-                            "btnUndo", String.format("/professor/courses/%d/lessons/%d/delete", id, lessonId)
-                    )
-            );
-            return String.format("/professor/courses/%d/lessons/%d/edit", id, lessonId);
-        }
+
+        // Try/catch to avoid errors with database
+        repoLesson.delete(maybeLesson.get());
+
         return String.format("redirect:/professor/courses/%d/lessons", id);
     }
 }

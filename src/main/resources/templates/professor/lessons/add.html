@@ -10,6 +10,7 @@
     <link href="../../../static/style.css" rel="stylesheet">-->
 </head>
 <body onload="changeInput()">
+<div th:replace="common/errors"/>
 <!-- Header with logo, logout and breadcrumbs -->
 <div th:replace="common/header"></div>
 <!-- Content -->
@@ -61,10 +62,6 @@
             </button>
         </div>
     </form>
-    <!-- If error -->
-    <div class="mt-1" th:if="${error}">
-        <span class="text-red-400 p-2" th:text="${error}"></span>
-    </div>
 </div>
 </body>
 <script>
