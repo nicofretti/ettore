@@ -209,6 +209,7 @@ public class ProfessorCourseController {
             } else {
                 Utils.addRedirectionError(redirectAttributes, "Error while adding course: " + exc.getClass().getCanonicalName());
             }
+            redirectAttributes.addFlashAttribute("course", course);
             return "redirect:/professor/courses/add";
         }
 

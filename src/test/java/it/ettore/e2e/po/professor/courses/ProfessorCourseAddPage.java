@@ -41,6 +41,10 @@ public class ProfessorCourseAddPage extends PageObject {
         select.selectByValue(category.toString());
     }
 
+    public String getCourseName() {
+        return inputName.getAttribute("value");
+    }
+
     // We need this because setCourseName("") doesn't trigger oninput on the JS side. We need to send one character and
     // then clear the input field not by calling .clear() but by sending a backspace
     public void clearName() {

@@ -130,6 +130,9 @@ public class ProfessorCourseAdd extends E2EBaseTest {
         // Check that the error message is shown
         ErrorsComponent errorsComponent = new ErrorsComponent(driver);
         assertEquals(Set.of("Course already exists"), errorsComponent.getErrorMessageSet());
+
+        // Check that the form is still populated after this failed attempt
+        assertEquals("Course", addCoursePage.getCourseName());
     }
 
     /**
