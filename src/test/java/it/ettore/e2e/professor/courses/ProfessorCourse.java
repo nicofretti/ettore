@@ -38,7 +38,7 @@ public class ProfessorCourse extends E2EBaseTest {
         loginPage.setPassword(password);
         loginPage.loginAsProfessor();
 
-        driver.get(baseDomain() + String.format("/professor/courses/%d", course.getId()));
+        driver.get(baseDomain() + String.format("professor/courses/%d", course.getId()));
 
         ProfessorCoursePage coursePage = new ProfessorCoursePage(driver);
 
