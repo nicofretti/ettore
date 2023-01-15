@@ -1,6 +1,7 @@
 package it.ettore.e2e.professor.lessons;
 
 import it.ettore.e2e.E2EBaseTest;
+import it.ettore.e2e.po.ErrorsComponent;
 import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
@@ -14,8 +15,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class ProfessorModifyLesson extends E2EBaseTest {
     @Autowired
@@ -83,7 +85,7 @@ public class ProfessorModifyLesson extends E2EBaseTest {
                 new Breadcrumb("COURSES", "/professor/courses"),
                 new Breadcrumb("COURSE NAME", String.format("/professor/courses/%d", course.getId())),
                 new Breadcrumb("LESSONS", String.format("/professor/courses/%d/lessons", course.getId())),
-                new Breadcrumb("LESSON NAME", String.format("/professor/courses/%d/lessons/%d", course.getId(), lessonOne.getId()))
+                new Breadcrumb("# LESSON NAME 1", String.format("/professor/courses/%d/lessons/%d", course.getId(), lessonOne.getId()))
         ), lessonPage.headerComponent().getBreadcrumbs());
 
         ProfessorModifyLessonPage modifyLessonPage = lessonPage.editLesson();
@@ -91,7 +93,7 @@ public class ProfessorModifyLesson extends E2EBaseTest {
                 new Breadcrumb("COURSES", "/professor/courses"),
                 new Breadcrumb("COURSE NAME", String.format("/professor/courses/%d", course.getId())),
                 new Breadcrumb("LESSONS", String.format("/professor/courses/%d/lessons", course.getId())),
-                new Breadcrumb("LESSON NAME", String.format("/professor/courses/%d/lessons/%d", course.getId(), lessonOne.getId())),
+                new Breadcrumb("# LESSON NAME 1", String.format("/professor/courses/%d/lessons/%d", course.getId(), lessonOne.getId())),
                 new Breadcrumb("EDIT", String.format("/professor/courses/%d/lessons/%d/edit", course.getId(), lessonOne.getId()))
         ), modifyLessonPage.headerComponent().getBreadcrumbs());
     }
@@ -133,6 +135,39 @@ public class ProfessorModifyLesson extends E2EBaseTest {
         //click on save
         ProfessorLessonsPage lessonsPage2 = modifyLessonPage.saveLesson();
         assertEquals(course.getLessons().size() + 1, lessonsPage2.getLessons().size());
+    }
+
+    /*Try adding the same lesson title twice*/
+    @Test
+    public void addTwiceSameLesson() {
+        ProfessorModifyLessonPage modifyLessonPage = lessonsPage.newLesson();
+        modifyLessonPage.setTitle("Lesson name");
+        modifyLessonPage.setContent("# Lesson content");
+        modifyLessonPage.setDescription("Lesson description");
+        ProfessorLessonsPage lessonsPage2 = modifyLessonPage.saveLesson();
+        assertEquals(course.getLessons().size() + 1, lessonsPage2.getLessons().size());
+        ProfessorModifyLessonPage modifyLessonPage2 = lessonsPage2.newLesson();
+        modifyLessonPage2.setTitle("Lesson name");
+        modifyLessonPage2.setContent("# Lesson content");
+        modifyLessonPage2.setDescription("Lesson description");
+        ProfessorLessonsPage lessonsPage3 = modifyLessonPage2.saveLesson();
+        // Check that the error message is shown
+        ErrorsComponent errorsComponent = new ErrorsComponent(driver);
+        assertEquals(Set.of("Lesson already exists"), errorsComponent.getErrorMessageSet());
+    }
+
+    /* Tests that Save button is disabled when we have empty fields */
+    @Test
+    public void saveButtonDisabledWhenEmptyFields() {
+        ProfessorModifyLessonPage modifyLessonPage = lessonsPage.newLesson();
+        assertFalse(modifyLessonPage.isSaveButtonClickable());
+        modifyLessonPage.setTitle("Lesson name");
+        assertFalse(modifyLessonPage.isSaveButtonClickable());
+        modifyLessonPage.setContent("# Lesson content");
+        assertFalse(modifyLessonPage.isSaveButtonClickable());
+        modifyLessonPage.setDescription("Lesson description");
+        assertTrue(modifyLessonPage.isSaveButtonClickable());
+
     }
 
     /*Test the correctness of adding new lesson*/
@@ -247,5 +282,4 @@ public class ProfessorModifyLesson extends E2EBaseTest {
         lessonsPage = courseDetails.goToLessons();
         assertEquals(course.getLessons().size(), lessonsPage.getLessons().size());
     }
-
 }

@@ -1,7 +1,9 @@
 package it.ettore.e2e.po.professor.lessons;
 
+import it.ettore.e2e.po.ErrorsComponent;
 import it.ettore.e2e.po.Header;
 import it.ettore.e2e.po.PageObject;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -24,6 +26,10 @@ public class ProfessorModifyLessonPage extends PageObject {
 
     public Header headerComponent() {
         return new Header(driver);
+    }
+
+    public ErrorsComponent errorComponent() {
+        return new ErrorsComponent(driver);
     }
 
     public void setTitle(String title) {
@@ -51,4 +57,14 @@ public class ProfessorModifyLessonPage extends PageObject {
         cancelButton.click();
         return new ProfessorLessonsPage(driver);
     }
+
+    public boolean isSaveButtonClickable() {
+        return !saveButton.getCssValue("pointer-events").equals("none");
+    }
+
+    public void clearDescription() {
+        description.clear();
+        description.sendKeys("x" + Keys.BACK_SPACE);
+    }
+
 }
