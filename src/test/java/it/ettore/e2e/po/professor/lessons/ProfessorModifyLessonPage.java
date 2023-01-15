@@ -7,6 +7,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class ProfessorModifyLessonPage extends PageObject {
+    @FindBy(name = "title")
+    private WebElement title;
+    @FindBy(name = "description")
+    private WebElement description;
+    @FindBy(name = "content")
+    private WebElement content;
+    @FindBy(id = "btn-save-lesson")
+    private WebElement saveButton;
+    @FindBy(id = "btn-cancel-lesson")
+    private WebElement cancelButton;
+
     public ProfessorModifyLessonPage(WebDriver driver) {
         super(driver);
     }
@@ -14,21 +25,6 @@ public class ProfessorModifyLessonPage extends PageObject {
     public Header headerComponent() {
         return new Header(driver);
     }
-
-    @FindBy(name = "title")
-    private WebElement title;
-
-    @FindBy(name = "description")
-    private WebElement description;
-
-    @FindBy(name = "content")
-    private WebElement content;
-
-    @FindBy(id = "btn-save-lesson")
-    private WebElement saveButton;
-
-    @FindBy(id = "btn-cancel-lesson")
-    private WebElement cancelButton;
 
     public void setTitle(String title) {
         this.title.clear();
@@ -43,6 +39,7 @@ public class ProfessorModifyLessonPage extends PageObject {
     public void setContent(String content) {
         this.content.clear();
         this.content.sendKeys(content);
+        this.content.click();
     }
 
     public ProfessorLessonsPage saveLesson() {

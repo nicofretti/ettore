@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -119,7 +120,8 @@ public class ProfessorLessonController {
                             @RequestParam String description,
                             @RequestParam String content,
                             Model model,
-                            HttpServletRequest request) {
+                            HttpServletRequest request,
+                            RedirectAttributes redirectAttributes) {
         User professor = Utils.loggedUser(request);
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
@@ -132,44 +134,20 @@ public class ProfessorLessonController {
         try {
             lesson = new Lesson(title, description.isBlank() ? null : description, content, course);
         } catch (Exception exc) {
-            Utils.addError(model, "Parameters errors: " + exc.getClass().getCanonicalName());
-            model.addAllAttributes(
-                    Map.of(
-                            "user", professor,
-                            "breadcrumbs", List.of(
-                                    new Breadcrumb("Courses", "/professor/courses"),
-                                    new Breadcrumb(course.getName(), String.format("/professor/courses/%d", id)),
-                                    new Breadcrumb("Lessons", String.format("/professor/courses/%d/lessons", id)),
-                                    new Breadcrumb("Add", String.format("/professor/courses/%d/lessons/add", id))
-                            ),
-                            "btnUndo", String.format("/professor/courses/%d/lessons", id)
-                    )
-            );
-            return String.format("/professor/courses/%d/lessons/add", id);
+            Utils.addRedirectionError(redirectAttributes, "Parameters errors: " + exc.getClass().getCanonicalName());
+            return String.format("redirect:/professor/courses/%d/lessons/add", id);
         }
         // Errors with database
         try {
             repoLesson.save(lesson);
         } catch (Exception exc) {
             if (Utils.IsCause(exc, DataIntegrityViolationException.class)) {
-                Utils.addError(model, "Lesson already exists");
+                Utils.addRedirectionError(redirectAttributes, "Lesson already exists");
             } else {
-                Utils.addError(model, "Error while adding lesson: " + exc.getClass().getCanonicalName());
+                Utils.addRedirectionError(redirectAttributes, "Error while adding lesson: " + exc.getClass().getCanonicalName());
             }
-            model.addAllAttributes(
-                    Map.of(
-                            "user", professor,
-                            "breadcrumbs", List.of(
-                                    new Breadcrumb("Courses", "/professor/courses"),
-                                    new Breadcrumb(course.getName(), String.format("/professor/courses/%d", id)),
-                                    new Breadcrumb("Lessons", String.format("/professor/courses/%d/lessons/add", id))
-                            ),
-                            "error", "Course already exists",
-                            "course", course,
-                            "btnUndo", "/professor/courses"
-                    )
-            );
-            return String.format("/professor/courses/%d/lessons/add", id);
+            redirectAttributes.addFlashAttribute("lesson", lesson);
+            return String.format("redirect:/professor/courses/%d/lessons/add", id);
         }
         return String.format("redirect:/professor/courses/%d/lessons", id);
     }
@@ -211,7 +189,8 @@ public class ProfessorLessonController {
                              @RequestParam String description,
                              @RequestParam String content,
                              Model model,
-                             HttpServletRequest request) {
+                             HttpServletRequest request,
+                             RedirectAttributes redirectAttributes) {
         User professor = Utils.loggedUser(request);
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
@@ -232,19 +211,8 @@ public class ProfessorLessonController {
             lesson.setDescription(description.isBlank() ? null : description);
             lesson.setContent(content);
         } catch (Exception exc) {
-            Utils.addError(model, "Parameters errors: " + exc.getClass().getCanonicalName());
-            model.addAllAttributes(
-                    Map.of(
-                            "user", professor,
-                            "breadcrumbs", List.of(
-                                    new Breadcrumb("Courses", "/professor/courses"),
-                                    new Breadcrumb(course.getName(), String.format("/professor/courses/%d", id)),
-                                    new Breadcrumb("Lessons", String.format("/professor/courses/%d/lessons", id)),
-                                    new Breadcrumb("Edit", String.format("/professor/courses/%d/lessons/%d/edit", id, lessonId))
-                            ),
-                            "btnUndo", String.format("/professor/courses/%d/lessons", id)
-                    )
-            );
+            Utils.addRedirectionError(redirectAttributes, "Parameters errors: " + exc.getClass().getCanonicalName());
+            redirectAttributes.addFlashAttribute("lesson", lesson);
             return String.format("/professor/courses/%d/lessons/add", id);
         }
         // Errors with database
@@ -252,24 +220,11 @@ public class ProfessorLessonController {
             repoLesson.save(lesson);
         } catch (Exception exc) {
             if (Utils.IsCause(exc, DataIntegrityViolationException.class)) {
-                Utils.addError(model, "Lesson already exists");
+                Utils.addRedirectionError(redirectAttributes, "Lesson already exists");
             } else {
-                Utils.addError(model, "Error while adding lesson: " + exc.getClass().getCanonicalName());
+                Utils.addRedirectionError(redirectAttributes, "Error while adding lesson: " + exc.getClass().getCanonicalName());
             }
-            model.addAllAttributes(
-                    Map.of(
-                            "user", professor,
-                            "breadcrumbs", List.of(
-                                    new Breadcrumb("Courses", "/professor/courses"),
-                                    new Breadcrumb(course.getName(), String.format("/professor/courses/%d", id)),
-                                    new Breadcrumb("Edit", String.format("/professor/courses/%d/lessons/%d/edit", id, lessonId))
-                            ),
-                            "error", "Course already exists",
-                            "course", course,
-                            "btnUndo", String.format("/professor/courses/%d/lessons/%d/delete", id, lessonId)
-
-                    )
-            );
+            redirectAttributes.addFlashAttribute("lesson", lesson);
             return String.format("/professor/courses/%d/lessons/%d/edit", id, lessonId);
         }
         return String.format("redirect:/professor/courses/%d/lessons", id);

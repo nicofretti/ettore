@@ -127,8 +127,8 @@ public class ProfessorModifyLesson extends E2EBaseTest {
 
         //fill the form
         modifyLessonPage.setTitle("Lesson name");
-        modifyLessonPage.setDescription("Lesson description");
         modifyLessonPage.setContent("# Lesson content");
+        modifyLessonPage.setDescription("Lesson description");
 
         //click on save
         ProfessorLessonsPage lessonsPage2 = modifyLessonPage.saveLesson();
@@ -140,8 +140,8 @@ public class ProfessorModifyLesson extends E2EBaseTest {
     public void addNewLessonCorrectness() {
         ProfessorModifyLessonPage modifyLessonPage = lessonsPage.newLesson();
         modifyLessonPage.setTitle("Lesson name");
-        modifyLessonPage.setDescription("Lesson description");
         modifyLessonPage.setContent("# Lesson content");
+        modifyLessonPage.setDescription("Lesson description");
         ProfessorLessonsPage lessonsPage2 = modifyLessonPage.saveLesson();
 
         assertEquals(course.getLessons().size() + 1, lessonsPage2.getLessons().size());
@@ -165,8 +165,8 @@ public class ProfessorModifyLesson extends E2EBaseTest {
 
         //fill the form
         modifyLessonPage.setTitle("Lesson name");
-        modifyLessonPage.setDescription("Lesson description");
         modifyLessonPage.setContent("# Lesson content");
+        modifyLessonPage.setDescription("Lesson description");
 
         //click on save
         ProfessorLessonsPage lessonsPage2 = modifyLessonPage.saveLesson();
@@ -180,8 +180,8 @@ public class ProfessorModifyLesson extends E2EBaseTest {
 
         //fill the formLesson
         modifyLessonPage2.setTitle("New name 2");
-        modifyLessonPage2.setDescription("New Lesson description 2");
         modifyLessonPage2.setContent("# Lesson content 2");
+        modifyLessonPage2.setDescription("New Lesson description 2");
 
         //click on save
         lessonsPage2 = modifyLessonPage2.saveLesson();
@@ -199,8 +199,8 @@ public class ProfessorModifyLesson extends E2EBaseTest {
 
         //fill the formLesson
         modifyLessonPage2.setTitle("New name 2");
-        modifyLessonPage2.setDescription("New Lesson description 2");
         modifyLessonPage2.setContent("# Lesson content 2");
+        modifyLessonPage2.setDescription("New Lesson description 2");
 
         //click on save
         lessonsPage = modifyLessonPage2.saveLesson();
