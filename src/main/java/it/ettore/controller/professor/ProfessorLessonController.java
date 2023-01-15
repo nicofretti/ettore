@@ -272,7 +272,7 @@ public class ProfessorLessonController {
             );
             return String.format("/professor/courses/%d/lessons/%d/edit", id, lessonId);
         }
-        return String.format("redirect:/professor/courses/%d/lessons/%d", id, lessonId);
+        return String.format("redirect:/professor/courses/%d/lessons", id);
     }
 
     @GetMapping(value = "/professor/courses/{id}/lessons/{lessonId}/delete")
