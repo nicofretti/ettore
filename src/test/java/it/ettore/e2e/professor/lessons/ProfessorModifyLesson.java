@@ -119,7 +119,7 @@ public class ProfessorModifyLesson extends E2EBaseTest {
     @Test
     public void addNewLesson() {
         assertEquals(String.format("/professor/courses/%d/lessons", professor.getCoursesTaught().get(0).getId()), currentPath());
-        assertEquals(0, lessonsPage.getLessons().size()-2);
+        assertEquals(course.getLessons().size(), lessonsPage.getLessons().size());
 
         //click on add new lesson
         ProfessorModifyLessonPage modifyLessonPage = lessonsPage.newLesson();
@@ -132,14 +132,32 @@ public class ProfessorModifyLesson extends E2EBaseTest {
 
         //click on save
         ProfessorLessonsPage lessonsPage2 = modifyLessonPage.saveLesson();
-        assertEquals(1, lessonsPage2.getLessons().size()-2);
+        assertEquals(course.getLessons().size()+1, lessonsPage2.getLessons().size());
+    }
+
+    /*Test the correctness of adding new lesson*/
+    @Test
+    public void addNewLessonCorrectness() {
+        ProfessorModifyLessonPage modifyLessonPage = lessonsPage.newLesson();
+        modifyLessonPage.setTitle("Lesson name");
+        modifyLessonPage.setDescription("Lesson description");
+        modifyLessonPage.setContent("# Lesson content");
+        ProfessorLessonsPage lessonsPage2 = modifyLessonPage.saveLesson();
+
+        assertEquals(course.getLessons().size()+1, lessonsPage2.getLessons().size());
+        assertEquals("Lesson name", lessonsPage2.getLessons().get(0).getTitle());
+        assertEquals("Lesson description", lessonsPage2.getLessons().get(0).getDescription());
+
+        //click on last lesson in the list to verify if also the content is correct
+        ProfessorLessonPage lessonPage = lessonsPage2.getLessons().get(course.getLessons().size()).goTo();
+        assertEquals("# Lesson content", lessonPage.getContent());
     }
 
     /* Test modifying existing course */
     @Test
     public void modifyCourse() {
         assertEquals(String.format("/professor/courses/%d/lessons", professor.getCoursesTaught().get(0).getId()), currentPath());
-        assertEquals(0, lessonsPage.getLessons().size()-2);
+        assertEquals(course.getLessons().size(), lessonsPage.getLessons().size());
 
         //click on add new lesson
         ProfessorModifyLessonPage modifyLessonPage = lessonsPage.newLesson();
@@ -152,7 +170,7 @@ public class ProfessorModifyLesson extends E2EBaseTest {
 
         //click on save
         ProfessorLessonsPage lessonsPage2 = modifyLessonPage.saveLesson();
-        assertEquals(1, lessonsPage2.getLessons().size()-2);
+        assertEquals(course.getLessons().size()+1, lessonsPage2.getLessons().size());
 
         //click on lesson
         ProfessorLessonPage lessonPage = lessonsPage2.getLessons().get(0).goTo();
@@ -168,7 +186,32 @@ public class ProfessorModifyLesson extends E2EBaseTest {
         //click on save
         lessonsPage2 = modifyLessonPage2.saveLesson();
 
-        assertEquals(1, lessonsPage2.getLessons().size()-2);
+        assertEquals(course.getLessons().size()+1, lessonsPage2.getLessons().size());
+    }
+
+    /* Test modifying existing course correctness */
+    @Test
+    public void modifyCourseCorrectness() {
+        ProfessorLessonPage lessonPage = lessonsPage.getLessons().get(0).goTo();
+
+        //click on edit
+        ProfessorModifyLessonPage modifyLessonPage2 = lessonPage.editLesson();
+
+        //fill the formLesson
+        modifyLessonPage2.setTitle("New name 2");
+        modifyLessonPage2.setDescription("New Lesson description 2");
+        modifyLessonPage2.setContent("# Lesson content 2");
+
+        //click on save
+        lessonsPage = modifyLessonPage2.saveLesson();
+
+        assertEquals(course.getLessons().size(), lessonsPage.getLessons().size());
+        assertEquals("New name 2", lessonsPage.getLessons().get(0).getTitle());
+        assertEquals("New Lesson description 2", lessonsPage.getLessons().get(0).getDescription());
+
+        //click on last lesson in the list to verify if also the content is correct
+        ProfessorLessonPage lessonPage2 = lessonsPage.getLessons().get(0).goTo();
+        assertEquals("# Lesson content 2", lessonPage2.getContent());
     }
 
     /* Test deleting existing lesson */
@@ -185,6 +228,24 @@ public class ProfessorModifyLesson extends E2EBaseTest {
         lessonsPage = modifyLessonPage.cancelLesson();
         assertEquals(String.format("/professor/courses/%d/lessons", course.getId()), currentPath());
         assertEquals(course.getLessons().size()-1, lessonsPage.getLessons().size());
+    }
+
+    /*Testing that no anomalies happen when modifying procedure is not completed correctly */
+    @Test
+    public void professorDecidesToLogout (){
+        assertEquals(course.getLessons().size(),lessonsPage.getLessons().size());
+        ProfessorModifyLessonPage modifyLessonPage = lessonsPage.newLesson();
+        modifyLessonPage.setTitle("Lesson name");
+        modifyLessonPage.setDescription("Lesson description");
+        modifyLessonPage.setContent("# Lesson content");
+
+        LoginPage loginPage =modifyLessonPage.headerComponent().logout();
+        loginPage.setEmail("some.professor@ettore.it");
+        loginPage.setPassword("SomeSecurePassword");
+        coursesPage = loginPage.loginAsProfessor();
+        courseDetails = coursesPage.getCourses().get(0).goTo();
+        lessonsPage = courseDetails.goToLessons();
+        assertEquals(course.getLessons().size(),lessonsPage.getLessons().size());
     }
 
 }
