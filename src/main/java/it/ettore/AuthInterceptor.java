@@ -66,6 +66,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             //  Going to /style.css or /logout is always ok
             if (Set.of(
                     "/style.css",
+                    "/markdown.css",
                     "/logout"
             ).contains(request.getServletPath())) {
                 return HandlerInterceptor.super.preHandle(request, response, handler);
