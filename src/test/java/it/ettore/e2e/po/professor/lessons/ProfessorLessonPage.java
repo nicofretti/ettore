@@ -7,6 +7,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class ProfessorLessonPage extends PageObject {
+    @FindBy(className = "et-name")
+    private WebElement title;
+    @FindBy(className = "markdown-body")
+    private WebElement content;
+    @FindBy(id = "btn-edit-lesson")
+    private WebElement editButton;
+
     public ProfessorLessonPage(WebDriver driver) {
         super(driver);
     }
@@ -15,21 +22,12 @@ public class ProfessorLessonPage extends PageObject {
         return new Header(driver);
     }
 
-    @FindBy(className = "et-name")
-    private WebElement title;
-
-    @FindBy(className = "et-description")
-    private WebElement content;
-
-    @FindBy(id = "btn-edit-lesson")
-    private WebElement editButton;
-
     public String getTitle() {
         return title.getText();
     }
 
     public String getContent() {
-        return content.getText();
+        return content.getAttribute("data-content");
     }
 
     public ProfessorModifyLessonPage editLesson() {
