@@ -76,14 +76,6 @@ public class StudentCourseController {
         return "student/courses/details";
     }
 
-    @GetMapping(value = "/student/courses/{id}/lessons")
-    public String courseLessonsPage(@PathVariable @NotNull long id, Model model, HttpServletRequest request) {
-        User student = Utils.loggedUser(request);
-
-        // TODO
-        return "todo";
-    }
-
     @GetMapping(value = "/student/courses/{id}/unjoin")
     public String courseUnjoin(@PathVariable @NotNull long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         User student = Utils.loggedUser(request);
