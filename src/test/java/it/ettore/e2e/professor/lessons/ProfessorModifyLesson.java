@@ -1,7 +1,6 @@
 package it.ettore.e2e.professor.lessons;
 
 import it.ettore.e2e.E2EBaseTest;
-import it.ettore.e2e.po.ErrorsComponent;
 import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
@@ -15,7 +14,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -151,9 +149,10 @@ public class ProfessorModifyLesson extends E2EBaseTest {
         modifyLessonPage2.setContent("# Lesson content");
         modifyLessonPage2.setDescription("Lesson description");
         ProfessorLessonsPage lessonsPage3 = modifyLessonPage2.saveLesson();
-        // Check that the error message is shown
-        ErrorsComponent errorsComponent = new ErrorsComponent(driver);
-        assertEquals(Set.of("Lesson already exists"), errorsComponent.getErrorMessageSet());
+        // Since the lesson has the same name of the previous now the lesson has name "Lesson name(1)"
+        assertEquals(course.getLessons().size() + 2, lessonsPage3.getLessons().size());
+        assertEquals("Lesson name(1)", lessonsPage3.getLessons().get(3).getTitle());
+
     }
 
     /* Tests that Save button is disabled when we have empty fields */

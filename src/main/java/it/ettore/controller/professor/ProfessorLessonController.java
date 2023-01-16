@@ -55,6 +55,20 @@ public class ProfessorLessonController {
         return true;
     }
 
+    /*
+     *  Check exists a lesson with the same title, if exists the method adds "(1)" to the title recursively
+     * */
+    public String correctLessonTitle(String title, List<Lesson> lessons) {
+        for (Lesson lesson : lessons) {
+            if (lesson.getTitle().equals(title)) {
+                title += "(1)";
+                title = correctLessonTitle(title, lessons);
+                break;
+            }
+        }
+        return title;
+    }
+
     @GetMapping("/professor/courses/{id}/lessons")
     public String lessonsPage(@PathVariable @NotNull long id, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         User professor = Utils.loggedUser(request);
@@ -155,7 +169,6 @@ public class ProfessorLessonController {
                             Model model,
                             HttpServletRequest request,
                             RedirectAttributes redirectAttributes) {
-        // TODO: lesson with same name
         User professor = Utils.loggedUser(request);
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
@@ -165,14 +178,10 @@ public class ProfessorLessonController {
 
         Course course = maybeCourse.get();
         Lesson lesson;
-        // Errors with lesson parameters
-        try {
-            lesson = new Lesson(title, description.isBlank() ? null : description, content, course);
-        } catch (Exception exc) {
-            Utils.addRedirectionError(redirectAttributes, "Parameters errors: " + exc.getClass().getCanonicalName());
-            return String.format("redirect:/professor/courses/%d/lessons/add", id);
-        }
+        // Check if the lesson has same name of another lesson of the same course
+        title = correctLessonTitle(title, course.getLessons());
         // Errors with database
+        lesson = new Lesson(title, description.isBlank() ? null : description, content, course);
         try {
             repoLesson.save(lesson);
         } catch (Exception exc) {
@@ -229,7 +238,6 @@ public class ProfessorLessonController {
                              Model model,
                              HttpServletRequest request,
                              RedirectAttributes redirectAttributes) {
-        // TODO: Lesson with same name
         User professor = Utils.loggedUser(request);
         Optional<Course> maybeCourse = repoCourse.findById(id);
         // On wrong ID, redirect to courses list
@@ -245,7 +253,8 @@ public class ProfessorLessonController {
         }
 
         Lesson lesson = maybeLesson.get();
-        // Errors with lesson parameters
+        // Check if the lesson has same name of another lesson of the same course
+        title = correctLessonTitle(title, course.getLessons());
         // Errors with database
         try {
             lesson.setTitle(title);
