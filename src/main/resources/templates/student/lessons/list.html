@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lessons</title>
+    <meta th:replace="common/meta"/>
+</head>
+<body>
+<div th:replace="common/errors"/>
+<!-- Header with logo, logout and breadcrumbs -->
+<div th:replace="common/header"></div>
+<!-- Content -->
+<div class="et-content">
+    <!-- Iterate over lessons -->
+    <div class="et-card p-5 w-100" th:each="lesson: ${lessons}">
+        <div class="flex flex-row justify-items-center gap-5">
+            <!-- Title -->
+            <a class="et-name text-2xl font-bold"
+               th:href="'/student/courses/'+${course.getId()}+'/lessons/'+${lesson.getId()}"
+               th:text="${lesson.getTitle()}">Lesson's
+                name</a>
+        </div>
+        <!-- Description -->
+        <p class="et-description mt-4" th:text="${lesson.description}">
+            Some nice description of the lesson.
+        </p>
+    </div>
+</div>
+</body>
+</html>
