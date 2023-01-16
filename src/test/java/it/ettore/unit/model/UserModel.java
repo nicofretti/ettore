@@ -2,15 +2,15 @@ package it.ettore.unit.model;
 
 import it.ettore.model.Course;
 import it.ettore.model.User;
-
 import org.junit.Test;
 
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static it.ettore.TestUtil.assertEmpty;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.Assert.assertEquals;
 
 public class UserModel {
     public static User dummyProfessor() {
@@ -70,6 +70,33 @@ public class UserModel {
     public void setShortPassword() {
         User user = dummyProfessor();
         user.setPassword("short");
+    }
+
+    @Test
+    public void setPassword() {
+        User user = dummyProfessor();
+        user.setPassword("SomeVerySecurePassword");
+        assertEquals(User.hashPsw("SomeVerySecurePassword"), user.getPswHash());
+    }
+
+    @Test
+    public void setEmail() {
+        User user = dummyProfessor();
+        user.setEmail("aaa@professor.com");
+
+        assertEquals("aaa@professor.com", user.getEmail());
+    }
+
+    @Test
+    public void testFullName() {
+        User user = dummyProfessor();
+        assertEquals("A Professor", user.fullName());
+    }
+
+    @Test
+    public void testToString() {
+        User user = dummyProfessor();
+        assertEquals(String.format("User{id=%d,email=%s,role=%s}", user.getId(), user.getEmail(), user.getRole()), user.toString());
     }
 
     @Test
@@ -249,4 +276,6 @@ public class UserModel {
 
         course.removeStudent(student);
     }
+
+
 }

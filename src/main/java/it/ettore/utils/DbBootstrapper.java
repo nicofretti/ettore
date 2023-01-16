@@ -58,7 +58,9 @@ public class DbBootstrapper {
         repoCourse.save(art);
 
         // Add some lessons about maths
-        Lesson lesson1 = new Lesson("Derivatives", "Some nice description on Derivation", "Derivatives lesson content and stuff", math);
+        Lesson lesson1 = new Lesson("Derivatives", "Some nice description on Derivation", "Derivatives lesson content and stuff `super` " +
+                "\n# Ledjo <3\n**Integrals**\n```java\nSystem.out.println('ciao')\n```", math);
+
         Lesson lesson2 = new Lesson("Integrals", "Some nice description on Integration", "Integrals lesson content and stuff", math);
         repoLesson.saveAll(List.of(lesson1, lesson2));
 

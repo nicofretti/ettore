@@ -4,13 +4,12 @@ import it.ettore.e2e.E2EBaseTest;
 import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
-import it.ettore.e2e.po.professor.lessons.ProfessorLessonPage;
+import it.ettore.e2e.po.LessonDetailsPage;
 import it.ettore.e2e.po.professor.lessons.ProfessorLessonsPage;
 import it.ettore.model.*;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,24 +21,26 @@ public class ProfessorLesson extends E2EBaseTest {
     @Autowired
     protected LessonRepository repoLesson;
 
-    @Test
-    public void lesson() {
+    Course course;
+    Lesson lessonOne;
+
+    @Before
+    public void prepareLessonTests() {
         String email = "some.professor@ettore.it";
         String password = "SomeSecurePassword";
         User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
         repoUser.save(professor);
 
-        Course course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
+        course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
         repoCourse.save(course);
         // Link the course to the professor
         professor.getCoursesTaught().add(course);
         repoUser.save(professor);
 
-        Lesson lesson = new Lesson("Lesson name", "Lesson description", "Lesson content", course);
-        Lesson lesson2 = new Lesson("Lesson name 2", "Lesson description 2", "Lesson content 2", course);
-        repoLesson.saveAll(List.of(lesson, lesson2));
+        lessonOne = new Lesson("Lesson name", "Lesson description", "Lesson content", course);
+        repoLesson.save(lessonOne);
 
-        course.getLessons().addAll(List.of(lesson, lesson2));
+        course.getLessons().add(lessonOne);
         repoCourse.save(course);
 
         driver.get(baseDomain() + "login");
@@ -49,23 +50,26 @@ public class ProfessorLesson extends E2EBaseTest {
         loginPage.setPassword(password);
 
         ProfessorCoursesPage coursesPage = loginPage.loginAsProfessor();
+        assertEquals(1, coursesPage.getCourses().size());
+        ProfessorLessonsPage lessonsPage = coursesPage.getCourses().get(0).goTo().goToLessons();
+        assertEquals(1, lessonsPage.getLessons().size());
+        assertEquals(String.format("/professor/courses/%d/lessons", course.getId()), currentPath());
+    }
 
-        //click on course
-        ProfessorCoursePage courseDetails = coursesPage.getCourses().get(0).goTo();
-
-        // Should be in the details page for the course
-        assertEquals(String.format("/professor/courses/%d", course.getId()), currentPath());
-
-
-        //click on the first lesson
-        ProfessorLessonsPage lessonsPage = courseDetails.goToLessons();
-        ProfessorLessonPage lessonPage = lessonsPage.getLessons().get(0).goTo();
+    /**
+     * Test that the professor is able to view one of his/her lesson and that the content is right
+     */
+    @Test
+    public void viewLesson() {
+        ProfessorLessonsPage lessonsPage = new ProfessorLessonsPage(driver);
+        // Go to the first lesson
+        LessonDetailsPage lessonPage = lessonsPage.getLessons().get(0).goTo();
 
         // Should be in the details page for the lesson
-        assertEquals(String.format("/professor/courses/%d/lessons/%d", course.getId(), lesson.getId()), currentPath());
+        assertEquals(String.format("/professor/courses/%d/lessons/%d", course.getId(), lessonOne.getId()), currentPath());
 
-        //check if lesson data is correct
-        assertEquals("Lesson name", lessonPage.getTitle());
-        assertEquals("Lesson content", lessonPage.getContent());
+        // Check if lesson data is correct
+        assertEquals(lessonOne.getTitle(), lessonPage.getTitle());
+        assertEquals(lessonOne.getContent(), lessonPage.getContent());
     }
 }

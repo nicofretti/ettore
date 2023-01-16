@@ -10,20 +10,17 @@
 <div th:replace="common/header"></div>
 <!-- Content -->
 <div class="et-content">
-    <button class="et-button-primary w-full h-12" id="btn-new-lesson"
-            th:onclick="'document.location=\'/professor/courses/'+${course.getId()}+'/lessons/add\''">New lesson
-    </button>
     <!-- Iterate over lessons -->
     <div class="et-card p-5 w-100" th:each="lesson: ${lessons}">
         <div class="flex flex-row justify-items-center gap-5">
             <!-- Title -->
             <a class="et-name text-2xl font-bold"
-               th:href="'/professor/courses/'+${course.getId()}+'/lessons/'+${lesson.getId()}"
+               th:href="'/student/courses/'+${course.getId()}+'/lessons/'+${lesson.getId()}"
                th:text="${lesson.getTitle()}">Lesson's
                 name</a>
         </div>
         <!-- Description -->
-        <p class="et-description mt-4" th:text="${lesson.description}">
+        <p class="et-description mt-4" th:text="${lesson.getDescription()}">
             Some nice description of the lesson.
         </p>
     </div>

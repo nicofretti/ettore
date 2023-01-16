@@ -15,10 +15,10 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String title;
     private String description;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String content;
 
     @ManyToOne
