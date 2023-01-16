@@ -45,7 +45,7 @@ public class ProfessorCourseController {
     }
 
     @GetMapping(value = "/professor/courses/{id}")
-    public String courseDetailsPage(@PathVariable @NotNull long id, Model model, HttpServletRequest request) {
+    public String courseDetailsPage(@PathVariable @NotNull long id, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         User professor = Utils.loggedUser(request);
 
         Optional<Course> maybeCourse = repoCourse.findById(id);
@@ -54,6 +54,11 @@ public class ProfessorCourseController {
             return "redirect:/professor/courses";
         }
         Course course = maybeCourse.get();
+
+        if (course.getProfessor().getId() != professor.getId()) {
+            Utils.addRedirectionError(redirectAttributes, "This course is not taught by you");
+            return "redirect:/professor/courses";
+        }
 
         // Add attributes
         model.addAllAttributes(
@@ -71,7 +76,7 @@ public class ProfessorCourseController {
     }
 
     @GetMapping(value = "/professor/courses/{id}/manage")
-    public String courseManagePage(@PathVariable @NotNull long id, Model model, HttpServletRequest request) {
+    public String courseManagePage(@PathVariable @NotNull long id, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         User professor = Utils.loggedUser(request);
 
         Optional<Course> maybeCourse = repoCourse.findById(id);
@@ -80,6 +85,11 @@ public class ProfessorCourseController {
             return "redirect:/professor/courses";
         }
         Course course = maybeCourse.get();
+
+        if (course.getProfessor().getId() != professor.getId()) {
+            Utils.addRedirectionError(redirectAttributes, "This course is not taught by you");
+            return "redirect:/professor/courses";
+        }
 
         // Add attributes
         model.addAllAttributes(
@@ -193,21 +203,13 @@ public class ProfessorCourseController {
     ) {
         User professor = Utils.loggedUser(request);
 
-        Course course;
-        try {
-            course = new Course(name, description.isBlank() ? null : description, startingYear, Course.Category.fromString(category), professor);
-        } catch (Exception exc) {
-            Utils.addRedirectionError(redirectAttributes, "Parameters errors: " + exc.getClass().getCanonicalName());
-            return "redirect:/professor/courses/add";
-        }
+        Course course = new Course(name, description.isBlank() ? null : description, startingYear, Course.Category.fromString(category), professor);
 
         try {
             repoCourse.save(course);
         } catch (Exception exc) {
             if (Utils.IsCause(exc, DataIntegrityViolationException.class)) {
                 Utils.addRedirectionError(redirectAttributes, "Course already exists");
-            } else {
-                Utils.addRedirectionError(redirectAttributes, "Error while adding course: " + exc.getClass().getCanonicalName());
             }
             redirectAttributes.addFlashAttribute("course", course);
             return "redirect:/professor/courses/add";
@@ -276,16 +278,11 @@ public class ProfessorCourseController {
             return "redirect:/professor/courses";
         }
 
-        try {
-            course.setName(name);
-            course.setDescription(description.isBlank() ? null : description);
-            course.setStartingYear(startingYear);
-            course.setCategory(Course.Category.fromString(category));
-            repoCourse.save(course);
-        } catch (Exception exc) {
-            Utils.addRedirectionError(redirectAttributes, "Error while editing course: " + exc.getClass().getCanonicalName());
-            return String.format("redirect:/professor/courses/%d/edit", id);
-        }
+        course.setName(name);
+        course.setDescription(description.isBlank() ? null : description);
+        course.setStartingYear(startingYear);
+        course.setCategory(Course.Category.fromString(category));
+        repoCourse.save(course);
 
         return String.format("redirect:/professor/courses/%d", id);
     }
@@ -308,13 +305,8 @@ public class ProfessorCourseController {
             return "redirect:/professor/courses";
         }
 
-        try {
-            repoLesson.deleteAll(course.getLessons());
-            repoCourse.delete(course);
-        } catch (Exception exc) {
-            Utils.addRedirectionError(redirectAttributes, String.format("Error deleting course: %s", exc.getClass().getCanonicalName()));
-            return String.format("redirect:/professor/courses/%d/edit", id);
-        }
+        repoLesson.deleteAll(course.getLessons());
+        repoCourse.delete(course);
 
         return "redirect:/professor/courses";
     }

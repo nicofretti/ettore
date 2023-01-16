@@ -1,9 +1,6 @@
 package it.ettore.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.SneakyThrows;
+import lombok.*;
 
 import javax.persistence.*;
 import java.security.MessageDigest;
@@ -41,8 +38,12 @@ public class User {
 
     // For the student
     @ManyToMany(mappedBy = "studentsRequesting")
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private List<Course> coursesRequesting = new ArrayList<>();
     @ManyToMany(mappedBy = "studentsJoined")
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private List<Course> coursesJoined = new ArrayList<>();
 
     public User(String firstName, String lastName, String email, String psw, Role role) {
