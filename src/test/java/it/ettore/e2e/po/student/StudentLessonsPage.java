@@ -1,4 +1,4 @@
-package it.ettore.e2e.po.professor.lessons;
+package it.ettore.e2e.po.student;
 
 import it.ettore.e2e.po.Header;
 import it.ettore.e2e.po.LessonDetailsPage;
@@ -12,24 +12,16 @@ import org.openqa.selenium.support.FindBy;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProfessorLessonsPage extends PageObject {
-    @FindBy(id = "btn-new-lesson")
-    private WebElement addNewLesson;
+public class StudentLessonsPage extends PageObject {
     @FindBy(css = ".et-content > div")
     private List<WebElement> lessons;
 
-    public ProfessorLessonsPage(WebDriver driver) {
+    public StudentLessonsPage(WebDriver driver) {
         super(driver);
     }
 
     public Header headerComponent() {
         return new Header(driver);
-    }
-
-    // TODO Update when we have a new lesson page
-    public ProfessorModifyLessonPage newLesson() {
-        addNewLesson.click();
-        return new ProfessorModifyLessonPage(driver);
     }
 
     public List<LessonComponent> getLessons() {

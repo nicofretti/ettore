@@ -28,6 +28,9 @@ public class StudentCoursePage extends PageObject {
     @FindBy(id = "btn-unjoin")
     private WebElement unjoinButton;
 
+    @FindBy(id = "btn-goto-lessons")
+    private WebElement lessonsButton;
+
     public String getName() {
         return name.getText();
     }
@@ -43,5 +46,10 @@ public class StudentCoursePage extends PageObject {
     public StudentCoursesPage unjoin() {
         unjoinButton.click();
         return new StudentCoursesPage(driver);
+    }
+
+    public StudentLessonsPage goToLessons() {
+        lessonsButton.click();
+        return new StudentLessonsPage(driver);
     }
 }

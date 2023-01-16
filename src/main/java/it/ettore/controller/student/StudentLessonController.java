@@ -41,7 +41,7 @@ public class StudentLessonController {
     }
 
     /**
-     * Controlls if the student that is logged in is enrolled in the lesson
+     * Controlls if the course actually contains the lesson
      */
     public boolean checkLessonBelongsToCourse(Course course, Optional<Lesson> maybeLesson, RedirectAttributes redirectAttributes) {
         if (maybeLesson.isEmpty()) {

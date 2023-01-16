@@ -1,12 +1,11 @@
-package it.ettore.e2e.po.professor.lessons;
+package it.ettore.e2e.po;
 
-import it.ettore.e2e.po.Header;
-import it.ettore.e2e.po.PageObject;
+import it.ettore.e2e.po.professor.lessons.ProfessorModifyLessonPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class ProfessorLessonPage extends PageObject {
+public class LessonDetailsPage extends PageObject {
     @FindBy(className = "et-name")
     private WebElement title;
     @FindBy(className = "markdown-body")
@@ -14,7 +13,7 @@ public class ProfessorLessonPage extends PageObject {
     @FindBy(id = "btn-edit-lesson")
     private WebElement editButton;
 
-    public ProfessorLessonPage(WebDriver driver) {
+    public LessonDetailsPage(WebDriver driver) {
         super(driver);
     }
 

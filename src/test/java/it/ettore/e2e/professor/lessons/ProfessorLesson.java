@@ -4,7 +4,7 @@ import it.ettore.e2e.E2EBaseTest;
 import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
-import it.ettore.e2e.po.professor.lessons.ProfessorLessonPage;
+import it.ettore.e2e.po.LessonDetailsPage;
 import it.ettore.e2e.po.professor.lessons.ProfessorLessonsPage;
 import it.ettore.model.*;
 import org.junit.Before;
@@ -65,7 +65,7 @@ public class ProfessorLesson extends E2EBaseTest {
 
         //click on the first lesson
         ProfessorLessonsPage lessonsPage = courseDetails.goToLessons();
-        ProfessorLessonPage lessonPage = lessonsPage.getLessons().get(0).goTo();
+        LessonDetailsPage lessonPage = lessonsPage.getLessons().get(0).goTo();
 
         // Should be in the details page for the lesson
         assertEquals(String.format("/professor/courses/%d/lessons/%d", course.getId(), lessonOne.getId()), currentPath());

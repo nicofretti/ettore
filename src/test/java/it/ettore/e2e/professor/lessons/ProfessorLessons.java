@@ -5,7 +5,7 @@ import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage.CourseComponent;
-import it.ettore.e2e.po.professor.lessons.ProfessorLessonPage;
+import it.ettore.e2e.po.LessonDetailsPage;
 import it.ettore.e2e.po.professor.lessons.ProfessorLessonsPage;
 import it.ettore.e2e.po.professor.lessons.ProfessorLessonsPage.LessonComponent;
 import it.ettore.model.*;
@@ -86,7 +86,7 @@ public class ProfessorLessons extends E2EBaseTest {
                 new Breadcrumb("LESSONS", String.format("/professor/courses/%d/lessons", course.getId()))
         ), lessonsPage.headerComponent().getBreadcrumbs());
 
-        ProfessorLessonPage lessonPage = lessonsPage.getLessons().get(0).goTo();
+        LessonDetailsPage lessonPage = lessonsPage.getLessons().get(0).goTo();
         assertEquals(List.of(
                 new Breadcrumb("COURSES", "/professor/courses"),
                 new Breadcrumb("COURSE NAME", String.format("/professor/courses/%d", course.getId())),
@@ -119,7 +119,7 @@ public class ProfessorLessons extends E2EBaseTest {
         assertEquals(lessonTwo.getTitle(), lessons.get(1).getTitle());
         assertEquals(lessonTwo.getDescription(), lessons.get(1).getDescription());
 
-        ProfessorLessonPage lessonPage = lessons.get(0).goTo();
+        LessonDetailsPage lessonPage = lessons.get(0).goTo();
         assertEquals(String.format("/professor/courses/%d/lessons/%d", course.getId(), lessonOne.getId()), currentPath());
         assertEquals(lessonOne.getTitle(), lessonPage.getTitle());
         assertEquals(lessonOne.getContent(), lessonPage.getContent());
