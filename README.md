@@ -16,11 +16,28 @@ For managing the tasks we created a **Trello** board where we divided the tasks 
 
 To ensure the quality of our codebase at all times we made use of the free CI/CD platform provided by **Github** called **Github Actions**. This allowed us to run the tests automatically every time a new commit was pushed to the repository or a Pull Request was created.This way we could be sure that the code we were pushing was working and that it was not breaking the existing codebase, giving us the peace of mind that the code provided by each member of the team was working as expected.
 
+## Requirements
+
+The Ettore platform must allow the following actions:
+
+- User must be able to register and login to the platform with the role of professor or student
+- Professor:
+
+  - Must be able to create and edit a course
+  - Must be able to create and edit lessons written in Markdown format
+  - Must be able to approve or reject course subscription requests from students
+
+- Student:
+
+  - Must be able to search for courses
+  - Must be able to request to subscribe to a course
+  - Must be able to view the lessons of a course to which he is subscribed
+
 ## User Stories
 
 ### Story 1 - User registration, login and course creation (Gives rise to scenarios 1.1, 1.2 and 1.3)
 
-Stefano is an ordinary professor and researcher at the Faculty of Computer Science of the University of Povegliano. Stefano can't wait for the semester to begin because he will teach for the first time a course on Signal analysis. Unfortunately, the University of Povegliano has not yet equipped itself with a system for distance learning, but Stefano would like to share with his students some in-depth writings that he made by himself on the geometric interpretation of the Fourier and Zeta transformations. Sending these contents via mail would be a feasible option, if not for the fact that Stefano would like to be able to modify the shared texts after publishing them, and also to welcome new students without having to continuously send mail. After some research on the web, Stefano discovers Ettore and decides to try it. **He registers by entering his credentials _(1.1)_**. **Then after logging in Ettore _(1.2)_. he starts creating his course on the platform _(1.3)_.**
+Stefano is an ordinary professor and researcher at the Faculty of Computer Science of the University of Povegliano. Stefano can't wait for the semester to begin because he will teach for the first time a course on Signal analysis. Unfortunately, the University of Povegliano has not yet equipped itself with a system for distance learning, but Stefano would like to share with his students some in-depth writings that he made by himself on the geometric interpretation of the Fourier and Zeta transformations. Sending these contents via mail would be a feasible option, if not for the fact that Stefano would like to be able to modify the shared texts after publishing them, and also to welcome new students without having to continuously send mail. After some research on the web, Stefano discovers Ettore and decides to try it. **He registers by entering his credentials _(1.1)_**. **Then after logging in Ettore _(1.2)_ he starts creating his course on the platform _(1.3)_.**
 
 ### Story 2 - Course search, course subscription request and approval by the professor (Gives rise to scenarios 2.1, 2.2 and 2.3)
 
@@ -28,7 +45,7 @@ Filippo is a student at the Academy of Fine Arts of Pacengo, after having attend
 
 ### Story 3 - Upload of a lesson , lesson modification and lesson displaying(Gives rise to scenario 3.1, 3.2 and 3.3)
 
-Professor Stefano receives several emails from working students who were unable to follow the lesson in which the Fast Fourier Transformation was explained. In addition, many other students have shown great interest on the subject. Stefano therefore decides to take advantage of Ettore and **publish on the page of his course "Signal analysis" several new lessons _(3.1)_** about the topic both introductory and in-depth. The lessons are in Markdown text format and this allows Stefano to enrich the content with images, videos, tables, mathematical formulas, etc. while remaining a file format of easy writing. **After publishing a lesson, the students have the possibility to open it._(3.2)_**However later that day, Stefano realizes that one of the lessons had a typo in one of the formulas and decides to **modify the lesson again _(3.3)_**.
+Professor Stefano receives several emails from working students who were unable to follow the lesson in which the Fast Fourier Transformation was explained. In addition, many other students have shown great interest on the subject. Stefano therefore decides to take advantage of Ettore and **publish on the page of his course "Signal analysis" several new lessons _(3.1)_** about the topic both introductory and in-depth. The lessons are in Markdown text format and this allows Stefano to enrich the content with images, videos, tables, mathematical formulas, etc. while remaining a file format of easy writing. **After publishing a lesson, the students have the possibility to open it _(3.2)_** . However later that day, Stefano realizes that one of the lessons had a typo in one of the formulas and decides to **modify the lesson again _(3.3)_**.
 
 ## Scenarios
 
@@ -49,7 +66,7 @@ The passwords entered in the two fields do not match or they are too short(<8). 
 - Initial assumption | A person who is already registered on the Ettore platform, decides to log in.
 - Normal functioning | The subject goes to the Ettore homepage, this is the only page accessible to users who have not yet logged in. From this page the subject clicks on the "Login" button. At this point a form appears in which it is asked to enter the following information: email address and password. To send the form, the "Login" button is clicked, which is only active if the form is correctly filled in. The user is redirected to the page with the list of courses (courses taught if the user is a professor, otherwise followed courses) which will initially be empty. |
 - What can go wrong | The email entered is not valid. For our purposes, consider a valid email that has visible characters both to the left and to the right of an @ character. The check is done in real time and the "Login" button is not clickable if the email does not satisfy the format just described. The email used has not been registered. In this case, the "Login" button can be pressed but then a message of error is displayed.
-- Other activities | TODO: Can one user loggin at the same time in two different places? |
+- Other activities | A user can log in at the same time with two different devices. |
 - Final system state | The user is logged in and can access the platform. |
 
 ### Scenario 1.3 - Creating a course
@@ -62,13 +79,13 @@ The passwords entered in the two fields do not match or they are too short(<8). 
 
 ### Scenario 2.1 - Searching a course
 
--Initial Assumption | A user is already registered and logged in on Ettore, with the role of student. He is on the page related to the search for courses and would like to search for a new course to which he can enroll. By default there are already some courses (12-15) sorted by year of delivery, with parity of year of delivery it continues with the sorting by name of the course and finally by category. TODO:cancellare questa parte o abbiamo pagination?|
+-Initial Assumption | A user is already registered and logged in on Ettore, with the role of student. He is on the page related to the search for courses and would like to search for a new course to which he can enroll. By default there are already some courses.|
 
 - Normal functioning | The user uses the search filter to search for the desired courses, in the filter there are:
   - An input to search for keywords within the title or description of the course of interest
   - A dropdown that allows you to select at most one category of interest
   - A date input to search for the period of delivery of the course|
-- What can go wrong | The user does not define any search criteria, in this case no action will be performed on the search page. TODO: se la ricerca non trova niente non funziona
+- What can go wrong | The user does not define any search criteria, in this case no action will be performed on the search page. If the course is not found,to the user will be shown an empty list wiht a message that no courses were found. |
 - Other activities | While a student is looking for a course at the same time a professor is creating a new teaching. After the insertion of a new course by a professor all students have the opportunity to view such a course. |
 - Final system state | - |
 
@@ -90,15 +107,27 @@ The passwords entered in the two fields do not match or they are too short(<8). 
 
 ### Scenario 3.1 - Creating a new Lesson
 
-Una lezione con lo stesso nome potrebbe già essere presente sullo stesso corso. In questo caso, Ettore carica comunque la lezione ma aggiunge un numero progressivo tra parentesi che segnala il duplicato. Ad esempio: se esistesse già la lezione “Mitocondrio”, sarebbe nuovamente caricata con il nome “Mitocondrio (1)”. |
-| Altre attività | Gli studenti potrebbe star sfogliando i contenuti del corso oppure lo stesso utente professore potrebbe star caricando altre lezioni contemporaneamente da altre schede browser o da un altro computer. |
-| Stato finale del sistema | Legata al corso, è presente una nuova lezione che può ora essere visualizzata dagli studenti iscritti. |
-
 - Initial assumption | A user is already registered and logged in on Ettore, with the role of professor, wants to upload a new lesson in one of the courses managed by him/her. |
 - Normal functioning | The user goes to the page related to the course and navigates to the "Lessons" section and clicks on "New lesson" button. The system asks the professor a title (mandatory), a description (optional) and the content(mandatory) which can be written in `Markdown` format. When at least the title and the content are present, the user can click on a "Save" button that creates the new lesson. |
-- Other activities | A student watching the list of lessons while the professor is adding a new lesson. In this case the student cannot see the new lesson without refreshing the page.|
 - What can go wrong | The professor does not enter a title or the content of the lesson, in this case the system will not allow the professor to save the lesson , or the professor enters a title that is already present in the course, in this case the system will add "(1)" at the end of the title. |
+- Other activities | A student watching the list of lessons while the professor is adding a new lesson. In this case the student cannot see the new lesson without refreshing the page.|
 - Final system state | The lesson is linked to the course and can be viewed by the students enrolled in the course. |
+
+### Scenario 3.2 - Viewing a lesson
+
+- Initial assumption | A user is already registered and logged in on Ettore (professor or student), wants to view a lesson of a course to which he/she has access. |
+- Normal functioning | The user goes to the page related to the course and navigates to the "Lessons" section and clicks on the lesson he/she wants to view. The system shows the lesson's title, description and content which is rendered in markdown to show elements such as images, tables, lists, etc. |
+- What can go wrong |---|
+- Other activities | A student watching the list of lessons while the professor is editing or removing a lesson. In this case the student cannot see the correct list of lessons without refreshing the page.|
+- Final system state |---|
+
+### Scenario 3.3 - Editing a lesson
+
+- Initial assumption | A user is already registered and logged in on Ettore, with the role of professor, wants to edit a lesson of his courses on the course list. |
+- Normal functioning | The user goes to the page related to the course and navigates to the "Lessons" list section and clicks on the title of lesson he/she wants to edit. The system shows the lesson's title, description and content. The professor can click on "edit" button to go to the modifying page of the lesson and then be able to change the title, description and content of the lesson. When the professor is done editing the lesson he/she can click on a "Save" button that saves the changes. |
+- What can go wrong | The professor does not enter a title or the content of the lesson, in this case the system will not allow the professor to save the lesson , or the professor enters a title that is already present in the course, in this case the system will add "(1)" at the end of the title. |
+- Other activities | A student watching the list of lessons while the professor is editing a lesson. In this case the student cannot see the correct list of lessons without refreshing the page.|
+- Final system state | The edited lesson is now updated with the new information entered by the professor. |
 
 ## Authentication system
 
