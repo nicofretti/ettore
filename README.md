@@ -171,14 +171,32 @@ In total we have **130** test dived in two main categories:
 
 ## End2end tests
 
-#### Here we have a list of the most immportant end2end tests that we have implemented separated by the class they belong to:
+#### Here we have a list of the most important end2end tests that we have implemented separated by the class they belong to:
 
 - [Register](https://github.com/nicofretti/ettore/blob/dev/lessons/src/test/java/it/ettore/e2e/Register.java)
+
   - [allFieldsMustBeFilled](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L22): Tests that the user cannot register if he/she does not fill all the fields by continously checking is the register button is enabled.
   - [emailMustBeValid](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L58): Tests that the user cannot register if he/she does not fill the email field with a valid email address.
   - [passwordMustBeLongEnough](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L93): Tests that the user cannot register if he/she does not fill the password field with a password long enough(>=8)
   - [passwordsMustMatch](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L126): Tests that the user cannot register if he/she does not enter the same password in both password fields.
   - [cannotRegisterSameEmailTwice](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L158): Tests that the user cannot register if he/she enters an email that is already registered and that the error message is shown.
   - [twoUsersCanHaveSamePassword](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L203): Tests that two users can have the same password.
+
+- [Login](https://github.com/nicofretti/ettore/blob/dev/lessons/src/test/java/it/ettore/e2e/Login.java)
+
+  - [login](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Login.java#L19): Tests that the user can login if he/she enters the correct email and password.
+  - [noSuchUser](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Login.java#L39): Tests that the user cannot login if he/she enters an email that is not registered and that the error message is shown.
+  - [wrongPassword](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Login.java#L61): Tests that the user cannot login if he/she enters the wrong password and that the error message is shown.
+
+- [Authentication](https://github.com/nicofretti/ettore/blob/dev/lessons/src/test/java/it/ettore/e2e/Authentication.java)
+  - [canGoToLogin](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L21): Tests that the user can go to the login page if he/she is not logged in.
+  - [canGoToRegister](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L31): Tests that the user can go to the register page if he/she is not logged in.
+  - [cannotGoToSecurePages](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L43): Tests that the user cannot go to the secure pages if he/she is not logged in and that he will be redirected to the login page.
+  - [canGoToCoursesList](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L55) Tests that the user can go to the courses list page if he/she is logged in.
+  - [onceLoggedInCannotLoginAgain](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L76): Tests that the user cannot go to the login page if he/she is already logged in and that he will be redirected to the courses list page.
+  - [onceLoggedInCannotRegisterAgain](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L102): Tests that the user cannot go to the register page if he/she is already logged in and that he will be redirected to the courses list page.
+  - [canLogout](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L128) Tests that the user can logout if he/she is logged in and after it gets redirected to the login page.
+  - [professorCannotGoToStudentSection](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L157): Tests that the professor cannot go to the student section and that he will be redirected to the courses list page.
+  - [studentCannotGoToProfessorSection](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L180): Tests that the student cannot go to the professor section and that he will be redirected to the courses list page.
 
 ## Code Coverage
