@@ -10,7 +10,7 @@ The project is written in **Java 11** with the support of **Gradle** v6.3 as a b
 
 We initially did a meeting to discuss which of the proposed project to develop and we decided to go with the e-learning platform. Then we started writing the stories and further developed their most interesting subsections into more detailed scenarios as later explained below.Then before starting with the actual development we created a **Figma** board on which we sketched out a basic design of the project. This helped us to have a clear idea of how the project should look like. It also allowed us to better estimate to time required to develop each page in the project.This way it was easier to divide the work among the team members and to assign each member a Task.
 
-For managing the tasks we created a **Trello** board where we divided the tasks and we assigned them to the members of the team. We also decided to use the **GitFlow** workflow for coordinating the development on the repository hosted on **GitHub**.We created a branch for each feature and we merged them into the develop branch when they were ready.During the development phase we used **Discord** to communicate with each other and to coordinate the work every time that we felt the need to do so.Each branch contains both the code and the tests that we wrote for that feature.For a branch to be actually merged into develop a Pull Request had to opened by the author of the branch and the other members of the team had to review the code and possibly modify or refactor before finally approving the request.
+For managing the tasks we created a **Trello** board where we divided the tasks and we assigned them to the members of the team. We also decided to use the **GitFlow** workflow for coordinating the development on the repository hosted on **GitHub**. We created a branch for each feature and we merged them into the develop branch when they were ready.During the development phase we used **Discord** to communicate with each other and to coordinate the work every time that we felt the need to do so.Each branch contains both the code and the tests that we wrote for that feature.For a branch to be actually merged into develop a Pull Request had to opened by the author of the branch and the other members of the team had to review the code and possibly modify or refactor before finally approving the request.
 
 ### CI/CD
 
@@ -139,10 +139,10 @@ Upon logging in, the user's client is sent a pair of cookies containing his/her 
 
 To guarantee a codebase of high quality we used automated tests. We used **JUnit** for unit testing and **Selenium** for end2end testing.This allowed us to have a clear idea of the quality of our code and to improve it if necessary by periodically making improvements and refactoring the code to make it more readable and maintainable.
 
-In total we have **130** test dived in two main categories:
+In total we have **130** test divided in two main categories:
 
 - **Unit tests**: 58
-  These are mainly used to test the logic of our models since there we have code that checks that some guarantees are always respected. For example, we have a test that checks that the a student can not be accpeted to join a course if he/she has never requested to join it.
+  These are mainly used to test the logic of our models since there we have code that checks that some guarantees are always respected. For example, we have a test that checks that the a student can not be accepted to join a course if he/she has never requested to join it.
 
 - **End2end tests**: 72
   These are used to test the logic of our controllers and the interaction between the different components of the project and to check different parts of the code that were unreachable with unit tests.
@@ -173,22 +173,23 @@ In total we have **130** test dived in two main categories:
 
 #### Here we have a list of the most important end2end tests that we have implemented separated by the class they belong to:
 
-- [Register](https://github.com/nicofretti/ettore/blob/dev/lessons/src/test/java/it/ettore/e2e/Register.java)
+- ### [Register](https://github.com/nicofretti/ettore/blob/dev/lessons/src/test/java/it/ettore/e2e/Register.java)
 
-  - [allFieldsMustBeFilled](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L22): Tests that the user cannot register if he/she does not fill all the fields by continously checking is the register button is enabled.
+  - [allFieldsMustBeFilled](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L22): Tests that the user cannot register if he/she does not fill all the fields by continuously checking is the register button is enabled.
   - [emailMustBeValid](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L58): Tests that the user cannot register if he/she does not fill the email field with a valid email address.
   - [passwordMustBeLongEnough](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L93): Tests that the user cannot register if he/she does not fill the password field with a password long enough(>=8)
   - [passwordsMustMatch](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L126): Tests that the user cannot register if he/she does not enter the same password in both password fields.
   - [cannotRegisterSameEmailTwice](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L158): Tests that the user cannot register if he/she enters an email that is already registered and that the error message is shown.
   - [twoUsersCanHaveSamePassword](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L203): Tests that two users can have the same password.
 
-- [Login](https://github.com/nicofretti/ettore/blob/dev/lessons/src/test/java/it/ettore/e2e/Login.java)
+- ### [Login](https://github.com/nicofretti/ettore/blob/dev/lessons/src/test/java/it/ettore/e2e/Login.java)
 
   - [login](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Login.java#L19): Tests that the user can login if he/she enters the correct email and password.
   - [noSuchUser](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Login.java#L39): Tests that the user cannot login if he/she enters an email that is not registered and that the error message is shown.
   - [wrongPassword](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Login.java#L61): Tests that the user cannot login if he/she enters the wrong password and that the error message is shown.
 
-- [Authentication](https://github.com/nicofretti/ettore/blob/dev/lessons/src/test/java/it/ettore/e2e/Authentication.java)
+- ### [Authentication](https://github.com/nicofretti/ettore/blob/dev/lessons/src/test/java/it/ettore/e2e/Authentication.java)
+  
   - [canGoToLogin](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L21): Tests that the user can go to the login page if he/she is not logged in.
   - [canGoToRegister](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L31): Tests that the user can go to the register page if he/she is not logged in.
   - [cannotGoToSecurePages](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L43): Tests that the user cannot go to the secure pages if he/she is not logged in and that he will be redirected to the login page.
