@@ -26,21 +26,28 @@ public class StudentLessons extends E2EBaseTest {
     @Autowired
     protected LessonRepository repoLesson;
 
+    User professor;
+
     Course course;
     Lesson lessonOne;
     Lesson lessonTwo;
 
     @Before
     public void prepareLessonsTests() {
+        professor = new User("Some", "Professor", "some.professor@ettore.it", "SomeSecurePassword", User.Role.PROFESSOR);
+        repoUser.save(professor);
+
         String email = "some.student@ettore.it";
         String password = "SomeSecurePassword";
         User student = new User("Some", "Student", email, password, User.Role.STUDENT);
         repoUser.save(student);
 
-        course = new Course("Course name", "Course description", 2023, Course.Category.Maths, student);
+        course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
         course.requestJoin(student);
         course.acceptStudent(student);
-        repoCourse.save(course);        // Link the course to the student
+        repoCourse.save(course);
+        professor.getCoursesTaught().add(course);
+        repoUser.save(professor);
 
         lessonOne = new Lesson("Lesson name", "Lesson description", "Lesson content", course);
         lessonTwo = new Lesson("Lesson name 2", "Lesson description 2", "Lesson content 2", course);
@@ -80,5 +87,45 @@ public class StudentLessons extends E2EBaseTest {
                 new Breadcrumb("LESSONS", String.format("/student/courses/%d/lessons", course.getId())),
                 new Breadcrumb("LESSON NAME", String.format("/student/courses/%d/lessons/%d", course.getId(), lessonOne.getId()))
         ), lessonPage.headerComponent().getBreadcrumbs());
+    }
+
+    @Test
+    public void cannotInteractWithNonExistingCourse() {
+        driver.get(baseDomain() + "student/courses/420/lessons");
+        // Check that we're redirected back
+        assertEquals("/student/courses", currentPath());
+
+        driver.get(baseDomain() + "student/courses/420/lessons/1");
+        // Check that we're redirected back
+        assertEquals("/student/courses", currentPath());
+    }
+
+    @Test
+    public void cannotInteractWithNonExistingLesson() {
+        driver.get(baseDomain() + "student/courses/" + course.getId() + "/lessons/420");
+        // Check that we're redirected back
+        assertEquals("/student/courses/" + course.getId() + "/lessons", currentPath());
+    }
+
+    @Test
+    public void cannotInteractWithNonJoinedCourse() {
+        Course anotherCourse = new Course("Another", "Course", 2021, Course.Category.Science, professor);
+        repoCourse.save(anotherCourse);
+
+        driver.get(baseDomain() + "student/courses/" + anotherCourse.getId() + "/lessons");
+        // Check that we're redirected back
+        assertEquals("/student/courses", currentPath());
+    }
+
+    @Test
+    public void cannotViewLessonOfCourseNotMatchingURL() {
+        Course anotherCourse = new Course("Another", "Course", 2021, Course.Category.Science, professor);
+        repoCourse.save(anotherCourse);
+        Lesson anotherLesson = new Lesson("Lesson", "Desc", "Content", anotherCourse);
+        repoLesson.save(anotherLesson);
+
+        driver.get(baseDomain() + "student/courses/" + course.getId() + "/lessons/" + anotherLesson.getId());
+        // Check that we're redirected back
+        assertEquals(String.format("/student/courses/%d/lessons", course.getId()), currentPath());
     }
 }

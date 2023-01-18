@@ -228,4 +228,44 @@ public class Register extends E2EBaseTest {
         professorCoursesPage = loginPage.loginAsProfessor();
         assertEquals("Another Human", professorCoursesPage.headerComponent().getFullName());
     }
+
+    /**
+     * Tests that a student can register him/herself
+     */
+    @Test
+    public void registerStudent() {
+        driver.get(baseDomain() + "register");
+        RegisterPage registerPage = new RegisterPage(driver);
+
+        registerPage.setFirstName("Marco");
+        registerPage.setLastName("Rossi");
+        registerPage.setEmail("marco.rossi@univr.it");
+        registerPage.setPassword("Some password");
+        registerPage.setConfirmPassword("Some password");
+        registerPage.tickStudent();
+        registerPage.registerAsStudent();
+
+        // Should now be in the student's homepage
+        assertEquals("/student/courses", currentPath());
+    }
+
+    /**
+     * Tests that a professor can register him/herself
+     */
+    @Test
+    public void registerProfessor() {
+        driver.get(baseDomain() + "register");
+        RegisterPage registerPage = new RegisterPage(driver);
+
+        registerPage.setFirstName("Marco");
+        registerPage.setLastName("Rossi");
+        registerPage.setEmail("marco.rossi@univr.it");
+        registerPage.setPassword("Some password");
+        registerPage.setConfirmPassword("Some password");
+        registerPage.tickProfessor();
+        registerPage.registerAsStudent();
+
+        // Should now be in the professor's homepage
+        assertEquals("/professor/courses", currentPath());
+    }
 }

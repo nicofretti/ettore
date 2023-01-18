@@ -61,7 +61,7 @@ public class AuthController {
             Model model,
             HttpServletRequest request
     ) {
-        User.Role role;
+        User.Role role = null;
         switch (stringRole) {
             case "student":
                 role = User.Role.STUDENT;
@@ -69,20 +69,11 @@ public class AuthController {
             case "professor":
                 role = User.Role.PROFESSOR;
                 break;
-            default:
-                Utils.addError(model, "Invalid role");
-                return "register";
         }
 
-        User user;
+        User user = null;
         try {
             user = new User(firstName, lastName, email, password, role);
-        } catch (IllegalArgumentException exc) {
-            Utils.addError(model, exc.getMessage());
-            return "register";
-        }
-
-        try {
             repoUser.save(user);
         } catch (Exception exc) {
             if (Utils.IsCause(exc, DataIntegrityViolationException.class)) {

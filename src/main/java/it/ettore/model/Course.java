@@ -97,9 +97,6 @@ public class Course {
             throw new IllegalStateException("This student has already requested to join");
         }
 
-        if (studentsRequesting == null) {
-            studentsRequesting = new ArrayList<>();
-        }
         studentsRequesting.add(student);
     }
 
@@ -107,23 +104,14 @@ public class Course {
         if (!isStudentRequesting(student)) {
             throw new IllegalStateException("This student has no pending request to join this course");
         }
-        if (isStudentJoined(student)) {
-            throw new IllegalStateException("This student has already been accepted to join the course");
-        }
 
         studentsRequesting.removeIf(someStudent -> someStudent.getId() == student.getId());
-        if (studentsJoined == null) {
-            studentsJoined = new ArrayList<>();
-        }
         studentsJoined.add(student);
     }
 
     public void rejectStudent(User student) {
         if (!isStudentRequesting(student)) {
             throw new IllegalStateException("This student has no pending request to join this course");
-        }
-        if (isStudentJoined(student)) {
-            throw new IllegalStateException("This student has already been accepted to join the course");
         }
 
         studentsRequesting.removeIf(someStudent -> someStudent.getId() == student.getId());

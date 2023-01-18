@@ -184,19 +184,7 @@ public class ProfessorLessonController {
         title = correctLessonTitle(title, course.getLessons(), Optional.empty());
 
         Lesson lesson = new Lesson(title, description.isBlank() ? null : description, content, course);
-
-        // Errors with database
-        try {
-            repoLesson.save(lesson);
-        } catch (Exception exc) {
-            if (Utils.IsCause(exc, DataIntegrityViolationException.class)) {
-                Utils.addRedirectionError(redirectAttributes, "Lesson already exists");
-            } else {
-                Utils.addRedirectionError(redirectAttributes, "Error while adding lesson: " + exc.getClass().getCanonicalName());
-            }
-            redirectAttributes.addFlashAttribute("lesson", lesson);
-            return String.format("redirect:/professor/courses/%d/lessons/add", id);
-        }
+        repoLesson.save(lesson);
 
         return String.format("redirect:/professor/courses/%d/lessons", id);
     }
@@ -263,21 +251,10 @@ public class ProfessorLessonController {
         // Check if the lesson has same name of another lesson of the same course
         title = correctLessonTitle(title, course.getLessons(), Optional.of(lessonId));
 
-        // Errors with database
-        try {
-            lesson.setTitle(title);
-            lesson.setDescription(description.isBlank() ? null : description);
-            lesson.setContent(content);
-            repoLesson.save(lesson);
-        } catch (Exception exc) {
-            if (Utils.IsCause(exc, DataIntegrityViolationException.class)) {
-                Utils.addRedirectionError(redirectAttributes, "Lesson already exists");
-            } else {
-                Utils.addRedirectionError(redirectAttributes, "Error while adding lesson: " + exc.getClass().getCanonicalName());
-            }
-            redirectAttributes.addFlashAttribute("lesson", lesson);
-            return String.format("redirect:/professor/courses/%d/lessons/%d/edit", id, lessonId);
-        }
+        lesson.setTitle(title);
+        lesson.setDescription(description.isBlank() ? null : description);
+        lesson.setContent(content);
+        repoLesson.save(lesson);
 
         return String.format("redirect:/professor/courses/%d/lessons", id);
     }

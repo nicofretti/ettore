@@ -1,6 +1,7 @@
 package it.ettore.e2e.professor.lessons;
 
 import it.ettore.e2e.E2EBaseTest;
+import it.ettore.e2e.po.Header;
 import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
@@ -26,6 +27,8 @@ public class ProfessorLessons extends E2EBaseTest {
     @Autowired
     protected LessonRepository repoLesson;
 
+    User professor;
+
     Course course;
     Lesson lessonOne;
     Lesson lessonTwo;
@@ -34,7 +37,7 @@ public class ProfessorLessons extends E2EBaseTest {
     public void prepareLessonsTests() {
         String email = "some.professor@ettore.it";
         String password = "SomeSecurePassword";
-        User professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
+        professor = new User("Some", "Professor", email, password, User.Role.PROFESSOR);
         repoUser.save(professor);
 
         course = new Course("Course name", "Course description", 2023, Course.Category.Maths, professor);
@@ -104,5 +107,87 @@ public class ProfessorLessons extends E2EBaseTest {
 
         assertEquals(lessonOne.getTitle(), lessonPage.getTitle());
         assertEquals(lessonOne.getContent(), lessonPage.getContent());
+    }
+
+    /**
+     * Check that the application doesn't allow interacting with the lessons of a non-existing course
+     */
+    @Test
+    public void cannotInteractWithNonExistingCourse() {
+        driver.get(baseDomain() + "professor/courses/420/lessons");
+        // Check that we're redirected back
+        assertEquals("/professor/courses", currentPath());
+
+        driver.get(baseDomain() + "professor/courses/420/lessons/420");
+        // Check that we're redirected back
+        assertEquals("/professor/courses", currentPath());
+
+        driver.get(baseDomain() + "professor/courses/420/lessons/add");
+        // Check that we're redirected back
+        assertEquals("/professor/courses", currentPath());
+
+        driver.get(baseDomain() + "professor/courses/420/lessons/420/edit");
+        // Check that we're redirected back
+        assertEquals("/professor/courses", currentPath());
+
+        driver.get(baseDomain() + "professor/courses/420/lessons/420/delete");
+        // Check that we're redirected back
+        assertEquals("/professor/courses", currentPath());
+    }
+
+    /**
+     * Check that the application doesn't allow interacting with a lesson that doesn't exist
+     */
+    @Test
+    public void cannotInteractWithNonExistingLesson() {
+        driver.get(baseDomain() + "professor/courses/" + course.getId() + "/lessons/420");
+        // Check that we're redirected back
+        assertEquals(String.format("/professor/courses/%d/lessons", course.getId()), currentPath());
+
+        driver.get(baseDomain() + "professor/courses/" + course.getId() + "/lessons/420/edit");
+        // Check that we're redirected back
+        assertEquals(String.format("/professor/courses/%d/lessons", course.getId()), currentPath());
+
+        driver.get(baseDomain() + "professor/courses/" + course.getId() + "/lessons/420/delete");
+        // Check that we're redirected back
+        assertEquals(String.format("/professor/courses/%d/lessons", course.getId()), currentPath());
+    }
+
+    /**
+     * Check that the application doesn't allow a professor to interact with lessons of a course that he/she doesn't
+     * teach
+     */
+    @Test
+    public void cannotViewLessonsOfCourseNotTaught() {
+        new Header(driver).logout();
+
+        String email = "another.professor@ettore.it";
+        String password = "AnotherSecurePassword";
+        User anotherProfessor = new User("Another", "Professor", email, password, User.Role.PROFESSOR);
+        repoUser.save(anotherProfessor);
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.setEmail(email);
+        loginPage.setPassword(password);
+        loginPage.loginAsProfessor();
+
+        driver.get(baseDomain() + "professor/courses/" + course.getId() + "/lessons");
+        // Check that we're redirected back
+        assertEquals("/professor/courses", currentPath());
+    }
+
+    /**
+     * Check that the application doesn't allow interacting with a lesson whose course doesn't match the course id in
+     * the path
+     */
+    @Test
+    public void cannotViewLessonOfCourseNotMatchingURL() {
+        // Create another course
+        Course anotherCourse = new Course("Another", "Course", 2021, Course.Category.Languages, professor);
+        repoCourse.save(anotherCourse);
+
+        driver.get(baseDomain() + "professor/courses/" + anotherCourse.getId() + "/lessons/" + lessonOne.getId());
+        // Check that we're redirected to the list of lessons
+        assertEquals(String.format("/professor/courses/%d/lessons", anotherCourse.getId()), currentPath());
     }
 }
