@@ -139,7 +139,7 @@ Upon logging in, the user's client is sent a pair of cookies containing his/her 
 
 To guarantee a codebase of high quality we used automated tests. We used **JUnit** for unit testing and **Selenium** for end2end testing.This allowed us to have a clear idea of the quality of our code and to improve it if necessary by periodically making improvements and refactoring the code to make it more readable and maintainable.
 
-In total we have **130** test divided in two main categories:
+In total we have **144** test divided in two main categories:
 
 - **Unit tests**: 58
   These are mainly used to test the logic of our models since there we have code that checks that some guarantees are always respected. For example, we have a test that checks that the a student can not be accepted to join a course if he/she has never requested to join it.
@@ -199,5 +199,22 @@ In total we have **130** test divided in two main categories:
   - [canLogout](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L128) Tests that the user can logout if he/she is logged in and after it gets redirected to the login page.
   - [professorCannotGoToStudentSection](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L157): Tests that the professor cannot go to the student section and that he will be redirected to the courses list page.
   - [studentCannotGoToProfessorSection](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L180): Tests that the student cannot go to the professor section and that he will be redirected to the courses list page.
+
+- ## [Professors Part](https://github.com/nicofretti/ettore/tree/develop/src/test/java/it/ettore/e2e/professor)
+  - ### [ProfessorManageStudent](https://github.com/nicofretti/ettore/blob/develop/src/test/java/it/ettore/e2e/professor/ProfessorManage.java):
+    - [approveJoinRequest](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/ProfessorManage.java#L24):Tests that the professor can approve a join request.
+    - [rejectJoinRequest](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/ProfessorManage.java#L75):Tests that the professor can reject a join request.
+    - [removeStudent](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/ProfessorManage.java#L125):Tests that the professor can remove a student from his course.
+  - ### [Professor managing the course section](https://github.com/nicofretti/ettore/tree/develop/src/test/java/it/ettore/e2e/professor/courses)
+    - [courseList](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourses.java#L45):Tests that the professor can go to the courses section and look at the list of his courses.
+    - [cannotInteractWithNonExistingCourse](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourses.java#L83):Tests that the professor cannot interact with a non existing course.
+    - [cannotInteractWithCourseNotTaught](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourses.java#L138):Tests that the professor cannot interact with a course that he is not teaching.
+    - [cannotInteractWithNonExistingStudent](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourses.java#L183):Tests that the professor cannot accept/reject a non existing student.
+    - [course](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourse.java#L22):Tests the correct display of course details.
+    - [addNewCourse](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseAdd.java#L76):Tests that the professor can add a new course.
+    - [twoCoursesSameNameIsForbidden](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseAdd.java#L107):Tests that the professor cannot add a course with the same name of another course and that an error message is displayed.
+    - [saveButtonNotClickableOnEmptyName](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseAdd.java#L142):Tests that the professor cannot add a course with an empty name and that the save button is not clickable.
+    - [modifyCourse](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseEdit.java#L96):Tests that the professor can modify any of his courses.
+    - [deleteCourse](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseEdit.java#L130):Tests that the professor can delete any of his courses.
 
 ## Code Coverage
