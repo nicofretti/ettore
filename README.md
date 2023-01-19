@@ -174,7 +174,7 @@ In total we have **144** test divided in two main categories:
 
 ## End2end tests
 
-#### Here is a list of the most important E2E tests that we have implemented, grouped by the class they belong to:
+#### Here is a list of the most important E2E tests that we have implemented, grouped by the class or section they belong to:
 
 - ### [Register](https://github.com/nicofretti/ettore/blob/dev/lessons/src/test/java/it/ettore/e2e/Register.java)
 
@@ -184,6 +184,8 @@ In total we have **144** test divided in two main categories:
   - [passwordsMustMatch](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L126): Tests that the user cannot register if he/she does not enter the same password in both password fields.
   - [cannotRegisterSameEmailTwice](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L158): Tests that the user cannot register if he/she enters an email that is already registered and tests that a proper error message is shown.
   - [twoUsersCanHaveSamePassword](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Register.java#L203): Tests that two users can have the same password.
+  - [registerStudent](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/Register.java#L236): Tests that a person can register him/her-self with the "student" role
+  - [registerProfessor](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/Register.java#L256): Tests that a person can register him/her-self with the "professor" role
 
 - ### [Login](https://github.com/nicofretti/ettore/blob/dev/lessons/src/test/java/it/ettore/e2e/Login.java)
 
@@ -192,7 +194,7 @@ In total we have **144** test divided in two main categories:
   - [wrongPassword](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Login.java#L61): Tests that the user cannot login if he/she enters an existing email address but the wrong password and checks that a proper error message is shown.
 
 - ### [Authentication](https://github.com/nicofretti/ettore/blob/dev/lessons/src/test/java/it/ettore/e2e/Authentication.java)
-  
+
   - [canGoToLogin](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L21): Tests that the user can go to the login page if he/she is not logged in.
   - [canGoToRegister](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L31): Tests that the user can go to the register page if he/she is not logged in.
   - [cannotGoToSecurePages](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L43): Tests that the user cannot go to the secure pages if he/she is not logged in and that he/she will be redirected to the login page instead.
@@ -203,21 +205,66 @@ In total we have **144** test divided in two main categories:
   - [professorCannotGoToStudentSection](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L157): Tests that the professor cannot go to the student section and that he/she will be redirected to the courses list page.
   - [studentCannotGoToProfessorSection](https://github.com/nicofretti/ettore/blob/27b601d04ee6ffe76a85748b1dedd6f8e824962f/src/test/java/it/ettore/e2e/Authentication.java#L180): Tests that the student cannot go to the professor section and that he/she will be redirected to the courses list page.
 
-- ## [Professors Part](https://github.com/nicofretti/ettore/tree/develop/src/test/java/it/ettore/e2e/professor)
-  - ### [ProfessorManageStudent](https://github.com/nicofretti/ettore/blob/develop/src/test/java/it/ettore/e2e/professor/ProfessorManage.java):
-    - [approveJoinRequest](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/ProfessorManage.java#L24):Tests that the professor can approve a join request.
-    - [rejectJoinRequest](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/ProfessorManage.java#L75):Tests that the professor can reject a join request.
-    - [removeStudent](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/ProfessorManage.java#L125):Tests that the professor can remove a student from his course.
+- ## [Professors](https://github.com/nicofretti/ettore/tree/develop/src/test/java/it/ettore/e2e/professor)
+  - ### [Manage students](https://github.com/nicofretti/ettore/blob/develop/src/test/java/it/ettore/e2e/professor/ProfessorManage.java):
+    - [approveJoinRequest](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/ProfessorManage.java#L24): Tests that the professor can approve a request that a student made to join a course.
+    - [rejectJoinRequest](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/ProfessorManage.java#L75):Tests that the professor can reject a request that a student made to join a course.
+    - [removeStudent](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/ProfessorManage.java#L125): Tests that the professor can remove a student from one of his/her courses.
+
   - ### [Professor managing the course section](https://github.com/nicofretti/ettore/tree/develop/src/test/java/it/ettore/e2e/professor/courses)
-    - [courseList](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourses.java#L45):Tests that the professor can go to the courses section and look at the list of his courses.
-    - [cannotInteractWithNonExistingCourse](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourses.java#L83):Tests that the professor cannot interact with a non existing course.
-    - [cannotInteractWithCourseNotTaught](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourses.java#L138):Tests that the professor cannot interact with a course that he is not teaching.
-    - [cannotInteractWithNonExistingStudent](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourses.java#L183):Tests that the professor cannot accept/reject a non existing student.
-    - [course](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourse.java#L22):Tests the correct display of course details.
-    - [addNewCourse](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseAdd.java#L76):Tests that the professor can add a new course.
-    - [twoCoursesSameNameIsForbidden](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseAdd.java#L107):Tests that the professor cannot add a course with the same name of another course and that an error message is displayed.
-    - [saveButtonNotClickableOnEmptyName](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseAdd.java#L142):Tests that the professor cannot add a course with an empty name and that the save button is not clickable.
-    - [modifyCourse](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseEdit.java#L96):Tests that the professor can modify any of his courses.
-    - [deleteCourse](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseEdit.java#L130):Tests that the professor can delete any of his courses.
+    - [course](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourse.java#L22): Tests the correct display of a course details.
+    - [courseList](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourses.java#L45): Tests that the professor can go to the courses section and look at the list of his courses.
+    - [cannotInteractWithNonExistingCourse](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourses.java#L83): Tests that the professor cannot view/edit/delete a course that doesn't exist.
+    - [cannotInteractWithCourseNotTaught](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourses.java#L138): Tests that the professor cannot view/edit/delete a course that exists but he/she is not the professor of.
+    - [cannotInteractWithNonExistingStudent](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourses.java#L183): Tests that the professor cannot accept/reject a join request made by, or remove from a course, a student that doesn't exist.
+    - [addNewCourse](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseAdd.java#L76): Tests that the professor can add a new course.
+    - [twoCoursesSameNameIsForbidden](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseAdd.java#L107): Tests that the professor cannot add a course with the same name of another course and that an error message is displayed. It is also asserted that the form remains populated.
+    - [saveButtonNotClickableOnEmptyName](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseAdd.java#L142): Tests that the professor cannot add a course with an empty name and that the save button is not clickable.
+    - [modifyCourse](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseEdit.java#L96): Tests that the professor can modify any of his courses.
+    - [deleteCourse](https://github.com/nicofretti/ettore/blob/66226c62bb0710a99cf09ce05e12a653b25f701e/src/test/java/it/ettore/e2e/professor/courses/ProfessorCourseEdit.java#L130): Tests that the professor can delete any of his courses.
+
+- ## [Students](https://github.com/nicofretti/ettore/tree/readme/src/test/java/it/ettore/e2e/student)
+
+  - ### [Courses](https://github.com/nicofretti/ettore/blob/readme/src/test/java/it/ettore/e2e/student/StudentCourses.java)
+
+    - [canSeeJoinedCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentCourses.java#L54): Tests that a student's homepage correctly displays the list of courses that he/she is enrolled in.
+    - [cannotSeeUnrequestedCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentCourses.java#L88): Tests that a student's homepage does not list a course that he/she hasn't even requested to join.
+    - [cannotSeeUnjoinedCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentCourses.java#L116): Tests that a student's homepage does not list a course that he/she has requested to join but not accepted into just yet.
+    - [canSeeCourseDetails](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentCourses.java#L147): Tests that a student is able to go to the details page for one of the courses that he/she is enrolled in.
+    - [unjoin](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentCourses.java#L185): Tests that a student is able to remove him/her-self from a course and not see it anymore in his/her homepage.
+    - [cannotInteractWithNonExistingCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentCourses.java#L222): Tests that a student cannot view a course that doesn't exist.
+    - [cannotInteractWithNonJoinedCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentCourses.java#L257): Tests that a student cannot view the details for a course that he/she is not enrolled in.
+    - [cannotRequestToJoinCourseAlreadyRequested](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentCourses.java#L294): Tests that a student cannot make a join request to a course if there's a already a pending request.
+    - [cannotRequestToJoinCourseAlreadyJoined](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentCourses.java#L325): Tests that a student cannot make a join request to a course if he/she has been already accepted.
+
+  - ### [Search](https://github.com/nicofretti/ettore/blob/readme/src/test/java/it/ettore/e2e/student/StudentSearch.java)
+
+    - [badSearch](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentCourses.java#L357): Tests that the application can handle a search request with badly formatted parameters and displays a proper error message.
+    - [displaysSomeCourses](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L123): Tests that the search page displays, by default, some courses (if there's any).
+    - [displaysNewCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L134): Tests that a course that we haven't joined can be found using the search page.
+    - [canJoinNewCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L145): Tests that the student can press the "Join" button to request to be accepted into the course
+    - [displaysRequestedCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L160): Tests that courses for which the student has requested to join (but hasn't been accepted into just yet) are still shown in the search page
+    - [cantJoinRequestedCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L171): Tests that the student is not able to press the "Join" button to request to be accepted into a course, if said course already has a pending request from the same student.
+    - [requestCourseJoin](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L187): Press the  "Join" button and tests that the student is taken back to the list of courses, and that a new pending request is present.
+    - [displaysJoinedCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L209): Tests that the courses for which the student is enrolled into are still shown in the search page.
+    - [cantJoinJoinedCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L220): Tests that the student is not able to press the "Join" button to request to be accepted into a course, if he/she is already enrolled in said course.
+    - [crazyQuery](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L236): Tests what happens when a query matches no course. The list should be empty and a message should be displayed.
+    - [findCourseByCategory](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L248): Tests that courses with matching category are listed and the others are hidden.
+    - [findAnyCategory](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L263): Tests that the application really displays courses of various categories when the "Any" category is selected in the search filters.
+    - [findCourseByName](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L279): Tests that courses whose name includes the given query string are shown.
+    - [findCourseByNameIgnoreCase](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L295): Tests that courses whose name includes the given query string (ignoring the uppercase/lowercase differences) are shown.
+    - [findCourseByDescription](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L312): Tests that courses whose description includes the given query string are shown.
+    - [findCourseByStartingYear](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L327): Tests that the courses that start in the selected year are shown and the others are hidden.
+    - [findAnyYear](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentSearch.java#L344): Tests that the application really displays courses of various starting year when the "Any" year is selected in the search filters.
+
+  - ### [Lessons](https://github.com/nicofretti/ettore/blob/readme/src/test/java/it/ettore/e2e/student/StudentLessons.java)
+
+    - [cannotInteractWithNonExistingCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentLessons.java#L93): Tests that the student is not able to list the lessons (or even navigate to a specific imaginary lesson by ID) for a course that doesn't exist
+    - [cannotInteractWithNonExistingLesson](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentLessons.java#L104): Tests that the student is not able to view a lesson that doesn't exist.
+    - [cannotInteractWithNonJoinedCourse](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentLessons.java#L111): Tests that the student is not able to list the lesson for a course that he/she is not enrolled into.
+    - [cannotViewLessonOfCourseNotMatchingURL](https://github.com/nicofretti/ettore/blob/07fd254a93c907356b34eb1013c98258d7d2785f/src/test/java/it/ettore/e2e/student/StudentLessons.java#L121): Tests that the student cannot view a lesson if the course it is part of doesn't match the course ID in the request URL.
+
 
 ## Code Coverage
+
+![](coverage.png)
