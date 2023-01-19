@@ -6,4 +6,8 @@ import java.util.Optional;
 
 public interface CourseRepository extends CrudRepository<Course, Long> {
     Optional<Course> findById(long id);
+
+    Iterable<Course> findByProfessor(User user);
+
+    Iterable<Course> findByStudentsJoined(User user);
 }

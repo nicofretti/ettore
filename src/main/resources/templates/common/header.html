@@ -1,0 +1,18 @@
+<!-- Logout and username -->
+<div class="et-user-actions">
+    <p id="full-name" th:text="${user.fullName()}">FirstName LastName</p>
+    <a href="/logout">Logout</a>
+</div>
+<!-- Header -->
+<div class="et-header">
+    <h1 class="et-logo">ETTORE</h1>
+    <div class="et-breadcrumbs">
+        <th:block th:each="breadcrumb : ${breadcrumbs}">
+            <a th:href="${breadcrumb.getUrl()}" th:text="${breadcrumb.getName()}">Home</a>
+            <!-- If the breadcrumb is the last one, don't add the / -->
+            <th:block th:if="${breadcrumb != breadcrumbs.get(breadcrumbs.size()-1)}">
+                <span>/</span>
+            </th:block>
+        </th:block>
+    </div>
+</div>

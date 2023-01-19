@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <meta th:replace="common/meta"/>
+</head>
+<body class="et-flex-centered flex-col h-screen" onload="updateForm()">
+<div th:replace="common/errors"/>
+<div class="et-card et-flex-centered flex-col p-12">
+    <h1 class="et-logo">ETTORE</h1>
+    <form class="et-flex-centered flex-col mt-12" method="post" action="/login">
+        <div class="flex flex-col">
+            <label class="text-sm">Email</label>
+            <input type="text" name="email" oninput="updateForm()">
+        </div>
+        <div class="flex flex-col mt-8">
+            <label class="text-sm">Password</label>
+            <input type="password" name="password" oninput="updateForm()">
+        </div>
+        <span style="display: none" class="text-red-700 self-start"
+              id="invalid-email-format">Invalid email format</span>
+        <span style="display: none" class="text-red-700 self-start" id="password-too-short">Password is too short</span>
+        <button class="et-button-primary et-button-disabled w-full h-12 mt-2" id="btn-login">Login</button>
+    </form>
+    <hr class="w-2/3 my-8 bg-text-light"/>
+    <button class="et-button-secondary w-full h-12" id="btn-goto-register" onclick="document.location = '/register'">Register
+    </button>
+</div>
+</body>
+</html>
+<script>
+    // Don't show email error if email has never been edited so far
+    let isEmailUntouched = true;
+    let isPasswordUntouched = true;
+
+    // Updates the clickable status of the login button and the visibility of the error messages
+    function updateForm() {
+        if (document.querySelector("input[name='email']").value !== "") {
+            isEmailUntouched = false;
+        }
+
+        if (document.querySelector("input[name='password']").value !== "") {
+            isPasswordUntouched = false;
+        }
+
+        let loginButton = document.querySelector("#btn-login");
+        if (canLogin()) {
+            loginButton.classList.remove("et-button-disabled");
+        } else {
+            loginButton.classList.add("et-button-disabled");
+        }
+
+        let invalidEmailFormatMsg = document.querySelector("#invalid-email-format");
+        if (isEmailUntouched || isEmailFormatOk()) {
+            invalidEmailFormatMsg.style = "display: none";
+        } else {
+            invalidEmailFormatMsg.style = "";
+        }
+
+        let passwordTooShortMsg = document.querySelector("#password-too-short");
+        if (isPasswordUntouched || isPasswordLongEnough()) {
+            passwordTooShortMsg.style = "display: none";
+        } else {
+            passwordTooShortMsg.style = "";
+        }
+    }
+
+    // Returns true if the login button should be clickable
+    function canLogin() {
+        return isEmailFormatOk() && isPasswordLongEnough();
+    }
+
+    function isEmailFormatOk() {
+        let value = document.querySelector("input[name='email']").value;
+        return /^[\w.]+@[\w.]+$/.test(value);
+    }
+
+    function isPasswordLongEnough() {
+        let value = document.querySelector("input[name='password']").value;
+        return value.length >= 8;
+    }
+</script>

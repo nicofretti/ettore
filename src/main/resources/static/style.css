@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@layer base{
+    :root {
+        --color-window: #FFFEF0;
+        --color-background: #FFF4CF;
+        --color-background-light: #E8E8E8;
+        --color-secondary: #3C3C3C;
+        --color-primary: #FED211;
+        --color-text: #252525;
+        --color-text-light: #C2C2C2;
+        --color-green: #00EA6C;
+
+        --color-red-light: #ff9790;
+        --color-red: #FF5C52;
+        --color-red-dark-translucent: rgba(222, 79, 71, 0.4);
+    }
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--color-window);
+    color: var(--color-text);
+}
+
+h1.et-logo{
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    letter-spacing: 0.275em;
+}
+
+span.et-subtitle{
+    font-size: 1.25rem;
+}
+
+/* Inputs */
+
+input[type=text], input[type=password] {
+    border-width: 2px;
+    border-color: rgb(209 213 219);
+    border-radius: 0.5rem;
+}
+input[type=text]:focus, input[type=password]:focus {
+    border-color: var(--color-background-light);
+}
+
+button.et-button-primary{
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+    border-radius: 0.5rem;
+}
+
+button.et-button-secondary{
+    background-color: var(--color-secondary);
+    color: var(--color-window);
+    border-radius: 0.5rem;
+}
+
+button.et-button-success{
+    background-color: var(--color-green);
+    color: var(--color-secondary);
+    border-radius: 0.5rem;
+}
+
+button.et-button-danger{
+    background-color: var(--color-red);
+    color: var(--color-window);
+    border-radius: 0.5rem;
+}
+
+button.et-button-disabled{
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
+button.et-button-grayed-out{
+    filter: grayscale(1);
+}
+
+button.et-button-good{
+    background-color: var(--color-green);
+    color: var(--color-secondary);
+    border-radius: 0.5rem;
+}
+
+button.et-button-bad{
+    background-color: var(--color-red);
+    color: var(--color-window);
+    border-radius: 0.5rem;
+}
+
+/* Custom Ettore */
+
+.et-bg-background{
+    background-color: var(--color-background);
+}
+
+.et-bg-text-light{
+    background-color: var(--color-text-light);
+}
+
+.et-card{
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    background-color: var(--color-background);
+}
+
+.et-flex-centered{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.et-user-actions{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+    text-align: right;
+}
+
+/* User name */
+.et-user-actions > p{
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+/* Logout link */
+.et-user-actions > a{
+    text-decoration: underline;
+}
+
+
+.et-user-actions{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+}
+
+.et-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 0.5rem;
+}
+
+.et-breadcrumbs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    text-transform: uppercase;
+    column-gap: 0.25rem;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+}
+.et-breadcrumbs > a{
+    text-decoration-line: underline;
+}
+
+.et-content{
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 50%;
+    gap: 1.5rem;
+}
+
+.et-icon-course{
+    color: var(--color-text);
+}
+
+.et-already-registered{
+    font-size: 0.938rem;
+}
+
+.et-already-registered > a {
+    text-decoration: underline;
+}
+
+.et-errors {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    gap: 0.5rem;
+
+    width: 20rem;
+}
+
+.et-error {
+    box-sizing: border-box;
+    padding: 0.75rem;
+
+    color: var(--color-window);
+
+    background: var(--color-red);
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-red-light);
+
+    box-shadow: var(--color-red-dark-translucent) 0px 8px 24px;
+
+    user-select: none;
+    cursor: pointer;
+}
+
+input.et-squared-input, textarea.et-squared-input {
+    border: 1px solid #6b7280;
+    border-radius: 0;
+}

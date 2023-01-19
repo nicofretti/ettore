@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}">New Course</title>
+    <meta th:replace="common/meta"/>
+</head>
+<body>
+<div th:replace="common/errors"/>
+<!-- Header with logo, logout and breadcrumbs -->
+<div th:replace="common/header"></div>
+<!-- Content -->
+<div class="et-flex-centered gap-4 px-20">
+    <!-- Form -->
+    <form class="et-card p-5" method="POST">
+        <div class="flex flex-row items-center gap-2 h-11 items-stretch">
+            <select class="text-xl font-medium flex-1 min-w-0" name="category">
+                <!-- Pre-select the course's category if in edit mode, else the very first category -->
+                <option th:each='category, iter: ${new String[]{"Maths", "Science", "History", "Geography", "Art", "Music", "Languages"}}'
+                        th:value="${category}"
+                        th:selected="${course != null ? course.getCategory().toString().equals(category) : iter.index == 0}">
+                    <span th:text="${category}"></span>
+                </option>
+            </select>
+            <input class="et-squared-input text-xl font-medium flex-2 min-w-0" name="name" oninput="updateSubmittable()" placeholder="Course name"
+                   required
+                   th:value="${course!=null ? course.getName(): ''}"
+                   type="text"
+            >
+            <select class="text-xl font-medium flex-1 min-w-0" name="startingYear">
+                <option th:each='startingYear, iter: ${new int[]{2023, 2022, 2021}}'
+                        th:value="${startingYear}"
+                        th:selected="${course != null ? course.getStartingYear() == startingYear : iter.index == 0}">
+                    <span th:text='${startingYear.toString() + "/" + (startingYear + 1).toString()}'></span>
+                </option>
+            </select>
+            <button id="btn-save"
+                    th:class='${"et-button-good ml-auto my-auto h-9 px-2 w-1/6 " + (course != null ? "" : "et-button-disabled")}'
+                    type="submit">
+                Save
+            </button>
+        </div>
+        <textarea class="et-squared-input mt-1 w-full" maxlength="255" name="description"
+                  placeholder="Course description">[[${course!=null ? course.getDescription(): ''}]]</textarea>
+        <div class="flex flex-row mt-1">
+            <button class="et-button-bad h-9 px-2 mr-auto"
+                    id="btn-delete"
+                    th:if="${course != null}"
+                    th:onclick="'document.location=\'/professor/courses/' + ${course.getId()} + '/delete\''"
+                    type="button">
+                Delete course
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    function updateSubmittable() {
+        let saveButton = document.getElementById("btn-save");
+        let courseName = document.getElementsByName("name")[0].value;
+        if (courseName.toString().length > 0) {
+            saveButton.classList.remove("et-button-disabled");
+            return;
+        }
+        saveButton.classList.add("et-button-disabled");
+    }
+</script>
+</html>

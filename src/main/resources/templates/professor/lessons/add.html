@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add New Course</title>
+    <meta th:replace="common/meta"/>
+</head>
+<body onload="updateSubmittable()">
+<div th:replace="common/errors"/>
+<!-- Header with logo, logout and breadcrumbs -->
+<div th:replace="common/header"></div>
+<!-- Content -->
+<div class="gap-4 px-20">
+    <!-- Form -->
+    <form method="POST">
+        <!-- Card -->
+        <div class="et-card flex flex-col gap-4 p-5">
+            <div>
+                <label class="et-label" for="title">Lesson title:</label>
+                <input class="et-squared-input text-xl font-bold w-full"
+                       id="title"
+                       name="title"
+                       oninput="updateSubmittable()"
+                       placeholder="Lesson title"
+                       required
+                       th:value="${lesson != null ? lesson.getTitle() : ''}"
+                       type="text">
+            </div>
+            <!-- Description -->
+            <div>
+                <label class="et-label" for="description">Lesson description:</label>
+                <textarea class="et-squared-input w-full h-20"
+                          maxlength="255"
+                          id="description"
+                          name="description"
+                          placeholder="Course description">[[${lesson != null ? lesson.getDescription() : ''}]]</textarea>
+            </div>
+            <!-- Content -->
+            <div>
+                <label class="et-label" for="content">Lesson content:</label>
+                <textarea class="et-squared-input w-full h-60"
+                          maxlength="1000"
+                          id="content"
+                          name="content"
+                          oninput="updateSubmittable()"
+                          placeholder="Course description"
+                          required>[[${lesson != null ? lesson.getContent() : ''}]]</textarea>
+            </div>
+        </div>
+        <!-- Buttons -->
+        <div class="flex flex-col mt-4 gap-4 w-full">
+            <button class="et-button-good w-full h-14 px-2"
+                    id="btn-save"
+                    type="submit">
+                Save
+            </button>
+            <button class="et-button-bad h-10 px-2"
+                    id="btn-delete"
+                    th:if="${lesson != null}"
+                    th:onclick="'document.location=\'/professor/courses/' + ${lesson.getCourse().getId()} + '/lessons/' + ${lesson.getId()} + '/delete\''"
+                    type="button">
+                Delete lesson
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    function updateSubmittable() {
+        let saveButton = document.getElementById("btn-save");
+
+        let lessonTitle = document.getElementsByName("title")[0].value;
+        let lessonContent = document.getElementsByName("content")[0].value;
+        if (lessonTitle.length > 0 && lessonContent.length > 0) {
+            saveButton.classList.remove("et-button-disabled");
+        } else {
+            saveButton.classList.add("et-button-disabled");
+        }
+    }
+</script>
+</html>

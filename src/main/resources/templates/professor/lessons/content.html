@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${lesson.getTitle()}">Lesson Title</title>
+    <meta th:replace="common/meta"/>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="/markdown.css" rel="stylesheet">
+</head>
+<body onload="renderMarkdown()">
+<div th:replace="common/errors"/>
+<!-- Header with logo, logout and breadcrumbs -->
+<div th:replace="common/header"></div>
+<!-- Content -->
+<div class="et-flex-centered gap-4 px-20">
+    <!-- Lesson content -->
+    <div class="et-card w-full p-5">
+        <div class="flex flex-col justify-items-center">
+            <!-- Title and Button -->
+            <div class="flex justify-between w-100">
+                <p class="et-name text-3xl font-bold" th:text="${lesson.getTitle()}">Lesson name</p>
+                <button class="et-button-primary w-28" id="btn-edit"
+                        th:if="${canEdit}"
+                        th:onclick="'document.location=\'/professor/courses/'+${lesson.getCourse().getId()}+'/lessons/'+${lesson.getId()}+'/edit\''">
+                    Modify
+                </button>
+            </div>
+            <!-- Lesson content -->
+            <article id="markdown-body" th:data-content="${lesson.getContent()}" th:text="${lesson.getContent()}">
+                This lesson is so interesting
+            </article>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function renderMarkdown() {
+        let content = document.getElementById("markdown-body").innerHTML;
+        document.getElementById("markdown-body").innerHTML = marked.parse(content);
+    }
+</script>
+</html>

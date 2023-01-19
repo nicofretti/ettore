@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search</title>
+    <meta th:replace="common/meta"/>
+</head>
+<body>
+<div th:replace="common/errors"/>
+<!-- Header with logo, logout and breadcrumbs -->
+<div th:replace="common/header"></div>
+<!-- Content -->
+<div class="et-content">
+    <form class="self-stretch" action="" method="get">
+        <div class="flex flex-row items-center gap-2 h-11 items-stretch">
+            <select class="text-xl font-medium flex-1 min-w-0" name="category">
+                <option th:each='option: ${new String[]{"", "Maths", "Science", "History", "Geography", "Art", "Music", "Languages"}}' th:value="${option}" th:selected='${option.equals(initialCategory)}'>
+                    <span th:text='${option.isEmpty() ? "Any category" : option}'></span>
+                </option>
+            </select>
+            <input class="et-squared-input text-xl font-medium flex-2 min-w-0" name="text" type="text" placeholder="Type here to search.." th:value="${initialText}">
+            <select class="text-xl font-medium flex-1 min-w-0" name="startingYear">
+                <option th:each='startingYear: ${new Object[]{"", 2023, 2022, 2021}}' th:value="${startingYear.toString()}" th:selected='${startingYear.toString().equals(initialStartingYear)}'
+                        th:text='${startingYear.equals("") ? "Any year" : startingYear.toString()+"/"+(startingYear+1).toString()}'></option>
+            </select>
+            <button id="btn-search" class="et-button-primary flex-1 min-w-0 px-2" type="submit">Search</button>
+        </div>
+    </form>
+    <!-- Iterate over courses -->
+    <div th:each="course: ${courses}" class="self-stretch et-card p-5">
+        <div class="flex flex-row items-center gap-5">
+            <!-- Icon -->
+            <i th:class="'et-icon-course fa-2x '+${course.getIcon()}" class="fa fa-book fa-2x"></i>
+            <!-- Title -->
+            <span th:text="${course.getName()}" class="et-name text-2xl font-bold">Course name</span>
+            <!-- Year -->
+            <p th:text="${course.formatPeriod()}" class="et-period text-xl">(FromYear/ToYear)</p>
+            <!-- Join button -->
+            <button th:if="${course.hasRequestedAlready || course.hasJoinedAlready}" title="You are already enrolled in this course or have already requested to join" class="et-button-primary et-button-grayed-out px-8 self-center ml-auto h-8">Join</button>
+            <button th:unless="${course.hasRequestedAlready || course.hasJoinedAlready}" class="et-button-primary px-8 self-center ml-auto h-8" th:onclick="'document.location = \'/student/courses/'+${course.getId()}+'/request-to-join\''">Join</button>
+        </div>
+        <!-- Description -->
+        <p th:text="${course.description}" class="et-description mt-4">
+            Descrizione del corso Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non est magna.
+        </p>
+    </div>
+    <span id="et-no-results" class="self-center text-xl text-semibold" th:if="${courses.isEmpty()}">No courses found matching the given criteria</span>
+</div>
+</body>
+</html>
