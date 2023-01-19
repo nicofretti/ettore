@@ -59,9 +59,10 @@ public class DbBootstrapper {
 
         // Add some lessons about maths
         Lesson lesson1 = new Lesson("Derivatives", "Some nice description on Derivation", "Derivatives lesson content and stuff `super` " +
-                "\n# Ledjo <3\n**Integrals**\n```java\nSystem.out.println('ciao')\n```", math);
+                "\n# Intro\nThe derivative of a `function` of a real **variable** measures the sensitivity to change of the function value (_output value_) with respect to its argument (_input value_).\n"
+                + "```java\nSystem.out.println(\"f'(x)\")\n```", math);
 
-        Lesson lesson2 = new Lesson("Integrals", "Some nice description on Integration", "Integrals lesson content and stuff", math);
+        Lesson lesson2 = new Lesson("Integrals", "Some nice description on Integration", "Integrals `lesson` content and stuff", math);
         repoLesson.saveAll(List.of(lesson1, lesson2));
 
         // And link them with the maths course

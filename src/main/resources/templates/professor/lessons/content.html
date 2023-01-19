@@ -25,7 +25,8 @@
                 </button>
             </div>
             <!-- Lesson content -->
-            <article id="markdown-body" th:data-content="${lesson.getContent()}" th:text="${lesson.getContent()}">
+            <article class="markdown-body" id="markdown-body" th:data-content="${lesson.getContent()}"
+                     th:text="${lesson.getContent()}">
                 This lesson is so interesting
             </article>
         </div>
