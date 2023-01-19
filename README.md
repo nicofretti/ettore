@@ -12,6 +12,10 @@ can ask to join courses and, once accepted, are able to look at the lessons avai
     <img src="img/course_info.png" width="400" title="Course info">
     <img src="img/course_students.png" width="400" alt="Students">
 </p>
+<p align="center">
+    <img src="img/lessons.png" width="400" title="Course lessons">
+    <img src="img/lesson.png" width="400" alt="Lessons">
+</p>
 
 ## Technology Stack
 
