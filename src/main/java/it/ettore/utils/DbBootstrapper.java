@@ -58,10 +58,12 @@ public class DbBootstrapper {
         repoCourse.save(art);
 
         // Add some lessons about maths
-        Lesson lesson1 = new Lesson("Derivatives", "Some nice description on Derivation", "Derivatives lesson content and stuff `super` " +
-                "\n# Ledjo <3\n**Integrals**\n```java\nSystem.out.println('ciao')\n```", math);
+        Lesson lesson1 = new Lesson("Derivatives", "The derivative of a function of a single variable at a chosen input value, when it exists, is the slope of the tangent line to the graph of the function at that point.",
+                "The derivative of a function of a single variable at a chosen input value, when it exists, is the slope of the tangent line to the graph of the function at that point." +
+                        "\n# Intro\nThe derivative of a `function` of a real **variable** measures the sensitivity to change of the function value (_output value_) with respect to its argument (_input value_).\n"
+                        + "```java\nSystem.out.println(\"f'(x)\")\n```", math);
 
-        Lesson lesson2 = new Lesson("Integrals", "Some nice description on Integration", "Integrals lesson content and stuff", math);
+        Lesson lesson2 = new Lesson("Integrals", "An integral in mathematics is either a numerical value equal to the area under the graph of a function for some interval or a new function, the derivative of which is the original function (indefinite integral).", "Integrals `lesson` content and stuff", math);
         repoLesson.saveAll(List.of(lesson1, lesson2));
 
         // And link them with the maths course

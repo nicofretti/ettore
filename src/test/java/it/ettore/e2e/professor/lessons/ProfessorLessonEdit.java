@@ -5,8 +5,8 @@ import it.ettore.e2e.po.LessonDetailsPage;
 import it.ettore.e2e.po.LoginPage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursePage;
 import it.ettore.e2e.po.professor.courses.ProfessorCoursesPage;
-import it.ettore.e2e.po.professor.lessons.ProfessorLessonsPage;
 import it.ettore.e2e.po.professor.lessons.ProfessorLessonAddPage;
+import it.ettore.e2e.po.professor.lessons.ProfessorLessonsPage;
 import it.ettore.model.*;
 import it.ettore.utils.Breadcrumb;
 import org.junit.Before;
@@ -254,7 +254,7 @@ public class ProfessorLessonEdit extends E2EBaseTest {
     }
 
     /**
-     * Modidy lesson, and then also check that the title, description and content take on the expected values
+     * Modify lesson, and then also check that the title, description and content take on the expected values
      */
     @Test
     public void editLessonCorrectness() {
